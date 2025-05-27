@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대한민국 ChatGPT 시장 분석 인포그래픽</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Tailwind 기본 폰트와 유사한 Inter 사용 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* 기본 최대 너비 */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* 기본 높이 */
+            max-height: 400px; /* 최대 높이 */
+        }
+        @media (min-width: 768px) { /* md 이상 */
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .kpi-value {
+            font-size: 2.5rem; /* KPI 수치 폰트 크기 */
+            font-weight: bold;
+        }
+        .kpi-label {
+            font-size: 0.875rem; /* KPI 레이블 폰트 크기 */
+            color: #4A5568; /* 회색 계열 */
+        }
+        /* Energetic & Playful Palette: #FF6F61 (Coral), #FFD166 (Yellow), #06D6A0 (Mint), #118AB2 (Blue), #073B4C (Dark Teal) */
+        .bg-coral { background-color: #FF6F61; }
+        .text-coral { color: #FF6F61; }
+        .border-coral { border-color: #FF6F61; }
+
+        .bg-yellow { background-color: #FFD166; }
+        .text-yellow { color: #FFD166; }
+
+        .bg-mint { background-color: #06D6A0; }
+        .text-mint { color: #06D6A0; }
+
+        .bg-blue { background-color: #118AB2; }
+        .text-blue { color: #118AB2; }
+        .border-blue { border-color: #118AB2; }
+
+        .bg-dark-teal { background-color: #073B4C; }
+        .text-dark-teal { color: #073B4C; }
+
+        .section-title {
+            font-size: 1.875rem; /* 30px */
+            font-weight: bold;
+            margin-bottom: 1rem; /* 16px */
+            color: #073B4C; /* Dark Teal */
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.5rem; /* 8px */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem; /* 24px */
+            margin-bottom: 1.5rem; /* 24px */
+        }
+        .tooltip-multiline-title { white-space: pre-line; }
+
+        /* HTML/CSS 기반 다이어그램용 스타일 */
+        .flow-item {
+            border: 2px solid #118AB2; /* Blue */
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            text-align: center;
+            background-color: #E0F2FE; /* Light Blue */
+            color: #073B4C; /* Dark Teal */
+        }
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #118AB2; /* Blue */
+            margin: 0.5rem 0;
+        }
+    </style>
+    <!-- Infographic Narrative Plan:
+    제목: 대한민국 ChatGPT 시장: 성장 동력과 글로벌 위상
+    섹션 1: 서론 - 한국 시장, AI의 새로운 중심?
+    섹션 2: 글로벌 ChatGPT 현황 한눈에 보기
+    섹션 3: 대한민국, ChatGPT 열풍의 현주소
+    섹션 4: '세계 2위'의 진실: 비중 vs. 성장성
+    섹션 5: 경쟁 환경 속 ChatGPT의 위상
+    섹션 6: 한국 시장의 매력: OpenAI는 왜 주목하는가?
+    섹션 7: 미래 전망 및 결론
+    -->
+    </head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-dark-teal text-white py-8 px-4 text-center">
+        <h1 class="text-4xl font-bold mb-2">대한민국 ChatGPT 시장: 성장 동력과 글로벌 위상</h1>
+        <p class="text-lg text-yellow">OpenAI의 분석과 시장 전망을 중심으로</p>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+
+        <section id="intro" class="mb-12">
+            <div class="card">
+                <h2 class="section-title text-coral">AI의 새로운 중심, 대한민국?</h2>
+                <p class="mb-4">OpenAI는 대한민국을 ChatGPT 유료 가입자 수 기준으로 미국에 이어 세계 2위 국가로 평가하며, 최근 한국 법인 설립 및 서울 사무소 개설 계획을 발표했습니다. 이는 한국 시장의 높은 AI 기술 수용성과 성장 잠재력을 인정한 것입니다.</p>
+                <p>본 인포그래픽은 OpenAI의 발표와 관련 보고서 내용을 바탕으로 대한민국 ChatGPT 시장의 현황, 주요 지표, 성장 배경, 그리고 미래 전망을 시각적으로 분석하여 제공합니다.</p>
+            </div>
+        </section>
+
+        <section id="global-status" class="mb-12">
+            <h2 class="section-title text-center">글로벌 ChatGPT 현황 한눈에 보기</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card text-center">
+                    <p class="kpi-label">글로벌 총 유료 가입자 (2025년 초)</p>
+                    <p class="kpi-value text-blue">약 1,100만 명</p>
+                    <p class="text-sm text-gray-600">(개인 및 기업 포함)</p>
+                </div>
+                <div class="card text-center">
+                    <p class="kpi-label">유료 구독 연간 수익 (2025년 초)</p>
+                    <p class="kpi-value text-mint">약 27억 달러</p>
+                    <p class="text-sm text-gray-600">(2025년 말 40억 달러 전망)</p>
+                </div>
+            </div>
+            <div class="card mt-6">
+                 <h3 class="text-xl font-semibold mb-3 text-dark-teal text-center">글로벌 유료 가입자 증가 추이</h3>
+                 <p class="text-center text-gray-700 mb-4">OpenAI는 특히 2024년 말 이후 빠른 유료 가입자 증가세를 보였으며, 이는 Sora, GPT-4o 등 혁신적인 기능 출시에 힘입은 결과입니다.</p>
+                <div class="chart-container h-72 md:h-96">
+                    <canvas id="globalGrowthChart"></canvas>
+                </div>
+                <p class="text-xs text-gray-500 mt-2 text-center">참고: 위 차트는 개념적 증가 추세를 나타내며, 실제 월별 데이터는 보고서에 명시되지 않았습니다.</p>
+            </div>
+        </section>
+
+        <section id="korea-status" class="mb-12">
+            <h2 class="section-title text-center">대한민국, ChatGPT 열풍의 현주소</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                <div class="card text-center">
+                    <p class="kpi-label">월간 활성 사용자 (MAU)</p>
+                    <p class="kpi-value text-coral">1,072만 명+</p>
+                    <p class="text-sm text-gray-600">(2025년 5월, 앱 기준)</p>
+                </div>
+                <div class="card text-center">
+                    <p class="kpi-label">주간 활성 사용자 (WAU) 성장</p>
+                    <p class="kpi-value text-yellow">4.5배 이상</p>
+                    <p class="text-sm text-gray-600">(지난 1년 간)</p>
+                </div>
+                <div class="card text-center md:col-span-2 lg:col-span-1">
+                    <p class="kpi-label">추정 유료 가입자 수</p>
+                    <p class="kpi-value text-mint">20만 ~ 50만 명</p>
+                    <p class="text-sm text-gray-600">(국내 분석 기반)</p>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="text-xl font-semibold mb-3 text-dark-teal text-center">대한민국 ChatGPT 사용자 지표 순위 (글로벌)</h3>
+                <div class="chart-container h-96">
+                    <canvas id="koreaRankingsChart"></canvas>
+                </div>
+                 <p class="text-sm text-gray-700 mt-4">대한민국은 유료 가입자 수(2위), 전체 사용자 수(상위 10위권), API 개발자 수(상위 10위권), 유료 기업 사용자 수(상위 5위권) 등 다양한 지표에서 글로벌 상위권을 차지하며 높은 AI 활용도를 보입니다.</p>
+            </div>
+        </section>
+
+        <section id="truth-of-2nd" class="mb-12">
+            <div class="card">
+                <h2 class="section-title text-coral text-center">'세계 2위'의 진실: 비중 vs. 성장성</h2>
+                <p class="text-center text-gray-700 mb-6">OpenAI는 한국을 유료 가입자 수 세계 2위로 평가했지만, 실제 글로벌 비중은 1.8%~4.5% 수준으로 추정됩니다. '2위'의 의미는 절대적 수치보다는 한국 시장의 높은 성장 잠재력, AI 기술 수용성, 그리고 활발한 생태계에 대한 질적인 평가로 해석됩니다.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3 text-dark-teal">글로벌 유료 가입자 비중 (추정)</h3>
+                        <div class="chart-container h-64 md:h-80">
+                            <canvas id="koreaProportionChart"></canvas>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">미국이 압도적 1위이며, 한국은 상대적으로 적은 비중으로도 2위 가능.</p>
+                    </div>
+                    <div class="mt-6 md:mt-0">
+                        <h3 class="text-xl font-semibold mb-3 text-dark-teal">OpenAI가 주목하는 한국 시장의 강점</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-center"><span class="text-mint mr-2">📈</span> 높은 AI 채택률 및 빠른 사용자 증가</li>
+                            <li class="flex items-center"><span class="text-mint mr-2">💡</span> 활발한 개발자 및 기업 커뮤니티</li>
+                            <li class="flex items-center"><span class="text-mint mr-2">💰</span> 유료 기능에 대한 높은 지불 의사</li>
+                            <li class="flex items-center"><span class="text-mint mr-2">🌐</span> 반도체부터 소프트웨어까지 풀스택 AI 생태계</li>
+                            <li class="flex items-center"><span class="text-mint mr-2">📱</span> 다양한 세대의 AI 일상적 활용</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="competitive-landscape" class="mb-12">
+            <div class="card">
+                <h2 class="section-title text-blue text-center">경쟁 환경 속 ChatGPT의 위상</h2>
+                <p class="text-center text-gray-700 mb-6">ChatGPT는 AI 생산성 도구로, 대중 엔터테인먼트 구독 서비스와는 다른 시장에 속합니다. 국내 주요 구독 서비스와 유료 가입자 수를 비교해 보면 ChatGPT의 상대적 규모와 시장 특성을 이해할 수 있습니다.</p>
+                <div class="chart-container h-96">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+                <p class="text-sm text-gray-700 mt-4">ChatGPT의 유료 가입자 수는 넷플릭스, 유튜브 프리미엄 등에 비해 적지만, AI 도구 시장 내에서는 높은 유료 전환율과 사용자 가치를 나타냅니다. (참고: 타 서비스는 MAU 또는 전체 구독자 기준일 수 있음)</p>
+            </div>
+        </section>
+
+        <section id="korea-attraction" class="mb-12">
+            <div class="card">
+                <h2 class="section-title text-yellow text-center">한국 시장의 매력: OpenAI는 왜 주목하는가?</h2>
+                <p class="text-center text-gray-700 mb-6">OpenAI가 한국 시장에 주목하는 이유는 단순히 사용자 수를 넘어선 다층적인 매력 때문입니다. 한국은 기술 혁신, AI 도입, 그리고 프리미엄 서비스에 대한 투자 의지가 높은 시장입니다.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-dark-teal">주요 강점 지표</h3>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-blue/10 rounded-lg">
+                                <p class="font-semibold text-blue">📱 앱 마켓 매출</p>
+                                <p>구글 플레이 전체 1위, 애플 앱스토어 2위 (2025년 5월 기준)</p>
+                            </div>
+                            <div class="p-4 bg-mint/10 rounded-lg">
+                                <p class="font-semibold text-mint">🧑‍💻 API 개발자 수</p>
+                                <p>글로벌 상위 10위권</p>
+                            </div>
+                            <div class="p-4 bg-coral/10 rounded-lg">
+                                <p class="font-semibold text-coral">🏢 기업 유료 서비스 채택률</p>
+                                <p>글로벌 상위 5위권</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-dark-teal">OpenAI의 한국 시장 전략</h3>
+                         <div class="flow-item mb-2">국내 기업 파트너십 강화<br>(카카오, SKT, 크래프톤 등)</div>
+                         <div class="flow-arrow">▼</div>
+                         <div class="flow-item mb-2">'한국형 AI' 개발 지원<br>(정책 입안자 협력)</div>
+                         <div class="flow-arrow">▼</div>
+                         <div class="flow-item">AI 인프라 확장 모색<br>(데이터 센터 등)</div>
+                         <p class="mt-4 text-sm text-gray-600">이를 통해 한국을 아시아 및 글로벌 확장 전략의 핵심 거점으로 삼고자 합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="future-outlook" class="mb-12">
+            <div class="card">
+                <h2 class="section-title text-mint text-center">미래 전망 및 결론</h2>
+                <p class="mb-4 text-gray-700">대한민국 ChatGPT 유료 가입자 수 150만~200만 명 추정은 현재로서는 검증되기 어렵지만, 1,000만 명이 넘는 MAU는 거대한 성장 잠재력을 시사합니다. OpenAI의 한국 시장 직접 투자는 국내 AI 생태계에 경쟁과 혁신을 동시에 가져올 것입니다.</p>
+                <blockquote class="border-l-4 border-blue p-4 bg-blue/10 my-4">
+                    <p class="italic text-gray-800">"한국은 반도체부터 소프트웨어, 스타트업까지 AI 전 영역을 아우르는 풀스택 생태계를 갖췄으며, 다양한 세대가 AI를 일상적으로 활용하는 선도국입니다."</p>
+                    <footer class="text-sm text-gray-600 mt-1">- 제이슨 권, OpenAI CSO (요약 인용)</footer>
+                </blockquote>
+                <p class="text-gray-700">결론적으로, 한국은 높은 AI 기술 수용성, 빠른 성장세, 강력한 생태계를 바탕으로 OpenAI에게 매우 중요한 전략적 시장입니다. 이는 OpenAI의 투자 결정을 정당화하며, 한국이 글로벌 AI 혁신의 핵심 허브로 부상할 가능성을 보여줍니다.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-dark-teal text-white py-6 px-4 text-center">
+        <p class="text-sm">&copy; 2025 대한민국 ChatGPT 시장 분석 인포그래픽. All rights reserved.</p>
+        <p class="text-xs mt-1">본 인포그래픽은 제공된 "OpenAI의 대한민국 ChatGPT 유료 가입자 수 현황 및 시장 타당성 분석 보고서"를 기반으로 제작되었습니다.</p>
+    </footer>
+
+    <script>
+        const CHART_COLORS = {
+            coral: '#FF6F61',
+            yellow: '#FFD166',
+            mint: '#06D6A0',
+            blue: '#118AB2',
+            darkTeal: '#073B4C',
+            gray: '#A0AEC0'
+        };
+
+        function wrapLabels(label, maxWidth) {
+            if (typeof label !== 'string' || label.length <= maxWidth) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+        
+        const commonTooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        // Global Growth Chart (Conceptual)
+        const globalGrowthCtx = document.getElementById('globalGrowthChart').getContext('2d');
+        new Chart(globalGrowthCtx, {
+            type: 'line',
+            data: {
+                labels: ['2023년 초', '2023년 말', '2024년 초', '2024년 말', '2025년 초'],
+                datasets: [{
+                    label: '글로벌 유료 가입자 증가 추세 (개념적)',
+                    data: [100, 250, 400, 650, 1100], // 예시 데이터, 실제 수치 아님
+                    borderColor: CHART_COLORS.mint,
+                    backgroundColor: CHART_COLORS.mint + '33', // 투명도 추가
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: '가입자 수 (단위: 만 명, 개념적)' }
+                    }
+                },
+                plugins: {
+                    tooltip: { callbacks: { title: commonTooltipTitleCallback } }
+                }
+            }
+        });
+
+        // Korea Rankings Chart
+        const koreaRankingsCtx = document.getElementById('koreaRankingsChart').getContext('2d');
+        new Chart(koreaRankingsCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    wrapLabels('유료 가입자 수', 16), 
+                    wrapLabels('전체 사용자 수', 16), 
+                    wrapLabels('API 개발자 수', 16), 
+                    wrapLabels('유료 기업 사용자 수', 16),
+                    wrapLabels('앱 다운로드당 매출', 16)
+                ],
+                datasets: [{
+                    label: '대한민국 글로벌 순위',
+                    data: [2, 10, 10, 5, 2], // 순위 데이터 (낮을수록 높음)
+                    backgroundColor: [CHART_COLORS.coral, CHART_COLORS.yellow, CHART_COLORS.mint, CHART_COLORS.blue, CHART_COLORS.darkTeal],
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        reverse: true, // 순위이므로 낮은 숫자가 좋음
+                        title: { display: true, text: '글로벌 순위 (낮을수록 높음)' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { 
+                        callbacks: { 
+                            title: commonTooltipTitleCallback,
+                            label: function(context) {
+                                return `순위: ${context.raw}위`;
+                            }
+                        } 
+                    }
+                }
+            }
+        });
+        
+        // Korea Proportion Chart
+        const koreaProportionCtx = document.getElementById('koreaProportionChart').getContext('2d');
+        new Chart(koreaProportionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['대한민국 (추정 1.8%~4.5%)', '미국 (추정)', '기타 국가'],
+                datasets: [{
+                    label: '글로벌 유료 가입자 비중',
+                    data: [3.15, 50, 46.85], // (1.8+4.5)/2 = 3.15. 미국과 기타는 예시.
+                    backgroundColor: [CHART_COLORS.coral, CHART_COLORS.blue, CHART_COLORS.gray],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: { callbacks: { title: commonTooltipTitleCallback } },
+                    title: {
+                        display: true,
+                        text: '글로벌 ChatGPT 유료 가입자 비중 (추정)',
+                        padding: { top: 10, bottom: 10 }
+                    }
+                }
+            }
+        });
+
+        // Comparison Chart
+        const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+        new Chart(comparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    wrapLabels('ChatGPT Plus (추정)', 16), 
+                    wrapLabels('넷플릭스', 16), 
+                    wrapLabels('유튜브 프리미엄 (뮤직 MAU)', 16), 
+                    wrapLabels('티빙', 16)
+                ],
+                datasets: [{
+                    label: '대한민국 유료 가입자/MAU (단위: 만 명)',
+                    data: [35, 835, 724, 500], // ChatGPT는 20~50만의 중간값 35만으로 표시
+                    backgroundColor: [CHART_COLORS.coral, CHART_COLORS.blue, CHART_COLORS.mint, CHART_COLORS.yellow],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: '가입자/MAU (단위: 만 명)' }
+                    }
+                },
+                plugins: {
+                    tooltip: { callbacks: { title: commonTooltipTitleCallback } },
+                    title: {
+                        display: true,
+                        text: '주요 구독 서비스 가입자 수 비교 (2025년 기준)',
+                        padding: { top: 10, bottom: 20 }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
