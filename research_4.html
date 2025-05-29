@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google I/O 2025 AI 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Overview: Text (Goal: Inform)
+        - Gemini Models: Tabs for each model with text descriptions of features/capabilities. A simple bar chart for Flash cost/speed comparison (Goal: Compare, Inform, Chart.js/Canvas).
+        - AI Tools: Interactive filterable cards with text descriptions (Goal: Organize, Inform, HTML/CSS/JS).
+        - Internal Projects: Text explanations in dedicated sub-sections (Goal: Inform).
+        - June Outlook: Interactive HTML table summarizing expected June releases (Goal: Inform, HTML/JS).
+        - Subscriptions: Comparison HTML table for AI Pro vs. Ultra (Goal: Compare, Inform, HTML).
+        All information sourced from the report. Focus on clarity and ease of understanding. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .section-active { display: block; }
+        .section-inactive { display: none; }
+        .nav-link-active { background-color: #0D9488; color: white; }
+        .nav-link-inactive { background-color: #F0F9FF; color: #0C4A6E; }
+        .tab-active { border-bottom: 2px solid #0D9488; color: #0D9488; font-weight: 600;}
+        .tab-inactive { border-bottom: 2px solid transparent; color: #6B7280;}
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .table-highlight tbody tr:hover { background-color: #F0FDFA; }
+        .tooltip {
+            position: absolute;
+            background-color: rgba(0,0,0,0.75);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .has-tooltip:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-stone-800">
+    <header class="bg-teal-700 text-white p-4 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+            <h1 class="text-2xl font-bold mb-2 sm:mb-0">Google I/O 2025 AI 분석</h1>
+            <nav id="mainNav" class="flex flex-wrap justify-center gap-2">
+                <button data-target="overview" class="nav-button nav-link-active px-3 py-1.5 rounded-md text-sm font-medium hover:bg-teal-600 transition-colors">개요</button>
+                <button data-target="gemini_models" class="nav-button nav-link-inactive px-3 py-1.5 rounded-md text-sm font-medium hover:bg-teal-600 transition-colors">Gemini 모델</button>
+                <button data-target="ai_tools" class="nav-button nav-link-inactive px-3 py-1.5 rounded-md text-sm font-medium hover:bg-teal-600 transition-colors">AI 도구/제품</button>
+                <button data-target="internal_projects" class="nav-button nav-link-inactive px-3 py-1.5 rounded-md text-sm font-medium hover:bg-teal-600 transition-colors">내부 프로젝트</button>
+                <button data-target="june_outlook" class="nav-button nav-link-inactive px-3 py-1.5 rounded-md text-sm font-medium hover:bg-teal-600 transition-colors">6월 출시 전망</button>
+                <button data-target="subscription_plans" class="nav-button nav-link-inactive px-3 py-1.5 rounded-md text-sm font-medium hover:bg-teal-600 transition-colors">구독 플랜</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+        <section id="overview" class="content-section section-active bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-3xl font-semibold text-teal-700 mb-4">AI 전략 개요</h2>
+            <p class="mb-4 text-stone-700 leading-relaxed">
+                Google I/O 2025는 Gemini를 중심으로 한 Google의 AI 전략이 전사적으로 통합되고 확장되고 있음을 명확히 보여주었습니다. 이번 행사는 Google이 AI를 자사 제품 및 서비스 전반에 걸쳐 심층적으로 통합하여 사용자 경험을 혁신하고 개발자 생산성을 극대화하려는 장기적인 비전을 제시했습니다. '연구에서 현실로'라는 기조 아래, AI 기술이 실제 사용자들에게 어떻게 다가가고 있는지를 다양한 발표를 통해 확인할 수 있었습니다.
+            </p>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-teal-50 p-4 rounded-lg">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-2">핵심 주제: Gemini 중심 통합</h3>
+                    <p class="text-stone-600">Gemini 모델은 Google 검색, Chrome, Pixel 기기, 개발 도구 등 거의 모든 주요 제품의 핵심 기술로 자리매김하며, Google AI 생태계의 지능형 레이어 역할을 수행합니다.</p>
+                </div>
+                <div class="bg-sky-50 p-4 rounded-lg">
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">주요 발표 요약</h3>
+                    <ul class="list-disc list-inside text-stone-600 space-y-1">
+                        <li>Gemini 2.5 Flash & Pro 모델 업데이트</li>
+                        <li>Google 검색 AI Mode, AI 코딩 에이전트 Jules</li>
+                        <li>비디오 생성 모델 Veo 3, AI 영화 제작 도구 Flow</li>
+                        <li>Google AI Ultra 등 신규 구독 플랜</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="gemini_models" class="content-section section-inactive bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-3xl font-semibold text-teal-700 mb-6">Gemini 모델 상세 분석</h2>
+            <p class="mb-6 text-stone-700 leading-relaxed">
+                Google은 Gemini 모델 라인업을 지속적으로 발전시키며 다양한 사용 사례에 최적화된 솔루션을 제공하고 있습니다. 이번 I/O에서는 특히 Gemini 2.5 Flash와 Pro 모델의 주요 업데이트, 그리고 Pro 모델의 새로운 'Deep Think' 모드가 주목받았습니다. 각 모델의 특징과 성능, 그리고 예상 출시 일정을 자세히 살펴보겠습니다.
+            </p>
+            <div class="mb-6 border-b border-gray-200">
+                <nav class="flex space-x-4 -mb-px" aria-label="Tabs">
+                    <button class="gemini-tab tab-active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="flash">Gemini 2.5 Flash</button>
+                    <button class="gemini-tab tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="pro">Gemini 2.5 Pro</button>
+                    <button class="gemini-tab tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="deepthink">Gemini 2.5 Pro Deep Think</button>
+                </nav>
+            </div>
+
+            <div id="flash" class="gemini-tab-content">
+                <h3 class="text-2xl font-medium text-stone-700 mb-3">Gemini 2.5 Flash</h3>
+                <p class="text-stone-600 mb-4">속도와 효율성에 최적화된 최신 멀티모달 모델입니다. 추론, 멀티모달리티, 코드 및 긴 컨텍스트 처리 능력이 향상되었으며, 오디오, 이미지, 비디오, 텍스트 입력을 처리하여 텍스트 응답을 생성할 수 있습니다.</p>
+                <ul class="list-disc list-inside text-stone-600 space-y-1 mb-4">
+                    <li><strong>주요 특징:</strong> 빠른 응답 속도, 비용 효율성 (Gemini 1.5 Pro 대비 질문당 85% 낮은 비용, 25% 빠른 응답)</li>
+                    <li><strong>처리 능력:</strong> 오디오, 이미지, 비디오, 텍스트 입력 처리</li>
+                    <li><strong>출시 상태:</strong> 2025년 6월 초 일반 출시 예정 (현재 프리뷰 제공)</li>
+                </ul>
+                <div class="chart-container bg-gray-50 p-4 rounded-md">
+                    <canvas id="geminiFlashChart"></canvas>
+                </div>
+                 <p class="text-sm text-stone-500 mt-2 text-center">Gemini 1.5 Pro 대비 Gemini 2.5 Flash 성능 (개념도)</p>
+            </div>
+
+            <div id="pro" class="gemini-tab-content" style="display: none;">
+                <h3 class="text-2xl font-medium text-stone-700 mb-3">Gemini 2.5 Pro</h3>
+                <p class="text-stone-600 mb-4">Google의 가장 진보된 추론 모델로, 복잡한 작업에 최적화되어 있습니다. 코딩 및 수학 벤치마크에서 뛰어난 성능을 보이며, 경쟁 모델을 능가하는 것으로 평가받습니다.</p>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li><strong>주요 특징:</strong> 최고 수준의 추론 능력, 복잡한 문제 해결</li>
+                    <li><strong>처리 능력:</strong> 오디오, 이미지, 비디오, 텍스트 입력 처리</li>
+                    <li><strong>벤치마크:</strong> 코딩 및 수학 분야에서 경쟁 모델 대비 우위</li>
+                    <li><strong>출시 상태:</strong> Gemini 2.5 Flash 일반 출시 직후 Google AI Studio 및 Vertex AI에서 일반 출시 예정</li>
+                </ul>
+            </div>
+
+            <div id="deepthink" class="gemini-tab-content" style="display: none;">
+                <h3 class="text-2xl font-medium text-stone-700 mb-3">Gemini 2.5 Pro Deep Think 모드</h3>
+                <p class="text-stone-600 mb-4">모델이 응답 전 여러 가설을 고려하여 보다 깊이 있는 추론을 수행하는 연구 기술입니다. 특히 수학 및 코딩과 같은 고도로 복잡한 사용 사례에 적합하며, 'Thought summaries' 기능을 통해 모델의 사고 과정을 투명하게 공개합니다.</p>
+                 <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li><strong>주요 특징:</strong> 다중 가설 고려, 복잡한 문제 해결 능력 극대화, 사고 과정 투명성</li>
+                    <li><strong>대상 작업:</strong> 수학, 코딩 등 고도 복잡성 작업</li>
+                    <li><strong>'Thought Summaries':</strong> 모델의 원시적 사고 과정, 핵심 세부 정보, 도구 사용 등을 명확히 제시</li>
+                    <li><strong>출시 상태:</strong> 신뢰할 수 있는 테스터에게 Gemini API를 통해 곧 제공 예정 (6월 중 일반 공개 가능성 낮음)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="ai_tools" class="content-section section-inactive bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-3xl font-semibold text-teal-700 mb-6">AI 도구 및 제품</h2>
+            <p class="mb-6 text-stone-700 leading-relaxed">
+                Google I/O 2025에서는 Gemini 모델을 기반으로 한 다양하고 혁신적인 AI 도구 및 제품들이 대거 공개되었습니다. 콘텐츠 제작부터 개발자 생산성 향상, 일상적인 사용자 경험 개선에 이르기까지, 이러한 도구들은 AI 기술이 우리 생활과 업무에 어떻게 통합될 수 있는지를 보여줍니다. 주요 도구들의 특징과 활용 분야를 살펴보세요.
+            </p>
+            <div class="mb-6">
+                <label for="toolFilter" class="block text-sm font-medium text-stone-700 mb-1">카테고리 필터:</label>
+                <select id="toolFilter" class="w-full sm:w-1/3 p-2 border border-stone-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+                    <option value="all">전체</option>
+                    <option value="creator">콘텐츠 제작</option>
+                    <option value="developer">개발자 도구</option>
+                    <option value="productivity">생산성 향상</option>
+                </select>
+            </div>
+            <div id="toolsContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="internal_projects" class="content-section section-inactive bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-3xl font-semibold text-teal-700 mb-6">내부 AI 프로젝트 탐구</h2>
+            <p class="mb-6 text-stone-700 leading-relaxed">
+                Google은 공개된 제품 외에도 차세대 AI 기술을 위한 다양한 내부 프로젝트를 진행하고 있습니다. 특히 LM Arena와 같은 플랫폼에서 테스트 중인 'goldmane'과 'calmriver'는 Google의 미래 AI 방향성을 엿볼 수 있는 중요한 단서입니다. 이 프로젝트들이 어떤 기술을 기반으로 하며, 어떤 잠재력을 가지고 있는지 알아보겠습니다.
+            </p>
+            <div class="space-y-6">
+                <div class="bg-sky-50 p-6 rounded-lg shadow">
+                    <h3 class="text-2xl font-medium text-sky-700 mb-3">goldmane (Gemini Diffusion 추정)</h3>
+                    <p class="text-stone-600 mb-2"><strong>핵심 기술:</strong> 확산(diffusion) 기반 텍스트 생성 (기존 자기회귀 방식과 차별화)</p>
+                    <p class="text-stone-600 mb-2"><strong>주요 특징:</strong></p>
+                    <ul class="list-disc list-inside text-stone-600 space-y-1 pl-4 mb-2">
+                        <li>텍스트 블록 병렬 처리 및 생성 중 오류 수정 가능</li>
+                        <li>코딩 및 수학 관련 작업에서 뛰어난 성능</li>
+                        <li>초당 1479 토큰의 매우 빠른 샘플링 속도</li>
+                    </ul>
+                    <p class="text-stone-600 mb-2"><strong>LM Arena 테스트:</strong> 다수 비공개 모델 테스트 및 높은 샘플링 비율로 '벤치마크 게이밍' 논란 존재. 이는 Google이 여러 변형 중 최상위 모델을 선택해 공개하는 '체리 피킹' 전략 가능성을 시사합니다.</p>
+                    <p class="text-stone-600"><strong>현황:</strong> 제한된 접근 데모 제공 (대기자 명단 등록 필요)</p>
+                </div>
+                <div class="bg-indigo-50 p-6 rounded-lg shadow">
+                    <h3 class="text-2xl font-medium text-indigo-700 mb-3">calmriver (Google Search AI Mode 관련 추정)</h3>
+                    <p class="text-stone-600 mb-2"><strong>핵심 기술:</strong> Google 검색의 AI Mode와 연관된 고급 대화형 AI 모델 (Drakesclaw 등과 함께 언급)</p>
+                    <p class="text-stone-600 mb-2"><strong>주요 특징 (AI Mode 기준):</strong></p>
+                    <ul class="list-disc list-inside text-stone-600 space-y-1 pl-4 mb-2">
+                        <li>고급 추론 및 멀티모달리티</li>
+                        <li>'쿼리 팬아웃' 기술로 질문을 하위 주제로 분해, 동시 다수 쿼리 실행</li>
+                        <li>Gemini 모델 및 Shopping Graph 통합으로 쇼핑 경험 향상</li>
+                        <li>Gmail 등 다른 Google 앱 연동을 통한 개인 컨텍스트 활용</li>
+                    </ul>
+                    <p class="text-stone-600 mb-2"><strong>LM Arena 테스트:</strong> 'Drakesclaw'와 함께 새로운 Google 모델로 자주 등장. 특히 'Drakesclaw'는 미묘한 뉘앙스 파악, 창의적 글쓰기, 도메인별 지식 등에서 우수하다고 평가.</p>
+                    <p class="text-stone-600"><strong>시사점:</strong> 단순 키워드 검색을 넘어 사용자의 의도를 깊이 이해하고 개인화된 정보를 제공하는 '대화형 검색'으로의 전환 가속화.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="june_outlook" class="content-section section-inactive bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-3xl font-semibold text-teal-700 mb-6">2025년 6월 출시 전망</h2>
+            <p class="mb-6 text-stone-700 leading-relaxed">
+                Google I/O 2025에서 발표된 다양한 AI 기능과 모델들이 2025년 6월을 기점으로 일반 사용자 및 개발자들에게 본격적으로 제공될 예정입니다. 다음 표는 6월에 주목해야 할 주요 업데이트와 예상 공개 상태를 정리한 것입니다. 이를 통해 Google AI 기술의 최신 동향을 파악하고 미리 대비할 수 있습니다.
+            </p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-stone-200 border border-stone-300 table-highlight">
+                    <thead class="bg-stone-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">기능/모델명</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">주요 특징</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">6월 공개 상태 (예상)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-stone-200" id="juneOutlookTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="subscription_plans" class="content-section section-inactive bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-3xl font-semibold text-teal-700 mb-6">Google AI 구독 플랜 비교</h2>
+            <p class="mb-6 text-stone-700 leading-relaxed">
+                Google은 다양한 사용자층의 요구에 맞춰 AI Pro와 AI Ultra라는 두 가지 주요 구독 플랜을 제공합니다. AI Pro는 핵심적인 AI 기능을 합리적인 가격으로 제공하여 광범위한 사용자 기반을 목표로 하며, AI Ultra는 최고 수준의 모델 접근성과 독점 기능을 통해 파워 유저 및 전문가를 대상으로 합니다. 각 플랜의 주요 특징과 가격을 비교하여 자신에게 맞는 플랜을 선택하는 데 도움을 드립니다.
+            </p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-stone-200 border border-stone-300 table-highlight">
+                    <thead class="bg-stone-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">항목</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Google AI Pro</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Google AI Ultra</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-stone-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">가격</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-500">월 $19.99</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-500">월 $249.99 (초기 3개월 50% 할인)</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">대상 사용자</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-stone-500">일반 사용자, 핵심 AI 기능 필요 사용자</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-stone-500">파워 유저, 전문가, 최고 수준 모델/기능 필요 사용자</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">Gemini 앱 접근</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-500">✔️</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-500">✔️ (Deep Research 기능 포함)</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">Flow (AI 영화 제작)</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-stone-500">Veo 2 모델 기반, 월 100회 장면 생성</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-stone-500">Veo 3 모델 조기 액세스, 더 높은 사용 한도</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">Veo 3 (텍스트-비디오)</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-500">제한적 (또는 별도)</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-500">✔️ (71개국 유료 구독자 대상 확대)</td>
+                        </tr>
+                         <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">Chrome 내 Gemini</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-500">조기 액세스 (미국, 특정 사용자)</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-500">조기 액세스 (미국, 특정 사용자)</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">추가 혜택</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-stone-500">-</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-stone-500">Whisk, NotebookLM 최고 한도, Project Mariner 조기 액세스, YouTube Premium, 30TB 저장 공간</td>
+                        </tr>
+                         <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">확장 국가</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-stone-500">주요 국가 지원</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-stone-500">미국 시작, 70개 이상 국가로 확장 (2025년 5월 27일 기준)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-800 text-stone-300 text-center p-6 mt-12">
+        <p class="text-sm">&copy; 2025 Google I/O AI 분석. 정보 제공 목적으로 제작되었습니다.</p>
+        <p class="text-xs mt-1">본 페이지는 제공된 보고서 내용을 기반으로 생성되었습니다.</p>
+    </footer>
+
+    <script>
+        const navButtons = document.querySelectorAll('.nav-button');
+        const contentSections = document.querySelectorAll('.content-section');
+        const mainNav = document.getElementById('mainNav');
+
+        const geminiTabs = document.querySelectorAll('.gemini-tab');
+        const geminiTabContents = document.querySelectorAll('.gemini-tab-content');
+
+        const toolFilter = document.getElementById('toolFilter');
+        const toolsContainer = document.getElementById('toolsContainer');
+
+        const aiToolsData = [
+            { 
+                id: 'veo3', name: 'Veo 3 (텍스트-비디오 생성)', category: 'creator', icon: '🎬',
+                description: '시각적 요소와 동기화된 오디오(대화, 음향 효과 등)를 동시 생성하는 최신 텍스트-비디오 모델. 4K 해상도 지원.',
+                features: ['텍스트-비디오+오디오 통합 생성', '4K 해상도', 'AI 영화 제작의 새 시대'],
+                status: 'Gemini 앱/웹 통해 71개국 유료 구독자(AI Pro, Ultra) 접근 가능 (모바일 곧 지원)'
+            },
+            {
+                id: 'flow', name: 'Flow (AI 영화 제작 도구)', category: 'creator', icon: '🎞️',
+                description: 'Veo, Imagen, Gemini 모델을 활용하여 자연어 프롬프트로 영화 같은 장면을 만드는 도구. 캐릭터 및 배경 디자인 가능.',
+                features: ['전문적 영화 제작 도구의 대중화', '텍스트-이미지로 캐릭터/배경 디자인', '창작의 민주화 목표'],
+                status: '미국에서 Google AI Pro/Ultra 구독 플랜 통해 접근 가능 (AI Pro: 월 100회 장면 생성)'
+            },
+            {
+                id: 'jules', name: 'Jules (AI 코딩 에이전트)', category: 'developer', icon: '💻',
+                description: '비동기식 AI 코딩 에이전트로, 코드 작성, 테스트, 버그 수정 등 소프트웨어 작업을 자율 수행. GitHub 통합, Gemini 2.5 Pro 기반.',
+                features: ['자율적 코드 작업 수행', '개발자 생산성 혁신', 'GitHub 직접 통합'],
+                status: '전 세계 공개 베타 출시 (현재 무료, 향후 유료화 예정)'
+            },
+            {
+                id: 'chrome_gemini', name: 'Chrome 내 Gemini 통합', category: 'productivity', icon: '�',
+                description: '브라우징 활동에 문맥적으로 반응하는 AI 브라우징 어시스턴트. 웹페이지 요약, 여러 탭 데이터 재구성.',
+                features: ['문맥 인식 AI 지원', '웹페이지 정보 요약/재구성', '능동적 브라우징 경험'],
+                status: '미국 내 Google AI Pro/Ultra 구독자 (Chrome 베타/Dev/Canary 사용자) 우선 출시 시작'
+            },
+            {
+                id: 'gemini_live', name: 'Gemini Live 업데이트', category: 'productivity', icon: '🗣️',
+                description: 'Gemini와 자연스러운 대화, 실시간 음성 응답. 카메라/화면 공유로 시각적 맥락 이해.',
+                features: ['실시간 음성 대화', '카메라/화면 공유로 시각적 맥락 이해', '물리적/디지털 환경 이해'],
+                status: 'Pixel 9 시리즈 사용 가능, Pixel 6 이상 모델 "곧" 제공 예정 (6월 중 확장 유력)'
+            },
+            {
+                id: 'notebooklm_audio', name: 'NotebookLM 오디오 개요', category: 'productivity', icon: '🎧',
+                description: 'AI 기반 노트 필기 및 연구 도구. 콘텐츠 합성, 요약, 질문 가능. "오디오 개요" 기능으로 노트를 팟캐스트처럼 청취.',
+                features: ['AI 기반 노트 정리/연구', '콘텐츠 합성 및 요약', '오디오 개요 (50개 이상 언어 지원)'],
+                status: '4월 29일 업데이트로 50개 이상 언어 지원'
+            }
+        ];
+
+        const juneOutlookData = [
+            { name: 'Gemini 2.5 Flash', features: '속도/효율성 최적화 멀티모달 모델. 추론, 멀티모달, 코드, 긴 컨텍스트 처리 향상.', status: '<strong>6월 초 일반 출시 예정</strong> (현재 프리뷰)' },
+            { name: 'Gemini 2.5 Pro', features: '최고급 추론 모델, 복잡 작업 최적화. 코딩/수학 벤치마크 우수.', status: 'Flash 일반 출시 직후 <strong>일반 출시 예정</strong> (AI Studio, Vertex AI)' },
+            { name: 'Gemini 2.5 Pro Deep Think 모드', features: '다중 가설 고려, 고도 복잡 작업 최적화. 사고 과정 공개.', status: '신뢰 테스터에게 <strong>곧 제공 예정</strong> (API 통해)' },
+            { name: 'Veo 3 (텍스트-비디오)', features: '오디오 동기화 4K 비디오 생성.', status: '5월 27일부터 <strong>71개국 유료 구독자 접근 확대</strong>. 모바일 "곧" 지원.' },
+            { name: 'Flow (AI 영화 제작)', features: 'Veo, Imagen, Gemini 활용 영화 장면 생성.', status: '<strong>미국 AI Pro/Ultra 구독자 접근 가능</strong>.' },
+            { name: 'Jules (AI 코딩 에이전트)', features: '자율 코드 작성/테스트/버그 수정. Gemini 2.5 Pro 기반.', status: '5월 20일 <strong>전 세계 공개 베타 (무료)</strong>.' },
+            { name: 'Chrome 내 Gemini 통합', features: '문맥 반응 AI 브라우징 어시스턴트.', status: '5월 21일부터 <strong>미국 AI Pro/Ultra 구독자 (Chrome 베타 등) 우선 출시 시작</strong>.' },
+            { name: 'Gemini Live 업데이트', features: '자연스러운 대화, 카메라/화면 공유.', status: 'Pixel 6 이상 <strong>"곧" 제공 예정</strong> (6월 확장 유력).' },
+            { name: 'NotebookLM 오디오 개요', features: '노트를 팟캐스트처럼 청취 (50+ 언어).', status: '<strong>4월 29일 업데이트 완료</strong>.' },
+            { name: 'Google AI Ultra 플랜', features: '최고 AI 모델/도구 접근, 최고 한도.', status: '5월 27일부터 <strong>70개 이상 국가로 확장</strong>.' }
+        ];
+
+        function setActiveSection(targetId) {
+            contentSections.forEach(section => {
+                if (section.id === targetId) {
+                    section.classList.remove('section-inactive');
+                    section.classList.add('section-active');
+                } else {
+                    section.classList.remove('section-active');
+                    section.classList.add('section-inactive');
+                }
+            });
+            navButtons.forEach(button => {
+                if (button.dataset.target === targetId) {
+                    button.classList.remove('nav-link-inactive');
+                    button.classList.add('nav-link-active');
+                } else {
+                    button.classList.remove('nav-link-active');
+                    button.classList.add('nav-link-inactive');
+                }
+            });
+            window.scrollTo(0, 0);
+        }
+        
+        mainNav.addEventListener('click', (e) => {
+            if (e.target.classList.contains('nav-button')) {
+                const targetId = e.target.dataset.target;
+                setActiveSection(targetId);
+            }
+        });
+
+        geminiTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTabContentId = tab.dataset.tab;
+                geminiTabContents.forEach(content => {
+                    content.style.display = content.id === targetTabContentId ? 'block' : 'none';
+                });
+                geminiTabs.forEach(t => {
+                    t.classList.toggle('tab-active', t === tab);
+                    t.classList.toggle('tab-inactive', t !== tab);
+                });
+            });
+        });
+
+        function renderTools(filter = 'all') {
+            toolsContainer.innerHTML = '';
+            const filteredTools = filter === 'all' ? aiToolsData : aiToolsData.filter(tool => tool.category === filter);
+            
+            if (filteredTools.length === 0) {
+                toolsContainer.innerHTML = `<p class="text-stone-500 col-span-full text-center">선택한 카테고리에 해당하는 도구가 없습니다.</p>`;
+                return;
+            }
+
+            filteredTools.forEach(tool => {
+                const toolCard = `
+                    <div class="bg-white border border-stone-200 rounded-lg shadow-md p-5 transition-all duration-300 card-hover flex flex-col">
+                        <div class="flex items-center mb-3">
+                            <span class="text-3xl mr-3">${tool.icon}</span>
+                            <h3 class="text-xl font-semibold text-teal-600">${tool.name}</h3>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-3 flex-grow">${tool.description}</p>
+                        <div class="mb-3">
+                            <p class="text-sm font-medium text-stone-700">주요 특징:</p>
+                            <ul class="list-disc list-inside text-xs text-stone-500 space-y-0.5 mt-1">
+                                ${tool.features.map(f => `<li>${f}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <p class="text-xs text-indigo-600 font-medium bg-indigo-50 px-2 py-1 rounded-full self-start">상태: ${tool.status}</p>
+                    </div>
+                `;
+                toolsContainer.innerHTML += toolCard;
+            });
+        }
+
+        toolFilter.addEventListener('change', (e) => {
+            renderTools(e.target.value);
+        });
+        
+        function renderJuneOutlook() {
+            const tableBody = document.getElementById('juneOutlookTableBody');
+            tableBody.innerHTML = '';
+            juneOutlookData.forEach(item => {
+                const row = `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">${item.name}</td>
+                        <td class="px-6 py-4 whitespace-normal text-sm text-stone-500">${item.features}</td>
+                        <td class="px-6 py-4 whitespace-normal text-sm text-stone-500 has-tooltip relative">
+                            ${item.status}
+                            <span class="tooltip bottom-full mb-2 w-max max-w-xs bg-gray-700 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">상세 정보: ${item.status.replace(/<\/?strong>/g, '')}</span>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        const ctxFlash = document.getElementById('geminiFlashChart');
+        if (ctxFlash) {
+            new Chart(ctxFlash, {
+                type: 'bar',
+                data: {
+                    labels: ['비용 효율성 (1.5 Pro 대비 절감)', '응답 속도 (1.5 Pro 대비 향상)'],
+                    datasets: [{
+                        label: 'Gemini 2.5 Flash 성능 향상',
+                        data: [85, 25],
+                        backgroundColor: [
+                            'rgba(13, 148, 136, 0.6)', // teal-600
+                            'rgba(59, 130, 246, 0.6)'  // blue-500
+                        ],
+                        borderColor: [
+                            'rgba(13, 148, 136, 1)',
+                            'rgba(59, 130, 246, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + "%"
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        setActiveSection('overview');
+        renderTools();
+        renderJuneOutlook();
+
+    </script>
+</body>
+</html>
+�
