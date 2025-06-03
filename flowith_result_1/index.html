@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025년 상반기 SOTA AI 모델 및 서비스 동향</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="overflow-hidden">
+
+    <div class="presentation-container">
+        <div id="slide-wrapper">
+            
+            <section class="slide" data-slide-index="0">
+                <div class="slide-content items-center justify-center text-center">
+                    <div class="absolute inset-0 opacity-30">
+                        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <pattern id="aiPattern" patternUnits="userSpaceOnUse" width="60" height="60">
+                                    <path d="M10 10 Q20 0 30 10 T50 10 M10 30 Q20 20 30 30 T50 30 M10 50 Q20 40 30 50 T50 50" stroke="#FFFFFF" stroke-width="1" fill="none" opacity="0.2"/>
+                                </pattern>
+                            </defs>
+                            <rect width="100%" height="100%" fill="url(#aiPattern)"/>
+                        </svg>
+                    </div>
+                    <div class="relative z-10">
+                        <h1 class="text-7xl font-bold gradient-text bg-gradient-to-r from-sky-400 via-rose-400 to-lime-400 mb-6">2025년 상반기 SOTA AI 모델 및 서비스 동향</h1>
+                        <p class="text-4xl font-light mb-12">주요 발전 사항 및 시장 전망</p>
+                        <p class="text-2xl">[발표자 이름/소속]</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide" data-slide-index="1">
+                <div class="slide-content justify-start text-left p-12 bg-gray-50 text-gray-800">
+                    <h2 class="text-5xl font-bold mb-8 text-indigo-700">발표 개요 및 2025년 상반기 AI 핵심 트렌드</h2>
+                    <p class="text-2xl mb-10 text-gray-600">2025년 상반기 AI 분야의 주요 동향을 소개하고, 본 발표에서 다룰 내용을 안내합니다.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-xl">
+                        <div>
+                            <h3 class="text-3xl font-semibold mb-4 text-indigo-600">발표 목적</h3>
+                            <p class="text-gray-700">최신 SOTA AI 모델 및 서비스 동향 공유 및 핵심 인사이트 제시</p>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-semibold mb-4 text-indigo-600">2025년 상반기 AI 트렌드 요약</h3>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                <li class="flex items-start"><i data-lucide="zap" class="mr-2 text-indigo-500 flex-shrink-0 mt-1"></i>멀티모달 기능의 확장 및 고도화</li>
+                                <li class="flex items-start"><i data-lucide="maximize" class="mr-2 text-indigo-500 flex-shrink-0 mt-1"></i>초거대 컨텍스트 윈도우 지원 강화</li>
+                                <li class="flex items-start"><i data-lucide="brain" class="mr-2 text-indigo-500 flex-shrink-0 mt-1"></i>고도화된 추론 능력 경쟁 심화</li>
+                                <li class="flex items-start"><i data-lucide="bot" class="mr-2 text-indigo-500 flex-shrink-0 mt-1"></i>자율적 AI 에이전트 기술의 부상</li>
+                                <li class="flex items-start"><i data-lucide="git-branch" class="mr-2 text-indigo-500 flex-shrink-0 mt-1"></i>오픈소스 모델 생태계 확장</li>
+                                <li class="flex items-start"><i data-lucide="cpu" class="mr-2 text-indigo-500 flex-shrink-0 mt-1"></i>새로운 아키텍처(MoE, Mamba 등) 도입 가속화</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide" data-slide-index="2">
+                <div class="slide-content items-center justify-center text-center p-12 bg-gradient-to-br from-purple-600 to-blue-500 text-white">
+                    <h2 class="text-6xl font-bold mb-6">주요 SOTA AI 모델 및 서비스 상세 소개</h2>
+                    <p class="text-4xl font-light mb-12">2025년 상반기, 혁신을 이끈 주요 AI 모델들</p>
+                    <div class="flex flex-wrap justify-center items-center gap-6">
+                        <span class="bg-white/20 text-white text-lg font-semibold px-6 py-3 rounded-full">OpenAI</span>
+                        <span class="bg-white/20 text-white text-lg font-semibold px-6 py-3 rounded-full">Google</span>
+                        <span class="bg-white/20 text-white text-lg font-semibold px-6 py-3 rounded-full">xAI</span>
+                        <span class="bg-white/20 text-white text-lg font-semibold px-6 py-3 rounded-full">Meta</span>
+                        <span class="bg-white/20 text-white text-lg font-semibold px-6 py-3 rounded-full">DeepSeek</span>
+                        <span class="bg-white/20 text-white text-lg font-semibold px-6 py-3 rounded-full">Microsoft</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide" data-slide-index="3">
+                <div class="slide-content justify-start text-left p-12 bg-white text-gray-800">
+                    <h2 class="text-5xl font-bold mb-4 text-gray-800">OpenAI의 발전: <span class="text-blue-600">o3 시리즈</span>와 <span class="text-blue-600">Operator</span></h2>
+                    <p class="text-2xl mb-8 text-gray-600">OpenAI는 추론 성능 향상과 함께 자율적인 온라인 작업 수행 능력을 강화했습니다.</p>
+                    <div class="grid md:grid-cols-2 gap-8 text-lg">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">개발/제공 회사: <span class="font-bold">OpenAI</span></h3>
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-4">출시/주요 업데이트:</h3>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>o3-mini (1월)</li>
+                                <li>o3/o4 mini 언급 (1분기 내)</li>
+                                <li>Operator (1월)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-xl">
+                            <h3 class="text-2xl font-semibold text-blue-700 mb-3">핵심 기능/기술:</h3>
+                            <ul class="list-disc list-inside text-blue-600 space-y-1">
+                                <li>고도화된 추론 능력 (코딩, 수학 등)</li>
+                                <li>복잡성 감소, ARC-AGI 시험 등 고급 문제 해결</li>
+                                <li>Operator (웹사이트 상호작용, 자율 작업)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-8 bg-gray-100 p-6 rounded-xl">
+                         <h3 class="text-2xl font-semibold text-gray-700 mb-3">강점/시장 역할:</h3>
+                         <p class="text-gray-600">고성능 범용 모델, 사용자 친화성 개선, AI 에이전트 분야 선도 가능성</p>
+                    </div>
+                    <div class="mt-6 flex justify-center items-center space-x-4 opacity-60">
+                        <i data-lucide="brain-circuit" class="w-16 h-16 text-blue-500"></i>
+                        <i data-lucide="mouse-pointer-click" class="w-16 h-16 text-blue-500"></i>
+                        <i data-lucide="code-2" class="w-16 h-16 text-blue-500"></i>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide" data-slide-index="4">
+                <div class="slide-content justify-start text-left p-12 bg-white text-gray-800">
+                    <h2 class="text-5xl font-bold mb-4 text-gray-800">Google의 폭넓은 혁신: <span class="text-green-600">Gemini</span>와 <span class="text-green-600">미디어 생성 AI</span></h2>
+                    <p class="text-2xl mb-8 text-gray-600">Google은 Gemini 시리즈를 통해 광범위한 멀티모달 능력과 '액션 실행' 기능을 선보였으며, 영상 생성 분야에서도 발전을 이루었습니다.</p>
+                    <div class="grid md:grid-cols-2 gap-8 text-lg">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">개발/제공 회사: <span class="font-bold">Google DeepMind / Google</span></h3>
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-4">출시/주요 업데이트:</h3>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>Gemini 2.0+ (상반기 내 다양한 버전)</li>
+                                <li>Veo 3 (5월)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-50 p-6 rounded-xl">
+                            <h3 class="text-2xl font-semibold text-green-700 mb-3">핵심 기능/기술:</h3>
+                            <ul class="list-disc list-inside text-green-600 space-y-1">
+                                <li>LAM (Large Action Models)</li>
+                                <li>광범위한 멀티모달(텍스트, 이미지, 영상, 화면 공유)</li>
+                                <li>Google 서비스 연동, 대규모 컨텍스트(128K+)</li>
+                                <li>로봇 제어(Robotics), 고화질 4K 영상 생성(Veo 3)</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div class="mt-8 bg-gray-100 p-6 rounded-xl">
+                         <h3 class="text-2xl font-semibold text-gray-700 mb-3">강점/시장 역할:</h3>
+                         <p class="text-gray-600">압도적인 멀티모달 이해 및 실행, Google 생태계 연동, 다양한 스케일 모델 라인업, 미디어 생성 분야 전문성</p>
+                    </div>
+                    <div class="mt-6 flex justify-center items-center space-x-4 opacity-60">
+                        <i data-lucide="text" class="w-12 h-12 text-green-500"></i>
+                        <i data-lucide="image" class="w-12 h-12 text-green-500"></i>
+                        <i data-lucide="video" class="w-12 h-12 text-green-500"></i>
+                        <i data-lucide="link" class="w-12 h-12 text-green-500"></i>
+                        <i data-lucide="film" class="w-12 h-12 text-green-500"></i>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="slide" data-slide-index="5">
+                <div class="slide-content justify-start text-left p-12 bg-white text-gray-800">
+                    <h2 class="text-5xl font-bold mb-4 text-gray-800">xAI Grok 3: <span class="text-purple-600">실시간 데이터</span>와 <span class="text-purple-600">첨단 추론</span>의 만남</h2>
+                    <p class="text-2xl mb-8 text-gray-600">xAI는 Grok 3를 통해 실시간 정보 접근성과 강력한 추론 능력을 결합하여 차별화된 AI를 제시했습니다.</p>
+                    <div class="grid md:grid-cols-2 gap-8 text-lg">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">개발/제공 회사: <span class="font-bold">xAI</span></h3>
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-4">출시/주요 업데이트:</h3>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>Grok 3 시리즈 (2월 초 공개)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-purple-50 p-6 rounded-xl">
+                            <h3 class="text-2xl font-semibold text-purple-700 mb-3">핵심 기능/기술:</h3>
+                            <ul class="list-disc list-inside text-purple-600 space-y-1">
+                                <li>수학/코딩/과학 등 첨단 추론</li>
+                                <li>실시간 웹 검색 및 X 연동(DeepSearch)</li>
+                                <li>문제 난이도별 연산 조절(Big Brain Mode)</li>
+                                <li>초대형 컨텍스트(1백만+), 자율 에이전트(Super Grok Agents)</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div class="mt-8 bg-gray-100 p-6 rounded-xl">
+                         <h3 class="text-2xl font-semibold text-gray-700 mb-3">강점/시장 역할:</h3>
+                         <p class="text-gray-600">실시간 데이터 기반 응답, 뛰어난 추론 성능, 자율 에이전트 기능 확장</p>
+                    </div>
+                    <div class="mt-6 flex justify-center items-center space-x-4 opacity-60">
+                        <i data-lucide="search" class="w-12 h-12 text-purple-500"></i>
+                        <i data-lucide="bar-chart-big" class="w-12 h-12 text-purple-500"></i>
+                        <i data-lucide="infinity" class="w-12 h-12 text-purple-500"></i>
+                        <i data-lucide="user-cog" class="w-12 h-12 text-purple-500"></i>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide" data-slide-index="6">
+                <div class="slide-content justify-start text-left p-12 bg-white text-gray-800">
+                    <h2 class="text-5xl font-bold mb-4 text-gray-800">Meta LLaMA: <span class="text-red-600">오픈소스 AI 생태계</span> 리더십</h2>
+                    <p class="text-2xl mb-8 text-gray-600">Meta는 LLaMA 시리즈를 통해 오픈소스 거대 언어 모델 분야를 이끌며, 초대규모 컨텍스트 처리 능력을 선보였습니다.</p>
+                    <div class="grid md:grid-cols-2 gap-8 text-lg">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-2">개발/제공 회사: <span class="font-bold">Meta</span></h3>
+                            <h3 class="text-2xl font-semibold text-gray-700 mb-4">출시/주요 업데이트:</h3>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>LLaMA 3.0 (상반기 공개)</li>
+                                <li>Llama 4 (4월 공개)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 p-6 rounded-xl">
+                            <h3 class="text-2xl font-semibold text-red-700 mb-3">핵심 기능/기술:</h3>
+                            <ul class="list-disc list-inside text-red-600 space-y-1">
+                                <li>LLaMA 3.0 (NLU/NLG/MMC 향상)</li>
+                                <li>Llama 4 (최대 10백만 토큰 컨텍스트, 405B 규모)</li>
+                                <li class="font-bold">오픈소스 제공</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div class="mt-8 bg-gray-100 p-6 rounded-xl">
+                         <h3 class="text-2xl font-semibold text-gray-700 mb-3">강점/시장 역할:</h3>
+                         <p class="text-gray-600">오픈소스 AI 기술 확산 기여, 강력한 언어 및 멀티모달 능력, 초대규모 컨텍스트 처리 가능성 제시</p>
+                    </div>
+                     <div class="mt-6 flex justify-center items-center space-x-4 opacity-60">
+                        <i data-lucide="git-fork" class="w-12 h-12 text-red-500"></i>
+                        <i data-lucide="box-select" class="w-12 h-12 text-red-500"></i>
+                        <span class="text-2xl font-bold text-red-500">Open Source</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide" data-slide-index="7">
+                <div class="slide-content justify-start text-left p-12 bg-gray-50 text-gray-800">
+                    <h2 class="text-5xl font-bold mb-8 text-center text-indigo-700">다양성을 더하는 AI 모델들</h2>
+                    <p class="text-2xl mb-10 text-center text-gray-600">오픈소스 모델의 확산과 특정 분야에 특화된 AI 모델의 발전도 두드러졌습니다.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                        <div class="bento-card bg-white p-6 rounded-2xl shadow-lg">
+                            <h3 class="text-2xl font-semibold text-sky-600 mb-3">DeepSeek R1 (DeepSeek AI, 1월)</h3>
+                            <ul class="list-disc list-inside text-gray-700 text-left space-y-1 text-sm">
+                                <li>MoE, 비용 효율성, 추론 강점</li>
+                                <li>오픈소스 접근성</li>
+                            </ul>
+                            <span class="mt-auto text-xs bg-sky-100 text-sky-700 px-2 py-1 rounded-full">오픈소스 LLM</span>
+                        </div>
+                        <div class="bento-card bg-white p-6 rounded-2xl shadow-lg">
+                            <h3 class="text-2xl font-semibold text-teal-600 mb-3">Microsoft Phi-4 (Microsoft, 5월)</h3>
+                            <ul class="list-disc list-inside text-gray-700 text-left space-y-1 text-sm">
+                                <li>소형, 오픈소스, 효율성</li>
+                            </ul>
+                             <span class="mt-auto text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded-full">오픈소스 LLM</span>
+                        </div>
+                        <div class="bento-card bg-white p-6 rounded-2xl shadow-lg">
+                            <h3 class="text-2xl font-semibold text-amber-600 mb-3">Midjourney v7 (Midjourney, 5월)</h3>
+                            <ul class="list-disc list-inside text-gray-700 text-left space-y-1 text-sm">
+                                <li>이미지 품질 및 스타일 제어 강화</li>
+                            </ul>
+                             <span class="mt-auto text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full">이미지 생성 AI</span>
+                        </div>
+                        <div class="bento-card bg-white p-6 rounded-2xl shadow-lg md:col-span-2 lg:col-span-3">
+                            <h3 class="text-2xl font-semibold text-slate-600 mb-3">IBM Granite 3.2 (IBM, 2월)</h3>
+                            <ul class="list-disc list-inside text-gray-700 text-left space-y-1 text-sm">
+                                <li>비즈니스 최적화, 개방형, '사고' 모드</li>
+                            </ul>
+                            <span class="mt-auto text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full">비즈니스 특화 AI</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide" data-slide-index="8">
+                <div class="slide-content justify-start text-left p-12 bg-gray-50 text-gray-800">
+                    <h2 class="text-5xl font-bold mb-8 text-indigo-700">핵심 기술 트렌드: MoE와 Mamba 아키텍처</h2>
+                    <p class="text-2xl mb-10 text-gray-600">새로운 모델 아키텍처들이 AI의 효율성과 성능 향상을 이끌고 있습니다.</p>
+                    <div class="grid md:grid-cols-2 gap-8 w-full">
+                        <div class="bento-card bg-white p-6 rounded-2xl shadow-lg text-left">
+                            <h3 class="text-3xl font-semibold text-cyan-600 mb-4">Mixture-of-Experts (MoE)</h3>
+                            <p class="text-gray-700 mb-3"><strong class="text-cyan-700">개념:</strong> 입력 데이터의 특정 부분 처리에 특화된 여러 개의 '전문가' 네트워크와 이를 조율하는 '게이트' 네트워크 구성</p>
+                            <p class="text-gray-700 mb-3"><strong class="text-cyan-700">장점:</strong> 효율적인 연산, 대규모 모델 구현 용이, 파라미터 수 대비 효율적 성능</p>
+                            <p class="text-gray-700"><strong class="text-cyan-700">주요 적용 사례:</strong> DeepSeek R1, Grok 3 등</p>
+                            <div class="mt-4 opacity-50">
+                                <svg viewBox="0 0 200 100" class="w-full h-auto max-h-32">
+                                    <rect x="10" y="10" width="30" height="20" fill="#06B6D4" rx="2"/>
+                                    <text x="25" y="25" font-size="8" fill="white" text-anchor="middle">Data</text>
+                                    <path d="M40 20 L60 20" stroke="#06B6D4" stroke-width="1"/>
+                                    <rect x="60" y="10" width="30" height="20" fill="#0891B2" rx="2"/>
+                                    <text x="75" y="25" font-size="8" fill="white" text-anchor="middle">Gate</text>
+                                    <path d="M75 30 Q75 40 65 50 M75 30 Q75 40 85 50" stroke="#0891B2" stroke-width="1" fill="none"/>
+                                    <rect x="40" y="50" width="30" height="30" fill="#A5F3FC" rx="2"/> <text x="55" y="68" font-size="7" fill="#0E7490" text-anchor="middle">Expert1</text>
+                                    <rect x="80" y="50" width="30" height="30" fill="#A5F3FC" rx="2"/> <text x="95" y="68" font-size="7" fill="#0E7490" text-anchor="middle">Expert2</text>
+                                    <rect x="120" y="50" width="30" height="30" fill="#A5F3FC" rx="2"/> <text x="135" y="68" font-size="7" fill="#0E7490" text-anchor="middle">ExpertN</text>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="bento-card bg-white p-6 rounded-2xl shadow-lg text-left">
+                            <h3 class="text-3xl font-semibold text-emerald-600 mb-4">Mamba</h3>
+                            <p class="text-gray-700 mb-3"><strong class="text-emerald-700">개념:</strong> 상태 공간 모델(SSM) 기반의 새로운 아키텍처, 긴 시퀀스 데이터 처리 효율성 높음</p>
+                            <p class="text-gray-700 mb-3"><strong class="text-emerald-700">장점:</strong> Transformer 대비 긴 컨텍스트 처리 효율성, 선형적 복잡성</p>
+                            <p class="text-gray-700"><strong class="text-emerald-700">주요 적용 가능성:</strong> IBM Granite 4.0 등</p>
+                            <div class="mt-4 opacity-50">
+                                 <svg viewBox="0 0 200 100" class="w-full h-auto max-h-32">
+                                    <rect x="10" y="40" width="20" height="20" fill="#34D399" rx="2"/>
+                                    <path d="M30 50 L50 50" stroke="#34D399" stroke-width="2" stroke-dasharray="4 2"/>
+                                    <rect x="50" y="40" width="20" height="20" fill="#34D399" rx="2"/>
+                                    <path d="M70 50 L90 50" stroke="#34D399" stroke-width="2" stroke-dasharray="4 2"/>
+                                    <rect x="90" y="40" width="20" height="20" fill="#34D399" rx="2"/>
+                                    <path d="M110 50 L130 50" stroke="#34D399" stroke-width="2" stroke-dasharray="4 2"/>
+                                    <text x="10" y="25" font-size="8" fill="#059669">Long Sequence Data</text>
+                                    <path d="M10 70 C 50 80, 100 80, 140 70" stroke="#059669" stroke-width="1.5" fill="none" />
+                                    <text x="75" y="90" font-size="8" fill="#059669" text-anchor="middle">Efficient Processing</text>
+                                 </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide" data-slide-index="9">
+                <div class="slide-content justify-start text-left p-12 bg-gray-50 text-gray-800">
+                    <h2 class="text-5xl font-bold mb-8 text-center text-indigo-700">종합 분석: 2025년 상반기 AI 시장의 주요 동향</h2>
+                    <p class="text-2xl mb-10 text-center text-gray-600">2025년 상반기를 관통하는 AI 기술 및 시장의 주요 변화와 흐름을 요약합니다.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                        <div class="bento-card bg-white p-6 rounded-2xl shadow-lg items-start text-left">
+                            <i data-lucide="combine" class="w-10 h-10 text-blue-500 mb-3"></i>
+                            <h3 class="text-xl font-semibold text-blue-700 mb-2">기능 통합 및 고도화</h3>
+                            <p class="text-sm text-gray-600">멀티모달, 추론 능력, 액션 실행 기능의 통합 및 상호 보완적 발전 (OpenAI, Google, xAI)</p>
+                        </div>
+                        <div class="bento-card bg-white p-6 rounded-2xl shadow-lg items-start text-left">
+                            <i data-lucide="cpu" class="w-10 h-10 text-green-500 mb-3"></i>
+                            <h3 class="text-xl font-semibold text-green-700 mb-2">아키텍처 혁신</h3>
+                            <p class="text-sm text-gray-600">MoE, Mamba 등 새로운 구조 도입을 통한 효율성 및 성능 개선</p>
+                        </div>
+                        <div class="bento-card bg-white p-6 rounded-2xl shadow-lg items-start text-left">
+                           <i data-lucide="git-branch" class="w-10 h-10 text-purple-500 mb-3"></i>
+                            <h3 class="text-xl font-semibold text-purple-700 mb-2">오픈소스 모델 확산</h3>
+                            <p class="text-sm text-gray-600">기술 생태계 확장 및 연구/개발 가속화 (Meta LLaMA, DeepSeek, Microsoft Phi)</p>
+                        </div>
+                        <div class="bento-card bg-white p-6 rounded-2xl shadow-lg items-start text-left">
+                            <i data-lucide="target" class="w-10 h-10 text-red-500 mb-3"></i>
+                            <h3 class="text-xl font-semibold text-red-700 mb-2">특정 산업/분야 전문 모델 등장</h3>
+                            <p class="text-sm text-gray-600">비즈니스, 미디어 생성 등 특정 목적에 최적화된 AI 출현 (IBM Granite, Google Veo, Midjourney)</p>
+                        </div>
+                        <div class="bento-card bg-white p-6 rounded-2xl shadow-lg items-start text-left">
+                            <i data-lucide="bot" class="w-10 h-10 text-yellow-500 mb-3"></i>
+                            <h3 class="text-xl font-semibold text-yellow-700 mb-2">AI 에이전트 기술 부상</h3>
+                            <p class="text-sm text-gray-600">사용자를 대신하여 복잡한 작업을 자율적으로 수행하는 AI의 가능성 현실화</p>
+                        </div>
+                        <div class="bento-card bg-white p-6 rounded-2xl shadow-lg items-start text-left">
+                            <i data-lucide="swords" class="w-10 h-10 text-indigo-500 mb-3"></i>
+                            <h3 class="text-xl font-semibold text-indigo-700 mb-2">경쟁 및 차별화</h3>
+                            <p class="text-sm text-gray-600">기업별 강점 기반 경쟁 (성능, 비용, 안전성, 윤리)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slide" data-slide-index="10">
+                <div class="slide-content items-center justify-center text-center p-12 bg-gradient-to-br from-gray-700 via-gray-800 to-black text-white">
+                     <h2 class="text-6xl font-bold mb-8">결론 및 향후 AI 발전 전망</h2>
+                     <p class="text-3xl font-light mb-10">2025년 상반기 AI 발전의 의미를 되새기고, 미래 AI 기술의 발전 방향을 예측합니다.</p>
+                     <div class="grid md:grid-cols-2 gap-8 text-left text-xl w-full max-w-5xl">
+                        <div class="bg-white/10 p-6 rounded-xl">
+                            <h3 class="text-2xl font-semibold mb-3 text-sky-300">상반기 핵심 요약</h3>
+                            <p class="opacity-90">유능하고, 다재다능하며, 효율적인 AI 시스템을 향한 발전 가속화</p>
+                        </div>
+                        <div class="bg-white/10 p-6 rounded-xl">
+                            <h3 class="text-2xl font-semibold mb-3 text-sky-300">AI가 산업 및 일상에 미칠 영향</h3>
+                            <p class="opacity-90">자동화 심화, 새로운 서비스 등장, 일하는 방식 변화 등</p>
+                        </div>
+                        <div class="md:col-span-2 bg-white/10 p-6 rounded-xl">
+                            <h3 class="text-2xl font-semibold mb-4 text-sky-300">향후 주목해야 할 기술 분야</h3>
+                            <ul class="space-y-3 opacity-90">
+                                <li class="flex items-center"><i data-lucide="shield-check" class="mr-3 text-green-400"></i>AI 윤리 및 안전성: 기술 발전과 더불어 중요성 증대</li>
+                                <li class="flex items-center"><i data-lucide="activity" class="mr-3 text-red-400"></i>범용 인공지능(AGI) 가능성: 특정 시험 성능 향상이 시사하는 바</li>
+                                <li class="flex items-center"><i data-lucide="users" class="mr-3 text-purple-400"></i>AI 에이전트의 실생활 적용: 산업 및 개인 생산성 혁신 잠재력</li>
+                                <li class="flex items-center"><i data-lucide="lightbulb" class="mr-3 text-yellow-400"></i>더욱 효율적인 아키텍처 및 학습 방법론</li>
+                            </ul>
+                        </div>
+                     </div>
+                     <div class="mt-10 opacity-30">
+                        <svg width="200" height="50" viewBox="0 0 200 50" class="mx-auto">
+                            <path d="M0 25 Q 25 0, 50 25 T 100 25 T 150 25 T 200 25" stroke="white" stroke-width="2" fill="none"/>
+                            <circle cx="200" cy="25" r="3" fill="white"/>
+                        </svg>
+                     </div>
+                </div>
+            </section>
+
+            <section class="slide" data-slide-index="11">
+                <div class="slide-content items-center justify-center text-center bg-indigo-700 text-white">
+                    <i data-lucide="message-square-quote" class="w-24 h-24 mb-8 opacity-80"></i>
+                    <h2 class="text-7xl font-bold mb-12">질의응답</h2>
+                    <p class="text-3xl font-light">궁금한 점이 있으시면 편하게 질문해주세요.</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <div id="progress-bar"></div>
+
+    <div class="nav-dots-container"></div>
+
+    <button id="arrow-prev" class="nav-arrow" aria-label="Previous slide">
+        <i data-lucide="arrow-left"></i>
+    </button>
+    <button id="arrow-next" class="nav-arrow" aria-label="Next slide">
+        <i data-lucide="arrow-right"></i>
+    </button>
+
+    <div id="slide-overview-grid"></div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

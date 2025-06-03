@@ -1,0 +1,278 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.presentation-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #111827; /* bg-gray-900 */
+    overflow: hidden;
+}
+
+.slide-wrapper {
+    position: relative;
+    background-color: #ffffff; /* Default white background for slides */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+    overflow: hidden;
+    transform-origin: center center;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100%);
+    transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    padding: 4% 5%; /* Responsive padding */
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0%);
+    z-index: 1;
+}
+
+.slide.prev {
+    transform: translateX(-100%);
+}
+
+.slide-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically center content by default */
+    align-items: center; /* Horizontally center content by default */
+    text-align: center; /* Center text by default */
+}
+
+.nav-dots-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+}
+
+.nav-dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.nav-dot.active {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.nav-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 100;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    opacity: 0; /* Hidden by default, show on hover over presentation area */
+}
+
+.presentation-container:hover .nav-arrow {
+    opacity: 0.7;
+}
+
+.nav-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 1;
+}
+
+#arrow-prev {
+    left: 20px;
+}
+
+#arrow-next {
+    right: 20px;
+}
+
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background-color: #6366F1; /* indigo-500 */
+    width: 0%;
+    z-index: 101;
+    transition: width 0.3s ease-out;
+}
+
+#slide-overview-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(17, 24, 39, 0.95); /* bg-gray-900 with opacity */
+    z-index: 200;
+    display: none; /* Hidden by default */
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.overview-slide-thumbnail {
+    aspect-ratio: 16 / 9;
+    background-color: #374151; /* bg-gray-700 */
+    border: 2px solid #4B5563; /* border-gray-600 */
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.875rem; /* text-sm */
+    text-align: center;
+    padding: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.overview-slide-thumbnail:hover {
+    transform: scale(1.05);
+    border-color: #6366F1; /* indigo-500 */
+}
+
+.overview-slide-thumbnail span {
+    display: block;
+    max-height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gradient-text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* Specific slide styles */
+.slide[data-slide-index="0"] .slide-content {
+    background: linear-gradient(135deg, #1E3A8A 0%, #5B21B6 100%); /* blue-800 to purple-700 */
+    color: white;
+    padding: 10%;
+}
+
+.slide[data-slide-index="1"] .slide-content,
+.slide[data-slide-index="2"] .slide-content {
+   background-color: #F3F4F6; /* bg-gray-100 */
+   color: #1F2937; /* bg-gray-800 */
+}
+
+.slide ul {
+    list-style-position: outside;
+    padding-left: 1.5em;
+    text-align: left;
+}
+.slide li {
+    margin-bottom: 0.75em;
+}
+
+.bento-grid {
+    display: grid;
+    gap: 1.5rem; /* gap-6 */
+    width: 100%;
+    height: 100%;
+}
+
+.bento-card {
+    background-color: white;
+    border-radius: 1.5rem; /* rounded-3xl */
+    padding: 2rem; /* p-8 */
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); /* shadow-lg */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.bento-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); /* shadow-xl */
+}
+
+
+@media print {
+    body {
+        background-color: white !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    .presentation-container {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    .slide-wrapper {
+        width: 100% !important;
+        height: auto !important;
+        max-width: none !important;
+        max-height: none !important;
+        box-shadow: none !important;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        page-break-after: always;
+        overflow: visible;
+    }
+    .slide {
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        height: auto; /* Adjust height for content */
+        min-height: 25cm; /* Approximate A4 height */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Align content to top for print */
+    }
+    .slide.active {
+        display: flex; /* Ensure it's flex for printing */
+    }
+    .nav-dots-container, .nav-arrow, #progress-bar, #slide-overview-grid {
+        display: none !important;
+    }
+    .slide-content {
+      color: black !important; /* Ensure text is black for printing */
+      background: white !important;
+    }
+    .slide[data-slide-index="0"] .slide-content {
+      background: white !important; /* Override dark background for print */
+      color: black !important;
+    }
+    .slide[data-slide-index="0"] .gradient-text {
+        background: none;
+        color: black !important; /* Ensure title is readable */
+    }
+    svg path, svg circle, svg rect {
+        fill: black !important; /* Ensure SVGs are printable */
+    }
+}
+
