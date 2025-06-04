@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 코딩 어시스턴트 시장 분석 대시보드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate & Teal -->
+    <!-- Application Structure Plan: A single-page dashboard design with a top navigation bar to switch between thematic sections: "개요 (Overview)", "주요 플레이어 (Key Players)", "투자 및 M&A (Investments & M&A)", and "시장 동향 (Market Trends)". This non-linear, thematic structure allows users to explore information based on their interests rather than following the report's linear flow. The "Key Players" section will use an interactive tab system to present detailed information on each company without overwhelming the user. This design prioritizes usability and comprehension by breaking down complex information into manageable, interactive chunks. -->
+    <!-- Visualization & Content Choices: 
+    - Market Growth: Goal: Inform/Change -> Viz: Line Chart (Chart.js) -> Interaction: Hover for details -> Justification: Clearly shows the strong growth trajectory over time.
+    - Major Investments & Infrastructure Spending: Goal: Compare -> Viz: Horizontal Bar Charts (Chart.js) -> Interaction: Hover for exact values -> Justification: Effectively compares the massive financial commitments and capital expenditures between tech giants.
+    - Corporate Relationships: Goal: Organize/Relationships -> Viz: Diagram with HTML/CSS -> Interaction: Hover effects to highlight entities -> Justification: Visually untangles the complex web of partnerships and investments, making it more digestible than text.
+    - Player Comparison: Goal: Compare -> Viz: HTML Table -> Interaction: Static view -> Justification: Provides a quick, scannable reference for key product differentiators.
+    - All visualizations are rendered on Canvas via Chart.js or built with HTML/CSS to adhere to the NO SVG/Mermaid requirement. The structure is designed to provide context for each visualization. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (max-width: 768px) { .chart-container { height: 300px; max-height: 350px; } }
+        .nav-link { transition: all 0.3s ease; }
+        .nav-link.active { color: #0d9488; border-bottom-color: #0d9488; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .player-tab.active { background-color: #0d9488; color: white; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900">AI 코딩 어시스턴트 시장 분석</h1>
+            <p class="text-slate-600 mt-2">2025년 6월 4일 기준, 주요 플레이어, 투자 및 시장 동향 대시보드</p>
+        </header>
+
+        <nav class="flex justify-center border-b border-slate-200 mb-8">
+            <a href="#overview" class="nav-link active text-slate-600 hover:text-teal-600 py-4 px-6 block font-medium border-b-2 border-transparent">개요</a>
+            <a href="#players" class="nav-link text-slate-600 hover:text-teal-600 py-4 px-6 block font-medium border-b-2 border-transparent">주요 플레이어</a>
+            <a href="#investments" class="nav-link text-slate-600 hover:text-teal-600 py-4 px-6 block font-medium border-b-2 border-transparent">투자 & M&A</a>
+            <a href="#trends" class="nav-link text-slate-600 hover:text-teal-600 py-4 px-6 block font-medium border-b-2 border-transparent">시장 동향</a>
+        </nav>
+
+        <main>
+            <section id="overview" class="content-section active">
+                <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+                    <h2 class="text-2xl font-bold mb-4 text-slate-900">시장 개요 및 성장 전망</h2>
+                    <p class="text-slate-600 mb-6">AI 코딩 어시스턴트 시장은 전례 없는 성장세를 보이며 기술 산업의 핵심 동력으로 부상하고 있습니다. 소프트웨어 개발 패러다임의 근본적인 변화를 이끌며, 2030년에는 260억 달러 규모에 이를 것으로 예상됩니다. 이 섹션에서는 시장의 전반적인 규모와 성장 예측을 시각적으로 보여주고, 핵심 요약을 제공합니다.</p>
+                    <div class="chart-container">
+                        <canvas id="marketGrowthChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-xl font-bold mb-3 text-slate-900">Executive Summary</h3>
+                        <p class="text-slate-600 leading-relaxed">AI 코딩 시장은 OpenAI, Google, Anthropic과 같은 기술 대기업들의 막대한 투자와 전략적 파트너십으로 특징지어집니다. 이들은 자체 솔루션 개발(Build)과 유망 스타트업 투자/인수(Partner/Buy)를 병행하며 시장 지배력을 강화하고 있습니다. Microsoft-OpenAI, Google/Amazon-Anthropic의 복잡한 관계는 단순한 협력을 넘어 '협력적 경쟁' 구도를 형성하며, 시장의 역동성을 더하고 있습니다. 데이터 프라이버시, 규제 감독, 인프라 경쟁이 미래 시장의 향방을 결정할 주요 변수로 작용할 것입니다.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-xl font-bold mb-3 text-slate-900">핵심 동인</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-teal-500 font-bold mr-3">✓</span>
+                                <span class="text-slate-600">개발자 생산성 향상에 대한 높은 수요</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-teal-500 font-bold mr-3">✓</span>
+                                <span class="text-slate-600">거대 기술 기업의 수십억 달러 규모 투자 및 인프라 경쟁</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-teal-500 font-bold mr-3">✓</span>
+                                <span class="text-slate-600">생성 AI 모델의 빠른 기술 발전과 기능 확장</span>
+                            </li>
+                             <li class="flex items-start">
+                                <span class="text-teal-500 font-bold mr-3">✓</span>
+                                <span class="text-slate-600">Cursor와 같은 전문 스타트업의 혁신적인 접근</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="players" class="content-section">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                     <h2 class="text-2xl font-bold mb-4 text-slate-900">주요 플레이어 분석</h2>
+                     <p class="text-slate-600 mb-6">AI 코딩 시장은 소수의 거대 기업과 혁신적인 스타트업들이 주도하고 있습니다. 각 기업은 고유한 전략, 기술적 강점, 그리고 복잡한 파트너십 네트워크를 통해 경쟁하고 있습니다. 아래 탭을 클릭하여 각 플레이어의 상세 프로필과 시장 내 포지셔닝을 확인하세요.</p>
+                    <div class="flex flex-wrap justify-center gap-2 mb-8 border-b border-slate-200 pb-4">
+                        <button class="player-tab active px-4 py-2 rounded-md text-sm font-medium bg-slate-200 text-slate-700" data-player="openai">OpenAI</button>
+                        <button class="player-tab px-4 py-2 rounded-md text-sm font-medium bg-slate-200 text-slate-700" data-player="anthropic">Anthropic</button>
+                        <button class="player-tab px-4 py-2 rounded-md text-sm font-medium bg-slate-200 text-slate-700" data-player="google">Google</button>
+                        <button class="player-tab px-4 py-2 rounded-md text-sm font-medium bg-slate-200 text-slate-700" data-player="microsoft">Microsoft/GitHub</button>
+                        <button class="player-tab px-4 py-2 rounded-md text-sm font-medium bg-slate-200 text-slate-700" data-player="others">Others</button>
+                    </div>
+
+                    <div id="player-content"></div>
+                </div>
+            </section>
+
+            <section id="investments" class="content-section">
+                <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+                    <h2 class="text-2xl font-bold mb-4 text-slate-900">주요 투자 및 M&A</h2>
+                    <p class="text-slate-600 mb-6">AI 코딩 시장의 경쟁은 막대한 자본의 흐름으로 요약될 수 있습니다. 기술 대기업들은 유망 AI 스타트업에 수십억 달러를 투자하여 기술력을 확보하고 시장 영향력을 확대하고 있습니다. 이 섹션에서는 주요 기업 간의 투자 관계와 M&A 동향을 시각적으로 분석합니다.</p>
+                    <div class="chart-container">
+                        <canvas id="investmentChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-bold mb-3 text-slate-900">주요 M&A 사례</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-100 rounded-lg">
+                            <p class="font-semibold text-slate-800">OpenAI <span class="text-teal-600 font-bold">&rarr;</span> Windsurf</p>
+                            <p class="text-sm text-slate-600">약 30억 달러에 AI 코딩 도구 Windsurf(구 Codeium)를 인수하며 시장 내 수평적 통합 가속화. OpenAI의 역대 최대 규모 M&A.</p>
+                        </div>
+                        <div class="p-4 bg-slate-100 rounded-lg">
+                            <p class="font-semibold text-slate-800">OpenAI <span class="text-teal-600 font-bold">&rarr;</span> Io</p>
+                            <p class="text-sm text-slate-600">약 65억 달러에 AI 하드웨어 스타트업 Io를 인수하며 소프트웨어를 넘어 AI 기반 소비자 기기로의 수직 확장 추진.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="trends" class="content-section">
+                 <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+                     <h2 class="text-2xl font-bold mb-4 text-slate-900">핵심 시장 동향</h2>
+                     <p class="text-slate-600 mb-6">AI 코딩 시장은 기술 발전 외에도 인프라 경쟁, 데이터 프라이버시, 규제 감독 등 다양한 거시적 동향에 의해 형성되고 있습니다. 이 섹션은 시장의 미래를 좌우할 핵심적인 트렌드를 조명합니다.</p>
+                    <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                           <h3 class="text-xl font-bold mb-4 text-slate-900">1. 인프라 군비 경쟁</h3>
+                            <p class="text-slate-600 mb-4">AI 리더십은 모델 개발 능력뿐만 아니라, 이를 뒷받침하는 대규모 컴퓨팅 인프라 보유에 달려있습니다. 기술 대기업들은 AI 데이터 센터 확충에 천문학적인 금액을 투자하며 진입장벽을 높이고 있습니다.</p>
+                           <div class="chart-container !h-64 !max-h-72">
+                               <canvas id="infraSpendingChart"></canvas>
+                           </div>
+                        </div>
+                        <div class="space-y-6">
+                           <div>
+                               <h3 class="text-xl font-bold mb-2 text-slate-900">2. 데이터 프라이버시의 부상</h3>
+                               <p class="text-slate-600">기업 고객들의 데이터 유출 및 독점 코드 활용에 대한 우려가 커지면서, 사용자 데이터로 모델을 훈련하지 않는다는 '프라이버시 존중' 정책이 중요한 경쟁 차별화 요소로 부상하고 있습니다. (예: Anthropic, Google Jules)</p>
+                           </div>
+                           <div>
+                               <h3 class="text-xl font-bold mb-2 text-slate-900">3. 규제 감독 강화</h3>
+                               <p class="text-slate-600">EU, 영국, 미국 등 주요국 규제 당국이 거대 기술 기업과 AI 스타트업 간의 파트너십을 면밀히 조사하고 있습니다. 이는 독점 계약을 완화하고, 보다 개방적이고 공정한 경쟁 환경을 조성하는 촉매제로 작용하고 있습니다.</p>
+                           </div>
+                            <div>
+                               <h3 class="text-xl font-bold mb-2 text-slate-900">4. '협력적 경쟁' 심화</h3>
+                               <p class="text-slate-600">시장의 플레이어들은 한편으로는 협력하고(파트너십, 투자) 다른 한편으로는 경쟁하는(자체 제품 출시) 복잡한 관계를 맺고 있습니다. 이는 단일 공급자 종속을 피하고 전략적 유연성을 확보하기 위한 움직임으로, 시장의 다각화를 촉진합니다.</p>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const data = {
+                marketGrowth: {
+                    labels: ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+                    data: [4.86, 6.18, 7.85, 9.98, 12.68, 16.12, 20.48, 26.03] 
+                },
+                investments: {
+                    labels: ['Amazon → Anthropic', 'Microsoft → OpenAI', 'Google → Anthropic'],
+                    data: [8, 13.75, 3]
+                },
+                infraSpending: {
+                    labels: ['Amazon (예상)', 'Microsoft (예상)', 'Google (2025 계획)'],
+                    data: [100, 80, 75]
+                },
+                players: {
+                    openai: {
+                        name: 'OpenAI',
+                        logo: '🧠',
+                        title: '풀스택 AI 기업으로의 확장',
+                        description: 'ChatGPT 생태계를 기반으로 한 Codex를 시작으로, Windsurf(코딩툴)와 Io(하드웨어) 인수를 통해 소프트웨어와 하드웨어를 아우르는 종합 AI 기업으로의 야심을 드러내고 있습니다. Microsoft와의 깊은 파트너십을 기반으로 시장에 진입했지만, 점차 독자적인 행보를 강화하며 더 큰 자율성과 직접적인 시장 참여를 추구하고 있습니다.',
+                        products: 'OpenAI Codex, Windsurf(인수), Io(인수)',
+                        strategy: '공격적인 M&A를 통한 수평/수직적 확장',
+                        relationship: '<div class="p-4 bg-slate-100 rounded-lg text-center"><p class="font-bold">Microsoft</p><div class="text-sm text-slate-500 my-1">137.5억 달러 투자 / 지분 49%</div><div class="h-8 border-l-2 border-teal-500 border-dashed inline-block"></div><p class="font-bold">OpenAI</p></div>'
+                    },
+                    anthropic: {
+                        name: 'Anthropic',
+                        logo: '🛡️',
+                        title: 'AI 안전과 멀티 클라우드 전략',
+                        description: 'AI의 안전성과 신뢰성을 핵심 가치로 내세우며, 사용자 데이터로 모델을 훈련하지 않는다는 강력한 개인 정보 보호 정책으로 차별화합니다. Amazon과 Google이라는 경쟁 관계의 두 거대 기업으로부터 동시에 투자를 유치하며, 특정 클라우드에 종속되지 않는 독특한 ‘멀티 클라우드’ 전략을 구사하여 유연성과 독립성을 확보했습니다.',
+                        products: 'Anthropic Claude Code',
+                        strategy: '데이터 프라이버시 강조, 멀티 클라우드 파트너십',
+                        relationship: '<div class="flex justify-center items-center gap-4"><div class="p-4 bg-slate-100 rounded-lg text-center"><p class="font-bold">Amazon</p><div class="text-sm text-slate-500 my-1">80억 달러 투자</div></div><div class="p-4 border-2 border-teal-500 rounded-lg text-center"><p class="font-bold">Anthropic</p></div><div class="p-4 bg-slate-100 rounded-lg text-center"><p class="font-bold">Google</p><div class="text-sm text-slate-500 my-1">30억 달러 투자</div></div></div>'
+                    },
+                    google: {
+                        name: 'Google',
+                        logo: '🔍',
+                        title: '‘구축 및 파트너’ 이중 전략',
+                        description: '최신 AI 모델 Gemini를 기반으로 한 자체 코딩 에이전트 Jules를 개발하는 동시에, 경쟁력 있는 외부 기업인 Anthropic에 막대한 투자를 단행하는 ‘구축 및 파트너(Build and Partner)’ 이중 전략을 사용합니다. AI 인프라에 대한 천문학적인 투자는 AI 경쟁의 핵심이 컴퓨팅 파워에 있음을 보여주며, 자체 모델과 파트너 모델 모두를 지원하는 강력한 기반이 됩니다.',
+                        products: 'Google Jules, Gemini 2.5 Pro',
+                        strategy: '자체 개발과 외부 투자를 병행, 인프라 우위 확보',
+                        relationship: '<div class="flex justify-center items-center gap-4"><div class="p-4 bg-slate-100 rounded-lg text-center"><p class="font-bold">내부 개발 (Jules)</p></div><div class="p-4 border-2 border-teal-500 rounded-lg text-center"><p class="font-bold">Google</p></div><div class="p-4 bg-slate-100 rounded-lg text-center"><p class="font-bold">외부 투자 (Anthropic)</p></div></div>'
+                    },
+                    microsoft: {
+                        name: 'Microsoft / GitHub',
+                        logo: '💻',
+                        title: '개발자 생태계 기반의 통합 전략',
+                        description: '자회사인 GitHub와 OpenAI와의 파트너십을 통해 개발된 GitHub Copilot을 중심으로, 기존의 막강한 개발자 생태계(VS Code, GitHub)에 AI를 깊숙이 통합하는 전략을 구사합니다. 개발자의 일상적인 워크플로우에 자연스럽게 녹아드는 방식으로 강력한 시장 지배력을 확보하고 있습니다. 동시에 OpenAI에 대한 의존도를 줄이기 위해 자체 AI 역량도 강화하고 있습니다.',
+                        products: 'GitHub Copilot',
+                        strategy: '기존 플랫폼과 생태계에 AI 기능 통합',
+                        relationship: '<div class="flex justify-center items-center gap-4"><div class="p-4 bg-slate-100 rounded-lg text-center"><p class="font-bold">Microsoft (Azure)</p></div><div class="p-4 border-2 border-teal-500 rounded-lg text-center"><p class="font-bold">GitHub Copilot</p></div><div class="p-4 bg-slate-100 rounded-lg text-center"><p class="font-bold">OpenAI</p></div></div>'
+                    },
+                    others: {
+                        name: '혁신적 스타트업',
+                        logo: '🚀',
+                        title: '틈새 시장을 공략하는 다크호스',
+                        description: '거대 기업들의 경쟁 속에서도 특정 기능이나 사용자 경험에 집중하는 전문 스타트업들이 빠르게 성장하며 높은 기업 가치를 인정받고 있습니다. 이들의 존재는 AI 코딩 시장이 아직 포화되지 않았으며, 혁신적인 아이디어를 통해 성공할 수 있는 기회가 충분함을 보여줍니다.',
+                        products: 'Cursor (Anysphere), Windsurf (OpenAI에 인수)',
+                        strategy: 'AI-Native IDE 등 특정 개발자 경험에 집중',
+                        relationship: '<div class="text-center p-4"><p class="font-bold">Cursor (Anysphere)</p><p class="text-slate-600">90억 달러 가치 평가, OpenAI도 투자 및 사용하는 AI-First IDE</p><br><p class="font-bold">Windsurf (Exafunction)</p><p class="text-slate-600">성장성을 인정받아 30억 달러에 OpenAI에 인수</p></div>'
+                    }
+                }
+            };
+
+            const createChart = (ctx, type, labels, data, label, backgroundColor, borderColor) => {
+                new Chart(ctx, {
+                    type: type,
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: label,
+                            data: data,
+                            backgroundColor: backgroundColor,
+                            borderColor: borderColor,
+                            borderWidth: 2,
+                            pointBackgroundColor: borderColor,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { font: { family: "'Noto Sans KR', sans-serif" } }
+                            },
+                            x: {
+                                ticks: { font: { family: "'Noto Sans KR', sans-serif" } }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                titleFont: { family: "'Noto Sans KR', sans-serif" },
+                                bodyFont: { family: "'Noto Sans KR', sans-serif" }
+                            }
+                        },
+                        indexAxis: type === 'bar' && labels.length < 5 ? 'y' : 'x',
+                    }
+                });
+            };
+
+            const ctxMarketGrowth = document.getElementById('marketGrowthChart')?.getContext('2d');
+            if (ctxMarketGrowth) createChart(ctxMarketGrowth, 'line', data.marketGrowth.labels, data.marketGrowth.data, '시장 규모 (십억 달러)', 'rgba(13, 148, 136, 0.2)', '#0d9488');
+
+            const ctxInvestment = document.getElementById('investmentChart')?.getContext('2d');
+            if (ctxInvestment) createChart(ctxInvestment, 'bar', data.investments.labels, data.investments.data, '투자액 (십억 달러)', ['rgba(13, 148, 136, 0.6)', 'rgba(59, 130, 246, 0.6)', 'rgba(234, 179, 8, 0.6)'], ['#0d9488', '#3b82f6', '#eab308']);
+            
+            const ctxInfraSpending = document.getElementById('infraSpendingChart')?.getContext('2d');
+            if (ctxInfraSpending) createChart(ctxInfraSpending, 'bar', data.infraSpending.labels, data.infraSpending.data, 'AI 인프라 투자 (십억 달러)', ['rgba(234, 179, 8, 0.6)', 'rgba(59, 130, 246, 0.6)', 'rgba(13, 148, 136, 0.6)'], ['#eab308', '#3b82f6', '#0d9488']);
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+
+            const switchView = (hash) => {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.hash === hash);
+                });
+                sections.forEach(section => {
+                    section.classList.toggle('active', `#${section.id}` === hash);
+                });
+            };
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    history.pushState(null, '', e.target.hash);
+                    switchView(e.target.hash);
+                });
+            });
+            
+            window.addEventListener('popstate', () => {
+                switchView(location.hash || '#overview');
+            });
+            
+            const playerTabs = document.querySelectorAll('.player-tab');
+            const playerContentDiv = document.getElementById('player-content');
+            
+            const updatePlayerContent = (playerName) => {
+                const playerData = data.players[playerName];
+                playerContentDiv.innerHTML = `
+                    <div class="grid md:grid-cols-2 gap-8 items-start">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 flex items-center"><span class="text-2xl mr-3">${playerData.logo}</span> ${playerData.name}: ${playerData.title}</h3>
+                            <p class="text-slate-600 mb-4 leading-relaxed">${playerData.description}</p>
+                            <div class="space-y-2 text-sm">
+                                <p><strong class="text-slate-800">주요 제품:</strong> ${playerData.products}</p>
+                                <p><strong class="text-slate-800">핵심 전략:</strong> ${playerData.strategy}</p>
+                            </div>
+                        </div>
+                        <div>
+                             <h4 class="text-lg font-semibold text-center mb-4 text-slate-800">주요 관계도</h4>
+                            ${playerData.relationship}
+                        </div>
+                    </div>
+                `;
+            };
+
+            playerTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    playerTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    updatePlayerContent(tab.dataset.player);
+                });
+            });
+
+            switchView(location.hash || '#overview');
+            if (playerContentDiv) updatePlayerContent('openai');
+        });
+    </script>
+
+</body>
+</html>
