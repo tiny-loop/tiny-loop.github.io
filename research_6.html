@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>알파벳(GOOGL) 종합 분석 대시보드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Stone, Slate, Muted Blue) -->
+    <!-- Application Structure Plan: The SPA is designed as an interactive dashboard with a sticky top navigation for easy access to thematic sections. This non-linear structure allows users to freely explore areas of interest (e.g., Fundamentals, Risks, Outlook) without scrolling through a long, linear report. The goal is to facilitate quick comprehension of key investment factors through targeted visualizations, concise summaries, and interactive elements, which is more effective for a dense financial report. -->
+    <!-- Visualization & Content Choices: 
+        - Stock Trend -> Goal: Change -> Line Chart (Chart.js) -> Timeframe buttons -> Visually shows performance over user-selected periods, providing immediate context on volatility and trends.
+        - Revenue Segments -> Goal: Organize/Compare -> Donut Chart (Chart.js) -> Hover interaction -> Clearly illustrates the contribution of each business unit, highlighting the importance of Search vs. the growth of Cloud.
+        - Valuation -> Goal: Compare -> Bar Chart (Chart.js) -> Tooltips -> Puts GOOGL's valuation in context against peers (MSFT, AMZN) and its own history, answering the key question of whether it's 'cheap' or 'expensive'.
+        - Analyst Ratings -> Goal: Inform -> Donut Chart (Chart.js) -> Hover interaction -> Provides a quick visual summary of Wall Street consensus, a key factor for many investors.
+        - Macro/Regulatory Factors -> Goal: Inform/Organize -> Styled HTML Cards/Lists -> N/A -> Presents complex qualitative information (like DOJ lawsuits or Fed policy) in a digestible, easy-to-scan format.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .kpi-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+        }
+        .nav-link {
+            transition: color 0.2s, border-bottom-color 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+        .btn-group button.active {
+            background-color: #2563eb;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-blue-600">GOOGL</span>
+                    <span class="ml-3 font-semibold text-slate-600 hidden sm:block">종합 분석 대시보드</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#summary" class="nav-link px-3 py-2 rounded-md text-sm font-medium">핵심 요약</a>
+                        <a href="#performance" class="nav-link px-3 py-2 rounded-md text-sm font-medium">주가 성과</a>
+                        <a href="#fundamentals" class="nav-link px-3 py-2 rounded-md text-sm font-medium">펀더멘털</a>
+                        <a href="#landscape" class="nav-link px-3 py-2 rounded-md text-sm font-medium">시장 환경</a>
+                        <a href="#outlook" class="nav-link px-3 py-2 rounded-md text-sm font-medium">전망 및 시나리오</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <select id="mobile-nav" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="summary">핵심 요약</option>
+                        <option value="performance">주가 성과</option>
+                        <option value="fundamentals">펀더멘털</option>
+                        <option value="landscape">시장 환경</option>
+                        <option value="outlook">전망 및 시나리오</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <section id="summary" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-slate-900">알파벳(GOOGL) 심층 분석</h1>
+                <p class="mt-2 text-lg text-slate-600">AI, 클라우드, 규제 리스크 속 기회와 위협 요인 탐색</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="kpi-card text-center">
+                    <p class="text-sm font-medium text-slate-500">현재 주가 (2025-06-13)</p>
+                    <p class="mt-1 text-3xl font-semibold text-slate-900">$176.50</p>
+                    <p class="mt-1 text-base text-green-600">+1.25 (0.71%)</p>
+                </div>
+                <div class="kpi-card text-center">
+                    <p class="text-sm font-medium text-slate-500">YTD 수익률</p>
+                    <p class="mt-1 text-3xl font-semibold text-green-600">+14.3%</p>
+                    <p class="mt-1 text-base text-slate-500">&nbsp;</p>
+                </div>
+                <div class="kpi-card text-center">
+                    <p class="text-sm font-medium text-slate-500">52주 최고가</p>
+                    <p class="mt-1 text-3xl font-semibold text-slate-900">$207.05</p>
+                     <p class="mt-1 text-base text-slate-500">&nbsp;</p>
+                </div>
+                <div class="kpi-card text-center">
+                    <p class="text-sm font-medium text-slate-500">52주 최저가</p>
+                    <p class="mt-1 text-3xl font-semibold text-slate-900">$140.53</p>
+                     <p class="mt-1 text-base text-slate-500">&nbsp;</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">Executive Summary</h2>
+                <p class="text-slate-700 leading-relaxed">
+                    알파벳은 AI 경쟁 심화, 거시경제 불확실성, 그리고 강력한 규제 압박이라는 삼중고에 직면해 있습니다. 그러나 견고한 1분기 실적과 첫 배당 지급, 대규모 자사주 매입 등 공격적인 주주 환원 정책은 회사의 근본적인 체력과 자신감을 보여줍니다. 검색, 클라우드, 유튜브 등 핵심 사업은 여전히 강력하며, 특히 AI와 클라우드는 장기 성장을 이끌 핵심 동력입니다. 현재 주가($175-180선)는 강력한 수익성과 AI 잠재력을 고려할 때 합리적 수준으로 평가되나, 미국 법무부(DOJ) 소송 등 규제 리스크는 주가 변동성을 높이는 핵심 변수입니다. 이 대시보드는 이러한 복합적인 요인들을 종합적으로 분석하여 투자 판단을 돕기 위해 제작되었습니다.
+                </p>
+            </div>
+        </section>
+
+        <section id="performance" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-6 text-center">주가 성과 및 기술적 분석</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="flex justify-center mb-4">
+                    <div id="stock-chart-buttons" class="inline-flex rounded-md shadow-sm" role="group">
+                        <button type="button" data-period="1y" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 active">1년</button>
+                        <button type="button" data-period="6m" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">6개월</button>
+                        <button type="button" data-period="3m" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">3개월</button>
+                    </div>
+                </div>
+                <div class="chart-container mx-auto max-w-4xl">
+                    <canvas id="stockPriceChart"></canvas>
+                </div>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div>
+                        <p class="text-sm text-slate-500">20/50/200일 SMA</p>
+                        <p class="font-semibold text-lg text-green-600">상승 추세</p>
+                        <p class="text-xs text-slate-400">주가가 모든 주요 이평선 위에 위치</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-slate-500">RSI (14)</p>
+                        <p class="font-semibold text-lg text-yellow-600">64.01 (중립)</p>
+                        <p class="text-xs text-slate-400">과매수 구간에 근접하나 아직 여유</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-slate-500">MACD (12,26,9)</p>
+                        <p class="font-semibold text-lg text-green-600">0.67 (긍정적)</p>
+                        <p class="text-xs text-slate-400">상승 모멘텀 지속 신호</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fundamentals" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-6 text-center">펀더멘털 분석</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">분기별 재무 하이라이트</h3>
+                    <div class="chart-container mx-auto max-w-xl">
+                        <canvas id="financialsChart"></canvas>
+                    </div>
+                    <p class="text-sm text-slate-600 mt-4">2025년 1분기, 시장 예상을 뛰어넘는 매출과 EPS를 기록하며 강력한 성장 모멘텀을 입증했습니다. 특히 순이익률 개선이 돋보입니다.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">사업 부문별 매출 비중 (Q1 2025)</h3>
+                     <div class="chart-container mx-auto max-w-xl">
+                        <canvas id="revenueSegmentsChart"></canvas>
+                    </div>
+                    <p class="text-sm text-slate-600 mt-4">검색 광고가 여전히 핵심 캐시카우 역할을 하는 가운데, 클라우드(GCP) 사업이 28%의 높은 성장률을 기록하며 차세대 성장 동력으로 부상하고 있습니다.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">가치평가(Valuation) 비교</h3>
+                    <div class="chart-container mx-auto max-w-xl">
+                        <canvas id="valuationChart"></canvas>
+                    </div>
+                    <p class="text-sm text-slate-600 mt-4">현재 PER은 역사적 평균 및 주요 경쟁사(MSFT, AMZN) 대비 낮은 수준으로, 규제 리스크가 주가에 할인 요인으로 작용하고 있음을 시사합니다.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">애널리스트 투자의견</h3>
+                     <div class="chart-container mx-auto max-w-xl">
+                        <canvas id="analystRatingsChart"></canvas>
+                    </div>
+                    <div class="text-center mt-4">
+                        <p class="text-sm text-slate-500">평균 목표주가</p>
+                        <p class="text-2xl font-bold text-blue-600">$205.86</p>
+                        <p class="text-xs text-slate-400">(52개 증권사 컨센서스)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="landscape" class="mb-16 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-6 text-center">경쟁 및 시장 환경</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">거시경제 요인</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-blue-500 text-2xl mr-3">🏦</span>
+                            <div>
+                                <h4 class="font-semibold">금리 정책</h4>
+                                <p class="text-sm text-slate-600">Fed의 금리 동결 기조. 향후 인하 시 기술주 밸류에이션 부담 완화 기대.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-orange-500 text-2xl mr-3">📈</span>
+                            <div>
+                                <h4 class="font-semibold">인플레이션</h4>
+                                <p class="text-sm text-slate-600">2% 목표치를 상회하는 근원 CPI. 소비 및 광고 지출에 부담 요인.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-500 text-2xl mr-3">📉</span>
+                            <div>
+                                <h4 class="font-semibold">경기 침체 리스크</h4>
+                                <p class="text-sm text-slate-600">약 40% 확률. 침체 시 광고 및 클라우드 시장 위축 우려.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">AI 경쟁력</h3>
+                    <ul class="space-y-4">
+                         <li class="flex items-start">
+                            <span class="text-purple-500 text-2xl mr-3">🧠</span>
+                            <div>
+                                <h4 class="font-semibold">Gemini 모델</h4>
+                                <p class="text-sm text-slate-600">멀티모달, 추론 등에서 GPT-4.5 대비 우위. 검색, 클라우드 혁신 가속화.</p>
+                            </div>
+                        </li>
+                         <li class="flex items-start">
+                             <span class="text-teal-500 text-2xl mr-3">⚙️</span>
+                            <div>
+                                <h4 class="font-semibold">인프라 우위</h4>
+                                <p class="text-sm text-slate-600">자체 개발 TPU 칩셋과 방대한 데이터는 경쟁사 대비 강력한 해자.</p>
+                            </div>
+                        </li>
+                         <li class="flex items-start">
+                             <span class="text-yellow-500 text-2xl mr-3">💰</span>
+                            <div>
+                                <h4 class="font-semibold">"AI 세금" (Capex)</h4>
+                                <p class="text-sm text-slate-600">막대한 자본 지출은 부담이지만, 미래 리더십 확보를 위한 필수 투자.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">규제 리스크</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                             <span class="text-red-600 text-2xl mr-3">⚖️</span>
+                            <div>
+                                <h4 class="font-semibold">미국 법무부(DOJ) 소송</h4>
+                                <p class="text-sm text-slate-600">광고 기술 및 검색 독점 관련 소송 패소. 사업부 분할 등 구조적 변경 가능성 존재.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 text-2xl mr-3">🇪🇺</span>
+                            <div>
+                                <h4 class="font-semibold">유럽 디지털시장법(DMA)</h4>
+                                <p class="text-sm text-slate-600">자사 서비스 우대 금지 등 사업 방식 변경 압박. 장기적 영향 주시 필요.</p>
+                            </div>
+                        </li>
+                         <li class="flex items-start">
+                             <span class="text-slate-500 text-2xl mr-3">📜</span>
+                            <div>
+                                <h4 class="font-semibold">리스크 프리미엄</h4>
+                                <p class="text-sm text-slate-600">규제 불확실성은 밸류에이션 할인 요인으로, 투자 시 반드시 고려해야 함.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="outlook" class="scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-6 text-center">전망 및 시나리오 분석</h2>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-r-lg">
+                    <h3 class="text-xl font-bold text-green-800 mb-4">✅ 긍정적 시나리오 (Bull Case)</h3>
+                    <ul class="list-disc list-inside space-y-2 text-green-700">
+                        <li>경제 연착륙 및 금리 인하로 투자 심리 개선</li>
+                        <li>AI 기술 리더십 공고화 및 성공적인 수익화</li>
+                        <li>클라우드(GCP) 고성장 및 마진 개선 지속</li>
+                        <li>규제 리스크가 벌금 등 제한적 수준에서 마무리</li>
+                        <li>밸류에이션 배수 확장(Multiple Expansion)</li>
+                    </ul>
+                </div>
+                <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-lg">
+                    <h3 class="text-xl font-bold text-red-800 mb-4">❌ 부정적 시나리오 (Bear Case)</h3>
+                     <ul class="list-disc list-inside space-y-2 text-red-700">
+                        <li>경기 침체 심화 및 고금리 장기화</li>
+                        <li>AI 투자 성과 미비 또는 기존 사업 잠식</li>
+                        <li>경쟁 심화로 클라우드 성장 둔화</li>
+                        <li>규제로 인한 사업부 분할 등 구조적 훼손</li>
+                        <li>이익 전망치 및 주가 배수 동시 하락</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-white mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-sm text-slate-400">
+            <p>본 자료는 제공된 보고서를 기반으로 제작되었으며, 투자 추천이 아닌 정보 제공을 목적으로 합니다.</p>
+            <p>&copy; 2025 Interactive Stock Analysis. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const appData = {
+                stockPrice: {
+                    labels: ['2024-06', '2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12', '2025-01', '2025-02', '2025-03', '2025-04', '2025-05', '2025-06'],
+                    '1y': [141, 145, 150, 142, 148, 155, 160, 165, 172, 168, 180, 178, 176.5],
+                    '6m': [160, 165, 172, 168, 180, 178, 176.5],
+                    '3m': [168, 180, 178, 176.5]
+                },
+                financials: {
+                    labels: ['Q2 \'24', 'Q3 \'24', 'Q4 \'24', 'Q1 \'25'],
+                    revenue: [850, 870, 890, 902.3],
+                    eps: [1.85, 1.95, 2.10, 2.81]
+                },
+                revenueSegments: {
+                    labels: ['검색 및 기타', '유튜브 광고', '클라우드(GCP)', '기타 사업'],
+                    data: [580.4, 89.3, 122.6, 2.26] 
+                },
+                valuation: {
+                    labels: ['GOOGL (현재)', 'GOOGL (5년 평균)', 'MSFT', 'AMZN'],
+                    per: [19.5, 24.2, 35, 36]
+                },
+                analystRatings: {
+                    labels: ['강력 매수', '매수', '보유'],
+                    data: [40, 4, 8]
+                }
+            };
+            
+            let stockPriceChartInstance;
+            let financialsChartInstance;
+            let revenueSegmentsChartInstance;
+            let valuationChartInstance;
+            let analystRatingsChartInstance;
+            
+            const chartDefaultOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#475569',
+                            font: {
+                                family: "'Noto Sans KR', sans-serif"
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#475569',
+                             font: {
+                                family: "'Noto Sans KR', sans-serif"
+                            }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#475569',
+                             font: {
+                                family: "'Noto Sans KR', sans-serif"
+                            }
+                        },
+                         grid: {
+                            color: '#e2e8f0'
+                        }
+                    }
+                }
+            };
+
+            function createStockPriceChart(period = '1y') {
+                const ctx = document.getElementById('stockPriceChart').getContext('2d');
+                if (stockPriceChartInstance) {
+                    stockPriceChartInstance.destroy();
+                }
+
+                const dataLength = appData.stockPrice[period].length;
+                const labels = appData.stockPrice.labels.slice(-dataLength);
+                
+                stockPriceChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'GOOGL 주가 ($)',
+                            data: appData.stockPrice[period],
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            borderWidth: 2,
+                            pointRadius: 2,
+                            pointBackgroundColor: '#2563eb',
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: chartDefaultOptions
+                });
+            }
+
+            function createFinancialsChart() {
+                const ctx = document.getElementById('financialsChart').getContext('2d');
+                financialsChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: appData.financials.labels,
+                        datasets: [
+                            {
+                                label: '매출 (십억 $)',
+                                data: appData.financials.revenue,
+                                backgroundColor: '#3b82f6',
+                                yAxisID: 'y',
+                            },
+                            {
+                                type: 'line',
+                                label: 'EPS ($)',
+                                data: appData.financials.eps,
+                                borderColor: '#16a34a',
+                                backgroundColor: '#16a34a',
+                                yAxisID: 'y1',
+                                tension: 0.1,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        ...chartDefaultOptions,
+                        scales: {
+                            x: chartDefaultOptions.scales.x,
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                title: { display: true, text: '매출 (십억 $)', color: '#475569' },
+                                ticks: { color: '#475569' },
+                                grid: { color: '#e2e8f0' }
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                title: { display: true, text: 'EPS ($)', color: '#475569' },
+                                ticks: { color: '#475569' },
+                                grid: { drawOnChartArea: false }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function createRevenueSegmentsChart() {
+                const ctx = document.getElementById('revenueSegmentsChart').getContext('2d');
+                revenueSegmentsChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: appData.revenueSegments.labels,
+                        datasets: [{
+                            label: '매출 비중 (십억 $)',
+                            data: appData.revenueSegments.data,
+                            backgroundColor: ['#3b82f6', '#ef4444', '#10b981', '#64748b'],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        ...chartDefaultOptions,
+                        plugins: {
+                            ...chartDefaultOptions.plugins,
+                             tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                            const percentage = ((context.raw / total) * 100).toFixed(1);
+                                            label += `$${context.raw}B (${percentage}%)`;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function createValuationChart() {
+                const ctx = document.getElementById('valuationChart').getContext('2d');
+                valuationChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: appData.valuation.labels,
+                        datasets: [{
+                            label: '주가수익비율 (PER)',
+                            data: appData.valuation.per,
+                            backgroundColor: ['#2563eb', '#93c5fd', '#374151', '#4b5563'],
+                            barPercentage: 0.6,
+                            categoryPercentage: 0.7
+                        }]
+                    },
+                    options: chartDefaultOptions
+                });
+            }
+            
+            function createAnalystRatingsChart() {
+                const ctx = document.getElementById('analystRatingsChart').getContext('2d');
+                analystRatingsChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: appData.analystRatings.labels,
+                        datasets: [{
+                            label: '투자의견 수',
+                            data: appData.analystRatings.data,
+                            backgroundColor: ['#16a34a', '#84cc16', '#fbbf24'],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        ...chartDefaultOptions
+                    }
+                });
+            }
+
+            const stockChartButtons = document.getElementById('stock-chart-buttons');
+            stockChartButtons.addEventListener('click', (e) => {
+                if(e.target.tagName === 'BUTTON') {
+                    const period = e.target.dataset.period;
+                    createStockPriceChart(period);
+                    
+                    stockChartButtons.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                }
+            });
+
+            const navLinks = document.querySelectorAll('a.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelector(link.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (e) => {
+                 document.querySelector(`#${e.target.value}`).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+            });
+
+            createStockPriceChart();
+            createFinancialsChart();
+            createRevenueSegmentsChart();
+            createValuationChart();
+            createAnalystRatingsChart();
+        });
+    </script>
+</body>
+</html>
