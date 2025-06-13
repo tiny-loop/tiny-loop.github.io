@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini AI 활용 전략 비교: 대화형 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Professional Tech (Light Slate background, Dark Slate text, Accent Blue) -->
+    <!-- Application Structure Plan: A single-page application featuring a main navigation bar guiding users to key sections: Introduction, a tabbed Core Comparison dashboard, and a final Recommendation. The tabbed interface for the core comparison (AI Features, Data Policy, Security, Cost) allows users to deconstruct complex information into manageable, directly comparable segments. This non-linear, user-driven structure is superior to a simple document scroll, as it empowers users to focus on the criteria most important to them, facilitating a more efficient and insightful analysis. -->
+    <!-- Visualization & Content Choices: Report Info -> Goal -> Viz/Presentation -> Interaction -> Justification. 1) Cost Comparison -> Compare -> Bar Chart -> Tooltips -> Directly visualizes the price difference, which is a primary decision factor. 2) Security Posture -> Compare multiple facets -> Radar Chart -> Tooltips -> Effectively shows the multi-dimensional strengths and weaknesses of each plan's security framework in a single, easily digestible graphic, far better than a long list. 3) Data Usage Risk -> Compare abstract risk -> Bar Chart -> Tooltips -> Translates the critical but abstract concept of data being used for model training into a tangible, high-impact visual comparison. 4) Feature/Policy lists -> Compare details -> Styled HTML Tables -> None -> Provides clear, structured, side-by-side textual information for detailed evaluation. Library: Chart.js for all canvas-based charts. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover {
+            color: #2563eb; /* blue-600 */
+        }
+        .tab-btn {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab-btn.active {
+            background-color: #2563eb; /* blue-600 */
+            color: white;
+            font-weight: 700;
+        }
+        .content-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0; /* slate-200 */
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 320px;
+            width: 100%;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .comparison-grid {
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 1024px) {
+            .comparison-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-slate-200">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-xl md:text-2xl font-bold text-slate-900">Gemini AI 활용 전략 비교</h1>
+                <div class="hidden sm:flex items-center space-x-8">
+                    <a href="#intro" class="nav-link text-slate-600 font-medium">소개</a>
+                    <a href="#comparison" class="nav-link text-slate-600 font-medium">핵심 비교</a>
+                    <a href="#recommendation" class="nav-link text-slate-600 font-medium">최종 추천</a>
+                </div>
+                <div class="sm:hidden">
+                    <button id="mobile-menu-button" class="p-2 rounded-md text-slate-500 hover:text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden sm:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#intro" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50">소개</a>
+                <a href="#comparison" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50">핵심 비교</a>
+                <a href="#recommendation" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50">최종 추천</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <section id="intro" class="scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">딥 리서치를 위한 최적의 AI 환경 선택</h2>
+                <p class="max-w-3xl mx-auto text-lg text-slate-600">Gemini와 같은 AI 도구는 연구의 혁신을 가져오지만, 민감한 데이터를 다루는 딥 리서치에서는 데이터 처리 방식이 무엇보다 중요합니다. 이 분석은 Google의 두 가지 주요 서비스, <strong class="text-blue-600">Google One AI Premium</strong>과 <strong class="text-green-600">Google Workspace Business Standard</strong>를 심층 비교하여 연구 목적에 가장 적합한 환경을 찾는 데 도움을 줍니다.</p>
+            </div>
+        </section>
+
+        <section id="comparison" class="scroll-mt-20">
+            <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg border border-slate-200">
+                <div class="mb-8">
+                    <div class="flex flex-wrap gap-2 justify-center" id="tab-buttons">
+                        <button class="tab-btn active px-4 py-2 text-sm md:text-base font-medium rounded-full" data-tab="tab-features">AI 기능</button>
+                        <button class="tab-btn px-4 py-2 text-sm md:text-base font-medium rounded-full bg-slate-100 text-slate-600" data-tab="tab-policy">데이터 정책</button>
+                        <button class="tab-btn px-4 py-2 text-sm md:text-base font-medium rounded-full bg-slate-100 text-slate-600" data-tab="tab-security">보안 및 규정 준수</button>
+                        <button class="tab-btn px-4 py-2 text-sm md:text-base font-medium rounded-full bg-slate-100 text-slate-600" data-tab="tab-cost">비용 효율성</button>
+                    </div>
+                </div>
+
+                <div id="tab-content">
+                    <div class="tab-pane active" id="tab-features">
+                        <h3 class="text-2xl font-bold text-center mb-2 text-slate-900">AI 기능 비교</h3>
+                        <p class="text-center text-slate-500 mb-8">두 플랜 모두 강력한 Gemini AI 기능을 제공하지만, 대상 사용자와 제공 범위에 차이가 있습니다.</p>
+                        <div class="grid comparison-grid gap-8">
+                            <div class="content-card">
+                                <h4 class="text-xl font-bold text-blue-600 mb-4">Google One AI Premium</h4>
+                                <ul class="space-y-3 text-slate-700">
+                                    <li><strong class="font-semibold">최신 AI 모델 접근:</strong> Gemini 2.5 Pro 및 Ultra 플랜의 경우 Deep Think, Veo 3 등 최첨단 모델에 우선 접근.</li>
+                                    <li><strong class="font-semibold">개인 앱 통합:</strong> Gmail, Docs 등 개인용 Google 앱에 깊숙이 통합되어 생산성 극대화.</li>
+                                    <li><strong class="font-semibold">NotebookLM 확장 기능:</strong> 더 많은 Q&A, 소스 용량, 맞춤형 스타일 등 연구자를 위한 강력한 기능 제공.</li>
+                                    <li><strong class="font-semibold">크리에이티브 도구:</strong> AI 영화 제작(Flow), 이미지-비디오 생성(Whisk) 등 창의적 작업 지원.</li>
+                                    <li><strong class="font-semibold">1백만 토큰 컨텍스트 창:</strong> 약 1,500페이지 분량의 방대한 정보를 한 번에 처리.</li>
+                                </ul>
+                            </div>
+                            <div class="content-card">
+                                <h4 class="text-xl font-bold text-green-600 mb-4">Google Workspace Business Standard</h4>
+                                <ul class="space-y-3 text-slate-700">
+                                    <li><strong class="font-semibold">비즈니스 AI 비서:</strong> 핵심 비즈니스 앱(Gmail, Meet 등)에 통합되어 전문 워크플로우 지원.</li>
+                                    <li><strong class="font-semibold">팀 기반 AI 활용:</strong> 'AI 전문가 팀' 생성을 통해 조직 내 협업 기반의 복잡한 프로젝트 처리 촉진.</li>
+                                    <li><strong class="font-semibold">AI 연구 비서(NotebookLM):</strong> 팀 지식 공유 및 연구 통합을 가속화하는 데 중점.</li>
+                                    <li><strong class="font-semibold">엔터프라이즈급 제어:</strong> 모든 AI 기능은 Workspace의 엄격한 보안 및 관리 프레임워크 내에서 작동.</li>
+                                    <li><strong class="font-semibold">1백만 토큰 컨텍스트 창:</strong> '핵심 서비스'로 제공되어 기업 수준의 보안 하에 대용량 문서 분석 가능.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane hidden" id="tab-policy">
+                        <h3 class="text-2xl font-bold text-center mb-2 text-slate-900">데이터 처리 및 학습 정책 비교</h3>
+                        <p class="text-center text-slate-500 mb-8">딥 리서치에서 가장 중요한 차이점입니다. 데이터가 어떻게 사용되고 보호되는지 확인하세요.</p>
+                        <div class="grid comparison-grid gap-8">
+                            <div class="content-card">
+                                <h4 class="text-xl font-bold text-blue-600 mb-4">Google One AI Premium</h4>
+                                <ul class="space-y-3 text-slate-700">
+                                    <li><strong class="font-semibold text-red-600">기본적으로 모델 학습에 사용:</strong> 사용자 상호작용 데이터는 Google 제품 및 머신러닝 기술 개선을 위해 기본적으로 수집 및 활용됩니다.</li>
+                                    <li><strong class="font-semibold">인간 검토 가능성:</strong> 일부 대화는 품질 개선을 위해 인간 검토자에 의해 검토될 수 있으며 최대 3년간 보관됩니다.</li>
+                                    <li><strong class="font-semibold">사용자 설정 필요:</strong> 데이터 학습을 원치 않을 경우, 사용자가 직접 Gemini 앱 활동 설정을 비활성화해야 합니다.</li>
+                                    <li><strong class="font-semibold">복잡한 예외 조항:</strong> 유료 API 사용 시 학습에서 제외되지만, 무료 AI Studio 인터페이스 사용 시에는 다시 학습에 사용될 수 있어 혼란의 여지가 있습니다.</li>
+                                </ul>
+                            </div>
+                            <div class="content-card">
+                                <h4 class="text-xl font-bold text-green-600 mb-4">Google Workspace Business Standard</h4>
+                                <ul class="space-y-3 text-slate-700">
+                                    <li><strong class="font-semibold text-green-700">모델 학습에 사용 안 함 (계약 보장):</strong> 고객 데이터는 명시적 허가나 지시 없이는 절대 생성형 AI 모델 학습에 사용되지 않음을 계약으로 보장합니다.</li>
+                                    <li><strong class="font-semibold">학습 목적의 인간 검토 없음:</strong> 고객 콘텐츠는 모델 학습을 위해 인간이 검토하지 않습니다.</li>
+                                    <li><strong class="font-semibold">데이터 조직 내 격리:</strong> 모든 상호작용 데이터는 조직의 도메인 내에 엄격하게 유지되며 외부로 공유되지 않습니다.</li>
+                                    <li><strong class="font-semibold">중앙 관리자 제어:</strong> 데이터 보존 기간 및 기록 활성화 여부를 조직의 관리자가 중앙에서 제어합니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-12">
+                            <h4 class="text-xl font-bold text-center mb-4">데이터 학습 위험도 (개념적 비교)</h4>
+                            <div class="content-card max-w-2xl mx-auto">
+                                <div class="chart-container">
+                                    <canvas id="policyChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane hidden" id="tab-security">
+                        <h3 class="text-2xl font-bold text-center mb-2 text-slate-900">보안 및 규정 준수 비교</h3>
+                        <p class="text-center text-slate-500 mb-8">조직의 데이터를 보호하는 능력은 플랜 선택의 핵심 기준입니다.</p>
+                        <div class="grid comparison-grid gap-8">
+                            <div class="content-card">
+                                <h4 class="text-xl font-bold text-blue-600 mb-4">Google One AI Premium</h4>
+                                <p class="mb-4 text-slate-600">개인 사용자 보호에 중점을 둔 보안 기능을 제공합니다.</p>
+                                <ul class="space-y-3 text-slate-700">
+                                    <li><strong class="font-semibold">개인 보안 기능:</strong> VPN, 다크 웹 리포트 등 개인의 온라인 활동 보호 기능.</li>
+                                    <li><strong class="font-semibold">기본 계정 보안:</strong> 2단계 인증, 비밀번호 검사 등 표준 Google 계정 보안.</li>
+                                    <li><strong class="font-semibold text-red-600">관리 제어 부재:</strong> 중앙에서 팀원의 보안 정책을 관리하거나 활동을 감사할 수 있는 기능이 없습니다.</li>
+                                    <li><strong class="font-semibold">기업 규정 준수 인증 없음:</strong> HIPAA, SOC 등과 같은 기업용 규정 준수 인증은 제공하지 않습니다.</li>
+                                </ul>
+                            </div>
+                            <div class="content-card">
+                                <h4 class="text-xl font-bold text-green-600 mb-4">Google Workspace Business Standard</h4>
+                                <p class="mb-4 text-slate-600">'설계에 의한 보안' 철학을 바탕으로 강력한 기업 수준의 제어를 제공합니다.</p>
+                                <ul class="space-y-3 text-slate-700">
+                                    <li><strong class="font-semibold">엔터프라이즈급 데이터 보호:</strong> 데이터 손실 방지(DLP), 정보 권한 관리(IRM), 클라이언트 측 암호화(CSE) 등 고급 기능.</li>
+                                    <li><strong class="font-semibold">포괄적인 관리 제어:</strong> 세분화된 접근 제어, 정책 강제, 원격 기기 관리 등 강력한 관리자 기능.</li>
+                                    <li><strong class="font-semibold">상세한 감사 로그:</strong> 모든 서비스에 걸쳐 사용자 및 관리자 활동을 추적하여 보안 모니터링 및 사고 대응 지원.</li>
+                                    <li><strong class="font-semibold text-green-700">다양한 규정 준수 인증:</strong> SOC 1/2/3, ISO 시리즈(27001, 42001 포함), HIPAA 준수 지원.</li>
+                                </ul>
+                            </div>
+                        </div>
+                         <div class="mt-12">
+                            <h4 class="text-xl font-bold text-center mb-4">보안 역량 비교</h4>
+                            <div class="content-card max-w-2xl mx-auto">
+                                <div class="chart-container">
+                                    <canvas id="securityChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane hidden" id="tab-cost">
+                        <h3 class="text-2xl font-bold text-center mb-2 text-slate-900">비용 효율성 분석</h3>
+                        <p class="text-center text-slate-500 mb-8">단순한 월 요금을 넘어, 각 플랜이 제공하는 총체적 가치(TCO)를 고려해야 합니다.</p>
+                        <div class="grid comparison-grid gap-8">
+                             <div class="content-card">
+                                <h4 class="text-xl font-bold text-blue-600 mb-4">Google One AI Premium</h4>
+                                <ul class="space-y-3 text-slate-700">
+                                    <li><strong class="font-semibold">가격:</strong> AI Pro 플랜 기준 월 $19.99 (학생 할인, 통신사 제휴 할인 가능).</li>
+                                    <li><strong class="font-semibold">가치 제안:</strong> 개인 생산성 극대화. 최신 AI 기능, 대용량 개인 클라우드 스토리지(2TB), VPN 등 개인용 부가 서비스에 중점.</li>
+                                    <li><strong class="font-semibold">대상:</strong> 개인 사용자, 학생, 비민감 데이터를 다루는 연구자.</li>
+                                    <li><strong class="font-semibold">총 소유 비용(TCO):</strong> 초기 비용은 낮지만, 조직 환경에서 사용할 경우 데이터 관리 및 보안 리스크로 인한 숨겨진 비용 발생 가능성.</li>
+                                </ul>
+                            </div>
+                            <div class="content-card">
+                                <h4 class="text-xl font-bold text-green-600 mb-4">Google Workspace Business Standard</h4>
+                                <ul class="space-y-3 text-slate-700">
+                                    <li><strong class="font-semibold">가격:</strong> 사용자당 월 $14 (연간 약정 시).</li>
+                                    <li><strong class="font-semibold">가치 제안:</strong> 안전한 협업 생태계. AI 기능뿐만 아니라 맞춤형 비즈니스 이메일, 공유 스토리지, 그리고 기업 수준의 보안 및 관리 기능을 모두 포함.</li>
+                                    <li><strong class="font-semibold">대상:</strong> 기업, 연구 기관, 협업 팀.</li>
+                                    <li><strong class="font-semibold">총 소유 비용(TCO):</strong> 사용자당 비용은 존재하지만, 규정 준수 및 보안 사고 예방을 통해 장기적으로 더 높은 비용 효율성 제공.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-12">
+                            <h4 class="text-xl font-bold text-center mb-4">기본 월 요금 비교 (1인 기준)</h4>
+                            <div class="content-card max-w-2xl mx-auto">
+                                <div class="chart-container">
+                                    <canvas id="costChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="recommendation" class="scroll-mt-20 pt-16">
+            <div class="bg-gradient-to-br from-blue-600 to-green-500 text-white p-8 md:p-12 rounded-2xl shadow-xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">최종 결론 및 추천</h2>
+                <p class="max-w-3xl mx-auto text-lg text-center text-blue-100 mb-10">AI 도구의 선택은 기술적 기능을 넘어, 데이터 거버넌스 철학에 대한 이해를 바탕으로 이루어져야 합니다. 당신의 연구에 가장 적합한 환경을 선택하세요.</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white/10 p-6 rounded-xl backdrop-blur-sm border border-white/20">
+                        <h3 class="text-2xl font-bold mb-3">✅ Google Workspace Business Standard 추천 대상</h3>
+                        <p class="text-blue-100 mb-4">데이터 기밀성과 보안이 최우선인 모든 딥 리서치</p>
+                        <ul class="space-y-2 list-disc list-inside">
+                            <li>민감하거나 독점적인 연구 데이터를 다루는 경우</li>
+                            <li>지적 재산 보호가 필수적인 프로젝트</li>
+                            <li>팀 또는 조직 단위의 협업이 필요한 연구</li>
+                            <li>HIPAA, GDPR 등 엄격한 규제 준수가 요구될 때</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white/10 p-6 rounded-xl backdrop-blur-sm border border-white/20">
+                        <h3 class="text-2xl font-bold mb-3">💡 Google One AI Premium 추천 대상</h3>
+                        <p class="text-blue-100 mb-4">개인 학습 및 비민감 데이터 활용</p>
+                         <ul class="space-y-2 list-disc list-inside">
+                            <li>개인적인 학습 및 AI 기능 탐색 목적</li>
+                            <li>공개된 데이터나 비민감 정보를 활용한 연구</li>
+                            <li>개인 생산성 향상이 주목표인 학생 또는 개인 연구자</li>
+                            <li>비용이 가장 중요한 고려사항일 때</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="text-center py-8 mt-8 border-t border-slate-200">
+        <p class="text-slate-500">본 분석 자료는 제공된 딥 리서치 보고서를 기반으로 생성되었습니다.</p>
+    </footer>
+
+    <script>
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        let policyChartInstance, securityChartInstance, costChartInstance;
+
+        function activateTab(targetTabId) {
+            tabPanes.forEach(pane => {
+                if (pane.id === targetTabId) {
+                    pane.classList.remove('hidden');
+                    pane.classList.add('active');
+                } else {
+                    pane.classList.add('hidden');
+                    pane.classList.remove('active');
+                }
+            });
+
+            tabButtons.forEach(button => {
+                if (button.dataset.tab === targetTabId) {
+                    button.classList.add('active', 'bg-blue-600', 'text-white');
+                    button.classList.remove('bg-slate-100', 'text-slate-600');
+                } else {
+                    button.classList.remove('active', 'bg-blue-600', 'text-white');
+                    button.classList.add('bg-slate-100', 'text-slate-600');
+                }
+            });
+            
+            if(targetTabId === 'tab-policy' && !policyChartInstance) createPolicyChart();
+            if(targetTabId === 'tab-security' && !securityChartInstance) createSecurityChart();
+            if(targetTabId === 'tab-cost' && !costChartInstance) createCostChart();
+        }
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTabId = button.dataset.tab;
+                activateTab(targetTabId);
+            });
+        });
+
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#475569', // slate-600
+                        font: {
+                            size: 14,
+                            family: "'Noto Sans KR', sans-serif"
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b', // slate-800
+                    titleFont: { size: 16, family: "'Noto Sans KR', sans-serif" },
+                    bodyFont: { size: 14, family: "'Noto Sans KR', sans-serif" },
+                    padding: 12,
+                    cornerRadius: 6
+                }
+            },
+        };
+
+        function createPolicyChart() {
+            const ctx = document.getElementById('policyChart').getContext('2d');
+            policyChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['데이터 학습 위험도'],
+                    datasets: [
+                        {
+                            label: 'Google One AI Premium',
+                            data: [90],
+                            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Google Workspace Business Standard',
+                            data: [10],
+                            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    ...chartOptions,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { 
+                                color: '#475569',
+                                callback: function(value) {
+                                    if(value === 10) return '낮음 (계약적 보호)';
+                                    if(value === 90) return '높음 (기본값 허용)';
+                                    return '';
+                                }
+                            }
+                        },
+                        x: { ticks: { color: '#475569' } }
+                    },
+                    plugins: {
+                        ...chartOptions.plugins,
+                        tooltip: {
+                             ...chartOptions.plugins.tooltip,
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if(context.raw === 90) label += '기본적으로 모델 개선에 사용됨';
+                                    if(context.raw === 10) label += '계약에 의해 모델 학습 금지';
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createSecurityChart() {
+            const ctx = document.getElementById('securityChart').getContext('2d');
+            securityChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['관리자 제어', '고급 데이터 보호(DLP/IRM)', '감사 및 로깅', '규정 준수', '데이터 격리'],
+                    datasets: [{
+                        label: 'Google One AI Premium',
+                        data: [2, 1, 2, 1, 3],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                    }, {
+                        label: 'Google Workspace Business Standard',
+                        data: [9, 9, 8, 9, 9],
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(16, 185, 129, 1)'
+                    }]
+                },
+                options: {
+                    ...chartOptions,
+                    scales: {
+                        r: {
+                            angleLines: { color: '#cbd5e1' },
+                            grid: { color: '#e2e8f0' },
+                            pointLabels: { 
+                                color: '#334155',
+                                font: { size: 12, weight: '500', family: "'Noto Sans KR', sans-serif" }
+                            },
+                            ticks: {
+                                backdropColor: 'rgba(248, 250, 252, 0.7)',
+                                color: '#64748b',
+                                stepSize: 2
+                            },
+                            min: 0,
+                            max: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        function createCostChart() {
+            const ctx = document.getElementById('costChart').getContext('2d');
+            costChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['월 요금 (USD)'],
+                    datasets: [{
+                        label: 'Google One AI Premium (Pro)',
+                        data: [19.99],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }, {
+                        label: 'Google Workspace Business Standard',
+                        data: [14.00],
+                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                     ...chartOptions,
+                     scales: {
+                        y: { beginAtZero: true, ticks: { color: '#475569' } },
+                        x: { ticks: { color: '#475569' } }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+
+    </script>
+</body>
+</html>
