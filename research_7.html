@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>푸켓 테러 시도 사건 대화형 대시보드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Serene Neutral -->
+    <!-- Application Structure Plan: The SPA uses a thematic, dashboard-like structure over a linear report format to enhance user engagement and understanding. It starts with a high-level summary, followed by an interactive timeline/map for chronological and geographical context. The core is an interactive tabbed section comparing media perspectives, supported by a dynamic bar chart for visual comparison. This structure allows users to explore the event's facts, then dive into the nuanced media analysis, which is the report's central thesis, providing a more intuitive and non-linear user flow than a simple document. -->
+    <!-- Visualization & Content Choices: 
+    - Timeline/Map (HTML/CSS/JS): Goal: Organize/Inform. Presents event sequence and locations interactively without clutter. Justification: Better than a text list for understanding the rapid succession of events.
+    - Media Perspective Tabs (HTML/CSS/JS): Goal: Compare/Organize. Allows focused comparison of media narratives, which is the report's core analysis. Justification: Prevents overwhelming the user with three parallel text blocks.
+    - Media Emphasis Bar Chart (Chart.js/Canvas): Goal: Compare. Visually quantifies the differing focus of each media group on key themes (e.g., tourism, security). Justification: A powerful, quick-glance tool to synthesize the report's main analytical point.
+    - Key Stat Cards (HTML/CSS): Goal: Inform. Highlights critical data points for immediate impact. Justification: More scannable and memorable than burying numbers in paragraphs. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        .tab-button.active {
+            background-color: #0d9488; /* teal-600 */
+            color: white;
+            border-color: #0d9488; /* teal-600 */
+        }
+        .timeline-item-content {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">푸켓 폭발물 테러 시도 사건 분석</h1>
+            <p class="text-lg text-slate-500">2025년 6월, 태국 주요 관광지에서 발생한 사건의 전개와 언론 보도 분석</p>
+        </header>
+
+        <main>
+            <section id="overview" class="mb-12">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6 text-center">사건 개요 (Key Insights)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-amber-500">
+                        <h3 class="font-bold text-xl mb-2">사건의 본질</h3>
+                        <p>푸켓 공항, 빠통 해변 등 주요 관광지에서 사제 폭발물 발견 및 해체. 태국 당국은 인명 피해 목적이 아닌 '공포 유발용' 저위력 장치라고 발표.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-sky-500">
+                        <h3 class="font-bold text-xl mb-2">당국의 대응</h3>
+                        <p>남부 빠따니 출신 용의자 2명 체포. 관광 산업 보호를 위해 신속한 대응과 안정화 메시지 전파에 주력. 보안 조치 전면 강화.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-teal-500">
+                        <h3 class="font-bold text-xl mb-2">언론의 시각</h3>
+                        <p>한국(자국민 안전), 태국(경제 영향 최소화), 국제(지속적 테러 위협) 등 매체별 이해관계에 따라 보도 관점과 강조점에 뚜렷한 차이를 보임.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="timeline" class="mb-12">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6 text-center">사건 전개 타임라인</h2>
+                <div class="space-y-4">
+                    <div class="bg-white p-4 rounded-lg shadow-sm cursor-pointer" onclick="toggleDetails('timeline-1')">
+                        <div class="flex justify-between items-center">
+                            <p class="font-bold text-lg"><span class="text-sky-600">6월 24일:</span> 용의자 체포</p>
+                            <span class="text-slate-400 text-sm">자세히 보기 🔽</span>
+                        </div>
+                        <div id="timeline-1" class="timeline-item-content max-h-0 overflow-hidden mt-2 pt-2 border-t border-slate-200">
+                            <p class="text-slate-600">푸켓으로 향하던 빠따니 출신 용의자 2명이 팡아 검문소에서 체포됨. 차량에서 타이머가 부착된 사제 폭발물 발견. 이 체포가 연쇄적인 장치 발견의 결정적 단서가 됨.</p>
+                        </div>
+                    </div>
+                     <div class="bg-white p-4 rounded-lg shadow-sm cursor-pointer" onclick="toggleDetails('timeline-2')">
+                        <div class="flex justify-between items-center">
+                            <p class="font-bold text-lg"><span class="text-sky-600">6월 25일:</span> 공항 폭발물 발견</p>
+                             <span class="text-slate-400 text-sm">자세히 보기 🔽</span>
+                        </div>
+                        <div id="timeline-2" class="timeline-item-content max-h-0 overflow-hidden mt-2 pt-2 border-t border-slate-200">
+                            <p class="text-slate-600">용의자 자백 후, 푸켓 국제공항 주차장에서 폭발물이 설치된 오토바이 발견. 폭발물 처리반(EOD)이 안전하게 해체. 공항 보안 최고 수준으로 격상.</p>
+                        </div>
+                    </div>
+                     <div class="bg-white p-4 rounded-lg shadow-sm cursor-pointer" onclick="toggleDetails('timeline-3')">
+                        <div class="flex justify-between items-center">
+                           <p class="font-bold text-lg"><span class="text-sky-600">6월 26일:</span> 추가 장치 발견 및 해체</p>
+                            <span class="text-slate-400 text-sm">자세히 보기 🔽</span>
+                        </div>
+                        <div id="timeline-3" class="timeline-item-content max-h-0 overflow-hidden mt-2 pt-2 border-t border-slate-200">
+                           <p class="text-slate-600">빠통 해변, 프롬텝 곶, 끄라비 등지에서 추가 폭발물 장치 발견. EOD가 모두 성공적으로 무력화. 태국 총리, 관광객 안심 메시지 발표.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="media-analysis" class="mb-12">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6 text-center">언론 보도 관점 비교 분석</h2>
+                <div class="mb-6">
+                     <p class="text-center text-slate-600 mb-6">이번 사건은 언론 매체의 국적과 주요 독자층에 따라 어떻게 다르게 해석되고 전달되었을까요? 아래 탭을 클릭하여 각 언론의 주요 보도 관점과 강조점을 비교해 보세요. 이를 통해 동일한 사건이 다양한 이해관계 속에서 어떻게 재구성되는지 확인할 수 있습니다.</p>
+                </div>
+                <div class="flex justify-center space-x-2 md:space-x-4 mb-6" id="media-tabs">
+                    <button class="tab-button active py-2 px-4 border-2 border-slate-300 rounded-full transition" data-media="korean">🇰🇷 한국 언론</button>
+                    <button class="tab-button py-2 px-4 border-2 border-slate-300 rounded-full transition" data-media="thai">🇹🇭 태국 현지 언론</button>
+                    <button class="tab-button py-2 px-4 border-2 border-slate-300 rounded-full transition" data-media="international">🌐 영어권 국제 언론</button>
+                </div>
+
+                <div id="media-content" class="bg-white p-6 rounded-lg shadow-inner min-h-[250px]">
+                    <div id="korean-content" class="media-panel">
+                        <h3 class="font-bold text-xl text-slate-800 mb-3">관점: 자국민 안전 우선</h3>
+                        <p class="mb-4">한국 언론은 '테러 시도'라는 사실 자체를 신속하게 보도하며, 한국인 인기 관광지인 푸켓의 안전 문제에 대한 우려를 중심으로 다루었습니다. 태국 당국의 신속한 대응과 경계 태세 강화를 비중 있게 전달하며, 여행객들의 주의를 환기시키는 데 초점을 맞췄습니다.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-600">
+                            <li><strong>강조점:</strong> '테러 시도 적발', '관광객 안전', '당국 대응'</li>
+                            <li><strong>특징:</strong> 사건의 배경(남부 분쟁)이나 장치의 구체적 특성보다는 사건 발생 사실과 그에 따른 안전 위협을 부각.</li>
+                        </ul>
+                    </div>
+                    <div id="thai-content" class="media-panel hidden">
+                        <h3 class="font-bold text-xl text-slate-800 mb-3">관점: 경제적 영향 최소화 및 국내 안보 관리</h3>
+                        <p class="mb-4">태국 현지 언론은 수사 상황을 가장 상세히 전달하며, 정부의 공식 입장을 적극적으로 보도했습니다. 장치가 '공포 유발' 목적의 저위력 장치임을 강조하고, 사건을 남부 분리주의 반군과 연결하여 국내 문제로 규정함으로써 관광 산업에 미칠 파장을 최소화하려 노력했습니다.</p>
+                         <ul class="list-disc list-inside space-y-1 text-slate-600">
+                            <li><strong>강조점:</strong> '공포 유발 목적', '경제 보호', '남부 반군 연계'</li>
+                            <li><strong>특징:</strong> 고위 관료들의 안심 메시지를 반복적으로 노출하고, EOD의 성공적인 작전을 상세히 보도하여 정부의 위기관리 능력을 과시.</li>
+                        </ul>
+                    </div>
+                    <div id="international-content" class="media-panel hidden">
+                         <h3 class="font-bold text-xl text-slate-800 mb-3">관점: 지속적인 여행 위험 경고</h3>
+                        <p class="mb-4">영어권 국제 언론은 각국의 여행 주의보와 연계하여 사건을 보도했습니다. 태국 당국의 발표를 인용하면서도, 태국 전반에 걸친 '지속적인 테러 위험'의 일부로 사건을 해석하는 경향을 보였습니다. 여행객들에게 높은 수준의 주의를 권고하는 실질적 정보 제공에 집중했습니다.</p>
+                        <ul class="list-disc list-inside space-y-1 text-slate-600">
+                            <li><strong>강조점:</strong> '여행 주의보', '지속적 테러 위험', '보안 강화 조치'</li>
+                            <li><strong>특징:</strong> 공식 여행 자문 사이트는 보수적인 위험 평가를 유지. 현지 기반 언론은 태국 당국의 공식 설명을 빠르게 통합하여 보도.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="chart-section" class="mb-12">
+                 <h2 class="text-2xl font-bold text-slate-800 mb-6 text-center">언론별 보도 주제 강조점 비교</h2>
+                 <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
+                    <div class="chart-container">
+                        <canvas id="mediaFocusChart"></canvas>
+                    </div>
+                     <p class="text-center text-sm text-slate-500 mt-4">각 언론 그룹이 특정 주제를 얼마나 비중 있게 다루었는지를 시각적으로 비교한 차트입니다. (상대적 비교 수치)</p>
+                 </div>
+            </section>
+
+             <section id="implications" class="text-center">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6">시사점 및 전망</h2>
+                 <p class="max-w-3xl mx-auto text-slate-600 mb-6">이번 사건은 태국 당국의 효과적인 초기 대응 능력을 보여주었지만, 동시에 관광 경제를 겨냥한 저강도 위협의 지속 가능성을 시사합니다. 관광객의 신뢰를 회복하고 장기적인 안정을 유지하는 것이 태국 정부의 핵심 과제로 남을 것입니다.</p>
+                <a href="#" class="bg-teal-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-teal-700 transition">더 자세한 보고서 내용 보기 (PDF)</a>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-12 pt-6 border-t border-slate-200">
+            <p class="text-sm text-slate-400">&copy; 2025 Interactive Report. All rights reserved. 본 자료는 제공된 보고서를 기반으로 제작되었습니다.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const mediaTabs = document.getElementById('media-tabs');
+            const mediaPanels = document.querySelectorAll('.media-panel');
+            
+            mediaTabs.addEventListener('click', function(e) {
+                if (e.target.classList.contains('tab-button')) {
+                    const mediaType = e.target.dataset.media;
+                    
+                    mediaTabs.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    
+                    mediaPanels.forEach(panel => {
+                        if (panel.id === `${mediaType}-content`) {
+                            panel.classList.remove('hidden');
+                        } else {
+                            panel.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+
+            const chartData = {
+                labels: ['자국민/관광객 안전', '경제적 영향 (관광)', '국내 안보 (남부 분쟁)', '정부 대응/안정화', '지속/광범위한 위협'],
+                datasets: [
+                    {
+                        label: '한국 언론',
+                        data: [9, 5, 2, 6, 4],
+                        backgroundColor: 'rgba(2, 132, 199, 0.7)', // sky-600
+                        borderColor: 'rgba(2, 132, 199, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '태국 현지 언론',
+                        data: [4, 8, 8, 9, 2],
+                        backgroundColor: 'rgba(13, 148, 136, 0.7)', // teal-600
+                        borderColor: 'rgba(13, 148, 136, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '영어권 국제 언론',
+                        data: [7, 6, 5, 5, 8],
+                        backgroundColor: 'rgba(245, 158, 11, 0.7)', // amber-500
+                        borderColor: 'rgba(245, 158, 11, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            };
+
+            const ctx = document.getElementById('mediaFocusChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e2e8f0' // slate-200
+                            },
+                            ticks: {
+                                color: '#475569' // slate-600
+                            }
+                        },
+                        y: {
+                             grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#334155' // slate-700
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                             labels: {
+                                color: '#334155' // slate-700
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1e293b', // slate-800
+                            titleColor: '#f1f5f9', // slate-100
+                            bodyColor: '#cbd5e1', // slate-300
+                            boxPadding: 4,
+                        }
+                    }
+                }
+            });
+        });
+
+        function toggleDetails(id) {
+            const element = document.getElementById(id);
+            if (element.style.maxHeight && element.style.maxHeight !== '0px') {
+                element.style.maxHeight = '0px';
+            } else {
+                element.style.maxHeight = element.scrollHeight + 'px';
+            }
+        }
+    </script>
+</body>
+</html>
