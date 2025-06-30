@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인포그래픽: 2025년 LLM 전략 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: A top-down narrative infographic SPA. It starts with a high-level hook (Key Trends), explains the evaluation framework, presents a comparative landscape visualization (Bubble Chart), drills down into specific metrics (Bar Chart), provides an actionable decision-making tool (Flowchart), and concludes. This structure guides the user from general understanding to specific, actionable insights, making the dense report data highly digestible. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: 2025 Key Trends -> Goal: Inform -> Viz: Big Number Cards -> Justification: High-impact, immediate communication of core themes.
+        - Report Info: Model Comparison Data -> Goal: Compare/Relationships -> Viz: Bubble Chart (Chart.js) -> Justification: Visualizes 4 dimensions (Korean Perf, On-Device, Param Size, Developer) simultaneously for a holistic market overview. NO SVG.
+        - Report Info: Parameter Sizes -> Goal: Compare -> Viz: Bar Chart (Chart.js) -> Justification: Clear, direct comparison of model sizes, highlighting the MoE vs. Dense architecture difference. NO SVG.
+        - Report Info: License Breakdown -> Goal: Inform -> Viz: Donut Chart (Chart.js) -> Justification: Shows the proportion of commercially available models, a key strategic point. NO SVG.
+        - Report Info: Decision Scenarios -> Goal: Organize/Guide -> Viz: HTML/CSS Flowchart -> Justification: Provides a clear, interactive-feeling decision path for users without using forbidden SVG/Mermaid.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8f9fa; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 450px;
+            max-height: 60vh;
+        }
+        @media (min-width: 768px) { .chart-container { height: 500px; } }
+        .gradient-text { background: linear-gradient(90deg, #118AB2, #06D6A0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-card { background-color: #ffffff; border-radius: 1rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); padding: 2rem; text-align: center; transition: transform 0.3s ease; }
+        .stat-card:hover { transform: translateY(-10px); }
+        .flowchart-node { border: 2px solid #118AB2; background-color: white; padding: 1rem; border-radius: 0.75rem; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .flowchart-arrow { display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #118AB2; margin: 0.5rem 0; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-16">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-black mb-4">
+                <span class="gradient-text">2025 LLM 전략 분석</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">차세대 모델의 한국어 성능과 저사양 구동 가능성을 중심으로, 최적의 LLM 선택을 위한 가이드</p>
+        </header>
+
+        <section id="trends" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10">2025년 시장을 관통하는 두 가지 핵심 트렌드</h2>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="stat-card">
+                    <div class="text-6xl mb-4">💡</div>
+                    <h3 class="text-2xl font-bold mb-2 text-[#118AB2]">네이티브 멀티모달</h3>
+                    <p class="text-gray-500">텍스트를 넘어 이미지, 오디오, 비디오까지 통합 처리하는 모델(Llama 4, Gemma 3/3n)이 새로운 애플리케이션의 시대를 엽니다.</p>
+                </div>
+                <div class="stat-card">
+                    <div class="text-6xl mb-4">⚙️</div>
+                    <h3 class="text-2xl font-bold mb-2 text-[#06D6A0]">효율적 아키텍처 (MoE)</h3>
+                    <p class="text-gray-500">거대한 파라미터는 유지하되, 추론 비용은 절감하는 MoE(Llama 4, Qwen 3)가 성능과 효율의 두 마리 토끼를 잡습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="landscape" class="mb-20 py-16 bg-white rounded-2xl shadow-xl">
+             <h2 class="text-3xl font-bold text-center mb-4">LLM 시장 지형도: 한눈에 보기</h2>
+             <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">주요 LLM들을 '온디바이스 친화성'과 '한국어 성능' 기준으로 시각화했습니다. 버블의 크기는 파라미터 규모를, 색상은 개발사를 나타냅니다.</p>
+            <div class="chart-container">
+                <canvas id="modelLandscapeChart"></canvas>
+            </div>
+        </section>
+        
+        <section id="comparison" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10">주요 모델 파라미터 규모 비교</h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl">
+                    <h3 class="text-xl font-bold text-center mb-6">총 파라미터 비교 (Dense & MoE)</h3>
+                    <p class="text-center text-gray-600 mb-6 text-sm">MoE 모델(Llama 4, Qwen 3)은 거대한 총 파라미터를 통해 높은 잠재력을 갖추고 있습니다.</p>
+                    <div class="chart-container" style="height:350px; max-height: 40vh;">
+                        <canvas id="totalParamsChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl">
+                    <h3 class="text-xl font-bold text-center mb-6">상업적 활용 가능 모델</h3>
+                     <p class="text-center text-gray-600 mb-6 text-sm">분석 대상 모델 중 85% 이상이 상업적 활용이 가능한 라이선스를 제공하여, 비즈니스 적용의 문턱이 낮아졌습니다.</p>
+                    <div class="chart-container" style="height:350px; max-height: 40vh;">
+                        <canvas id="licenseChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="flowchart" class="py-16">
+            <h2 class="text-3xl font-bold text-center mb-4">나에게 맞는 LLM 찾기</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">개발하려는 서비스의 목적에 따라 최적의 모델 경로를 따라가 보세요.</p>
+            <div class="max-w-md mx-auto">
+                <div class="flowchart-node font-bold text-lg bg-[#FFD166] border-[#FFD166]">프로젝트 시작</div>
+                <div class="flowchart-arrow">↓</div>
+                <div class="flowchart-node">상업적 활용이 목적인가요?</div>
+                <div class="grid grid-cols-2 gap-4 my-2">
+                    <div class="flowchart-arrow">↙</div>
+                    <div class="flowchart-arrow">↘</div>
+                </div>
+                 <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <div class="text-center text-sm font-bold text-red-500">아니요 (연구용)</div>
+                        <div class="flowchart-arrow">↓</div>
+                        <div class="flowchart-node bg-red-50 border-red-500"><strong>LG Exaone 3.5</strong></div>
+                    </div>
+                    <div>
+                        <div class="text-center text-sm font-bold text-green-600">예 (상업용)</div>
+                        <div class="flowchart-arrow">↓</div>
+                        <div class="flowchart-node">온디바이스 배포가 필수인가요?</div>
+                        <div class="grid grid-cols-2 gap-4 my-2">
+                             <div class="flowchart-arrow">↙</div>
+                             <div class="flowchart-arrow">↘</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                               <div class="text-center text-sm font-bold text-purple-600">예</div>
+                               <div class="flowchart-arrow">↓</div>
+                               <div class="flowchart-node bg-purple-50 border-purple-500"><strong>Gemma 3n<br>Qwen 3 (0.6B)</strong></div>
+                            </div>
+                             <div>
+                               <div class="text-center text-sm font-bold text-blue-600">아니요</div>
+                               <div class="flowchart-arrow">↓</div>
+                               <div class="flowchart-node bg-blue-50 border-blue-500"><strong>Llama 4<br>Kanana 1.5<br>HyperCLOVA X</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const palette = {
+        red: '#FF6B6B',
+        yellow: '#FFD166',
+        green: '#06D6A0',
+        blue: '#118AB2',
+        darkBlue: '#073B4C'
+    };
+
+    const developerColors = {
+        'Meta': palette.blue,
+        'Mistral AI': '#4ECDC4',
+        'Alibaba': palette.red,
+        'Google': palette.green,
+        'Naver': '#2DB400',
+        'Kakao': palette.yellow,
+        'LG': '#A50034',
+    };
+
+    const modelData = [
+        { name: 'Llama 4', dev: 'Meta', params: 400, on_device: 4, korean: 5 },
+        { name: 'Mistral Magistral', dev: 'Mistral AI', params: 24, on_device: 4, korean: 3 },
+        { name: 'Qwen 3', dev: 'Alibaba', params: 235, on_device: 5, korean: 5 },
+        { name: 'Gemma 3/3n', dev: 'Google', params: 27, on_device: 5, korean: 5 },
+        { name: 'HyperCLOVA X SEED', dev: 'Naver', params: 1.5, on_device: 3, korean: 5 },
+        { name: 'Kanana 1.5', dev: 'Kakao', params: 8, on_device: 3, korean: 5 },
+        { name: 'Exaone 3.5', dev: 'LG', params: 32, on_device: 3, korean: 5, commercial: false },
+    ];
+    
+    function processLabel(label) {
+        if (label.length > 16) {
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > 16) {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+        return label;
+    }
+
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+          return label.join(' ');
+        }
+        return label;
+    };
+
+    if (document.getElementById('modelLandscapeChart')) {
+        new Chart(document.getElementById('modelLandscapeChart'), {
+            type: 'bubble',
+            data: {
+                datasets: modelData.map(m => ({
+                    label: m.name,
+                    data: [{
+                        x: m.on_device,
+                        y: m.korean,
+                        r: Math.sqrt(m.params) * 1.8,
+                    }],
+                    backgroundColor: `${developerColors[m.dev]}B3`, // 70% opacity
+                    borderColor: developerColors[m.dev],
+                    borderWidth: 2,
+                }))
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                scales: {
+                    x: {
+                        title: { display: true, text: '온디바이스 친화성 →', font: { size: 14, weight: 'bold' } },
+                        min: 2.5, max: 5.5,
+                        ticks: { callback: (v) => ({ 3: '중', 4: '상', 5: '최상' }[v]) }
+                    },
+                    y: {
+                        title: { display: true, text: '↑ 한국어 성능', font: { size: 14, weight: 'bold' } },
+                        min: 2.5, max: 5.5,
+                        ticks: { callback: (v) => ({ 3: 'Tier 2', 5: 'Tier 1' }[v]) }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => {
+                                const model = modelData.find(m => m.name === context.dataset.label);
+                                if (!model) return '';
+                                return `${model.name} (${model.dev}): ${model.params}B Params`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    if (document.getElementById('totalParamsChart')) {
+        const sortedData = [...modelData].sort((a, b) => b.params - a.params);
+        new Chart(document.getElementById('totalParamsChart'), {
+            type: 'bar',
+            data: {
+                labels: sortedData.map(m => processLabel(m.name)),
+                datasets: [{
+                    label: '총 파라미터 (단위: B)',
+                    data: sortedData.map(m => m.params),
+                    backgroundColor: sortedData.map(m => developerColors[m.dev]),
+                    borderColor: sortedData.map(m => developerColors[m.dev]),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                responsive: true,
+                scales: {
+                    x: { type: 'logarithmic', title: { display: true, text: '파라미터 (B, 로그 스케일)' } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    if (document.getElementById('licenseChart')) {
+        const commercialCount = modelData.filter(m => m.commercial !== false).length;
+        const researchCount = modelData.length - commercialCount;
+        new Chart(document.getElementById('licenseChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['상업용 가능', '연구용 제한'],
+                datasets: [{
+                    data: [commercialCount, researchCount],
+                    backgroundColor: [palette.green, palette.red],
+                    borderColor: '#ffffff',
+                    borderWidth: 4
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 14 } } },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>
