@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM 딥 리서치 요약 슬라이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .slide-container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .slide {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 48px 64px;
+            display: flex;
+            flex-direction: column;
+        }
+        .slide-title {
+            font-size: 2.75rem;
+            font-weight: 900;
+            color: #1a202c;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 4px solid #F97316; /* Accent color */
+        }
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            flex-grow: 1;
+        }
+        .card {
+            background-color: #FFF7ED; /* Light accent background */
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+        .card ul {
+            list-style-type: none;
+            padding: 0;
+            font-size: 0.9rem;
+            color: #4a5568;
+            flex-grow: 1;
+        }
+        .card ul li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+        .card ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #F97316;
+            font-weight: bold;
+        }
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            flex-grow: 1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        th {
+            background-color: #EDF2F7;
+            font-weight: 700;
+            color: #2d3748;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #F7FAFC;
+        }
+        .highlight {
+            font-weight: 700;
+            color: #dd6b20;
+        }
+        .text-section {
+            width: 35%;
+            padding-right: 2rem;
+        }
+        .table-section {
+            width: 65%;
+        }
+         .content-split {
+            display: flex;
+            flex-grow: 1;
+            gap: 2rem;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem 3rem;
+            flex-grow: 1;
+        }
+        .feature-block h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+        .feature-block ul {
+            list-style-type: none;
+            padding: 0;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+        .feature-block ul li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .feature-block ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #38A169; /* Green check for pros */
+        }
+        .feature-block.cons ul li::before {
+            content: '✗';
+            color: #E53E3E; /* Red X for cons */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-container">
+        
+        <!-- Slide 1: 최신 로컬 LLM 동향 -->
+        <div class="slide">
+            <h2 class="slide-title">최신 로컬 LLM 동향</h2>
+            <div class="card-container">
+                <div class="card">
+                    <h3 class="card-title">Llama 4 (Meta)</h3>
+                    <ul>
+                        <li>MoE 아키텍처 채택</li>
+                        <li>네이티브 멀티모달 지원</li>
+                        <li>최대 1000만 토큰 컨텍스트</li>
+                        <li>7억 MAU 이하 상업적 허용</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Qwen 3 (Alibaba)</h3>
+                    <ul>
+                        <li>초소형(0.6B)부터 초대형(235B)</li>
+                        <li>공식 GGUF 등 강력한 온디바이스 지원</li>
+                        <li>Apache 2.0 라이선스</li>
+                        <li>100개 이상 다국어 네이티브 지원</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Gemma 3/3n (Google)</h3>
+                    <ul>
+                        <li>온디바이스 AI 최강자 (3n)</li>
+                        <li>2-4GB VRAM으로 멀티모달 구동</li>
+                        <li>MatFormer 경량 아키텍처</li>
+                        <li>자체 라이선스 (약관 동의 필요)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Kanana 1.5 (Kakao)</h3>
+                    <ul>
+                        <li>네이티브 한국어 모델</li>
+                        <li>Apache 2.0 라이선스</li>
+                        <li>에이전트 기능(코딩, 함수호출) 강화</li>
+                        <li>커뮤니티 GGUF 활발</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">HyperCLOVA X (Naver)</h3>
+                    <ul>
+                        <li>네이티브 한국어 모델</li>
+                        <li>한국어 벤치마크 최고 성능</li>
+                        <li>자체 라이선스 (상업적 허용)</li>
+                        <li>SEED 0.5B 모델 초저사양 적합</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 모델 사이즈 및 PC 사양 요구사항 -->
+        <div class="slide">
+            <h2 class="slide-title">모델 사이즈 및 PC 사양 요구사항</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>모델</th>
+                            <th>파라미터 수</th>
+                            <th>GPU VRAM 최소</th>
+                            <th>시스템 RAM</th>
+                            <th>주요 특징 및 비고</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Qwen 3 (0.6B)</td>
+                            <td>0.6B</td>
+                            <td>&lt;2GB</td>
+                            <td>4GB</td>
+                            <td>양자화 시 극저사양 구동 가능 (공식 GGUF)</td>
+                        </tr>
+                        <tr>
+                            <td>HyperCLOVA X SEED (1.5B)</td>
+                            <td>1.5B</td>
+                            <td>~4GB</td>
+                            <td>8GB</td>
+                            <td>한국어 특화 경량 모델 (커뮤니티 GGUF)</td>
+                        </tr>
+                        <tr>
+                            <td>Kanana 1.5 (8B)</td>
+                            <td>8B</td>
+                            <td>8-10GB</td>
+                            <td>16GB</td>
+                            <td>균형 잡힌 성능의 한국어 모델, Apache 2.0</td>
+                        </tr>
+                        <tr>
+                            <td>Mistral Magistral (24B)</td>
+                            <td>24B</td>
+                            <td>~24GB</td>
+                            <td>32GB</td>
+                            <td>추론 능력 특화, FP16 기준</td>
+                        </tr>
+                        <tr>
+                            <td>Llama 4 (Scout 109B)</td>
+                            <td>109B (활성 17B)</td>
+                            <td>16-20GB</td>
+                            <td>32GB</td>
+                            <td>MoE 모델, 양자화 시 VRAM 요구량 감소</td>
+                        </tr>
+                         <tr>
+                            <td>Qwen 3 (MoE 235B)</td>
+                            <td>235B (활성 30B)</td>
+                            <td>~32GB</td>
+                            <td>64GB</td>
+                            <td>MoE 모델, 고성능 다국어 추론</td>
+                        </tr>
+                         <tr>
+                            <td class="highlight">Gemma 3n (E4B)</td>
+                            <td class="highlight">8B (실효 4B)</td>
+                            <td class="highlight">≤3GB</td>
+                            <td class="highlight">4GB</td>
+                            <td class="highlight">온디바이스 멀티모달 최적화, Per-Layer Embedding</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 3: Gemma 3n 상세 분석 -->
+        <div class="slide">
+             <h2 class="slide-title">차세대 온디바이스 AI: Gemma 3n 상세 분석</h2>
+             <div class="feature-grid">
+                <div class="feature-block">
+                    <h3>아키텍처 특징</h3>
+                    <ul>
+                        <li><strong>MatFormer:</strong> 모바일 기기 연산에 최적화된 경량 아키텍처</li>
+                        <li><strong>Per-Layer Embedding (PLE):</strong> 계층별 임베딩으로 VRAM 사용량 최소화</li>
+                        <li><strong>LauRel, AltUp:</strong> 추가적인 메모리 연산 효율화 기술 내장</li>
+                    </ul>
+                </div>
+                <div class="feature-block">
+                    <h3>PC 사양 및 구동 환경</h3>
+                     <ul>
+                        <li><strong>최소:</strong> RAM 2GB, 노트북/스마트폰 CPU, 인터넷 불필요</li>
+                        <li><strong>권장:</strong> RAM 4GB, 중급 이상 노트북 (Core i5급 이상)</li>
+                        <li><strong>핵심:</strong> <span class="highlight">VRAM 3GB 이하</span>에서 이미지/오디오/비디오 멀티모달 처리</li>
+                    </ul>
+                </div>
+                 <div class="feature-block">
+                    <h3>장점 (Pros)</h3>
+                    <ul>
+                        <li>극저사양 디바이스에서 고성능 AI 오프라인 구동</li>
+                        <li>텍스트, 이미지, 오디오를 동시에 처리하는 진정한 On-Device 멀티모달</li>
+                        <li>주요 로컬 추론 도구(Ollama 등)에서 완벽 지원</li>
+                    </ul>
+                </div>
+                <div class="feature-block cons">
+                    <h3>단점 (Cons)</h3>
+                    <ul>
+                        <li>제한된 파라미터로 복잡하고 긴 추론 작업에는 한계</li>
+                        <li>최신 대형 모델(Llama 4 등) 대비 추론 능력과 지식 부족</li>
+                        <li>특정 전문 분야 작업에는 파인튜닝 필수</li>
+                    </ul>
+                </div>
+             </div>
+        </div>
+
+        <!-- Slide 4: 파라미터와 성능의 관계 -->
+        <div class="slide">
+            <h2 class="slide-title">핵심 요약: 파라미터와 성능의 관계</h2>
+            <div class="content-split">
+                <div class="text-section">
+                    <h3 class="text-xl font-bold mb-4">파라미터란 무엇인가?</h3>
+                    <p class="mb-6 text-gray-600">모델이 학습을 통해 얻는 '지식'의 덩어리입니다. 숫자가 클수록 더 많은 정보를 기억하고 정교한 언어 생성이 가능합니다.</p>
+                    <ul>
+                        <li class="flex items-start mb-4">
+                            <span class="text-orange-500 font-bold mr-3 text-2xl">→</span>
+                            <span class="text-gray-700"><strong>GPU VRAM:</strong> 모델 가중치(파라미터)를 직접 올려두고 빠르게 연산하는 핵심 메모리</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-orange-500 font-bold mr-3 text-2xl">→</span>
+                             <span class="text-gray-700"><strong>시스템 RAM:</strong> 연산 과정에서 발생하는 중간 데이터(Activation)를 처리하는 보조 메모리</span>
+                        </li>
+                    </ul>
+                     <p class="mt-8 text-sm text-gray-500">*파라미터 수가 늘어나면 모델 파일 크기와 VRAM 요구량이 모두 증가하며, 중간 연산 데이터도 많아져 시스템 RAM 요구량도 함께 증가합니다.</p>
+                </div>
+                <div class="table-section">
+                    <h3 class="text-xl font-bold mb-4">규모별 간이 비교표</h3>
+                    <table>
+                         <thead>
+                            <tr>
+                                <th>모델 크기</th>
+                                <th>파라미터 수</th>
+                                <th>대략적 GPU VRAM 요구량</th>
+                                <th>대략적 시스템 RAM 요구량</th>
+                                <th>체감 성능</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>경량급</td>
+                                <td>~2 Billion</td>
+                                <td>4 - 6 GB</td>
+                                <td>8 GB</td>
+                                <td class="highlight">빠름 (가벼운 동작)</td>
+                            </tr>
+                            <tr>
+                                <td>표준급</td>
+                                <td>~8 Billion</td>
+                                <td>8 - 12 GB</td>
+                                <td>16 GB</td>
+                                <td>보통 (일반 PC 가능)</td>
+                            </tr>
+                            <tr>
+                                <td>고성능급</td>
+                                <td>30 Billion 이상</td>
+                                <td>32 - 48 GB 이상</td>
+                                <td>64 GB 이상</td>
+                                <td>느림 (고성능 워크스테이션)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
