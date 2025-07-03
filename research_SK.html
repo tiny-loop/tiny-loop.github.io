@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK그룹 AI 데이터센터 전략 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #0079FF, #004AAD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        .flow-line::before {
+            content: '';
+            position: absolute;
+            background-color: #B3D9FF;
+            z-index: 0;
+        }
+        .flow-line-h::before {
+            left: -1rem;
+            right: -1rem;
+            top: 50%;
+            height: 2px;
+            transform: translateY(-50%);
+        }
+        .flow-line-v::before {
+            top: -1rem;
+            bottom: -1rem;
+            left: 50%;
+            width: 2px;
+            transform: translateX(-50%);
+        }
+        .flow-arrow-down::after {
+            content: '▼';
+            position: absolute;
+            bottom: -1.75rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #0079FF;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center py-8 md:py-16">
+            <h1 class="text-4xl md:text-6xl font-black mb-4">SK그룹, AI 시대를 선도하다</h1>
+            <p class="text-lg md:text-2xl text-slate-600 font-light">2025년을 향한 AI 데이터센터 토털 솔루션 프로바이더로의 도약</p>
+        </header>
+
+        <main class="space-y-16 md:space-y-24">
+
+            <section class="text-center">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white rounded-2xl shadow-lg p-8 order-2 md:order-1">
+                        <h2 class="text-2xl font-bold mb-4">AI 피라미드 2.0: 수익화 전략</h2>
+                        <p class="text-slate-600 text-left">SK텔레콤의 'AI 피라미드 2.0' 전략은 AI 기술 역량을 실질적인 수익으로 연결하는 것을 목표로 합니다. 그 기반에는 AI 서비스와 솔루션을 뒷받침하는 강력한 AI 데이터센터 인프라가 있습니다. 이는 단순 기술 개발을 넘어, 아시아의 AI 허브로 도약하기 위한 구체적인 비즈니스 모델입니다.</p>
+                    </div>
+                    <div class="flex flex-col items-center justify-center space-y-4 order-1 md:order-2">
+                         <div class="bg-gradient-to-br from-[#0079FF] to-[#004AAD] text-white rounded-full w-48 h-48 md:w-64 md:h-64 flex flex-col items-center justify-center shadow-2xl">
+                             <span class="text-5xl md:text-7xl font-black">1GW</span>
+                             <span class="text-lg md:text-xl font-bold mt-2">목표 전력용량</span>
+                         </div>
+                         <p class="text-slate-500 mt-2">아시아 AI 허브 구축 비전</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold text-center mb-12">One SK: AI 데이터센터 통합 가치사슬</h2>
+                <p class="max-w-3xl mx-auto text-center text-slate-600 mb-16">SK그룹은 각 계열사의 핵심 역량을 유기적으로 결합하여 AI 데이터센터 구축 및 운영에 필요한 모든 요소를 아우르는 독보적인 '토털 솔루션'을 제공합니다. 이는 단순 부품 공급을 넘어, 기획부터 운영까지 전 과정을 아우르는 통합된 시너지를 창출합니다.</p>
+                
+                <div class="relative max-w-4xl mx-auto">
+                    <div class="text-center mb-8 relative flow-arrow-down">
+                        <div class="inline-block bg-[#004AAD] text-white rounded-xl shadow-lg p-4 md:p-6 z-10 relative">
+                            <h3 class="text-xl md:text-2xl font-bold">AI 데이터센터 고객</h3>
+                            <p class="text-sm">소버린 AI, 엔터프라이즈, 스타트업</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 text-center relative z-10 flow-arrow-down">
+                        <h3 class="text-2xl font-bold gradient-text mb-2">SK텔레콤: AI DC 오케스트레이터</h3>
+                        <p class="text-slate-600">그룹 AI 사업 총괄, AI 모델(A.X) 개발, 글로벌 파트너십, 최종 솔루션 제공</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center relative z-10">
+                        <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-blue-200 hidden lg:block"></div>
+                        <div class="bg-slate-100 rounded-xl p-6 shadow-md relative">
+                            <span class="text-4xl mb-2 block">💡</span>
+                            <h4 class="font-bold text-lg text-[#0079FF]">전력/에너지</h4>
+                            <p class="text-sm text-slate-500">SK E&S, SK이노베이션, SK온<br>LNG, 신재생 PPA, ESS, UPS 배터리 등 통합 에너지 솔루션 공급</p>
+                        </div>
+                        <div class="bg-slate-100 rounded-xl p-6 shadow-md relative">
+                           <span class="text-4xl mb-2 block">🧠</span>
+                           <h4 class="font-bold text-lg text-[#0079FF]">AI 반도체</h4>
+                           <p class="text-sm text-slate-500">SK하이닉스<br>세계 1위 HBM(고대역폭 메모리) 등 AI 연산의 핵심 부품 공급</p>
+                        </div>
+                        <div class="bg-slate-100 rounded-xl p-6 shadow-md relative">
+                           <span class="text-4xl mb-2 block">❄️</span>
+                            <h4 class="font-bold text-lg text-[#0079FF]">첨단 냉각</h4>
+                            <p class="text-sm text-slate-500">SK엔무브<br>차세대 액침냉각 솔루션으로 전력 효율 극대화 및 성능 향상</p>
+                        </div>
+                        <div class="lg:col-span-3 mt-4 md:mt-0">
+                             <div class="bg-slate-100 rounded-xl p-6 shadow-md relative">
+                                <span class="text-4xl mb-2 block">🏗️</span>
+                                <h4 class="font-bold text-lg text-[#0079FF]">인프라 & 소프트웨어</h4>
+                                <p class="text-sm text-slate-500">SK브로드밴드, SK C&C<br>물리적 DC 시설, ISP 네트워크, 클라우드 관리 및 기업용 AI 플랫폼 제공</p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold text-center mb-12">경쟁 환경 분석: AI DC 역량 비교</h2>
+                <p class="max-w-3xl mx-auto text-center text-slate-600 mb-16">SK그룹은 명시적인 '원스톱' 전략을 통해 시장을 공략하고 있습니다. 삼성, LG, 한화 등 경쟁 그룹들도 각자의 강점을 바탕으로 AI 시대에 대응하고 있으나, SK와 같이 모든 가치사슬을 아우르는 통합 전략의 명확성에서는 차이를 보입니다.</p>
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <div class="chart-container h-96 md:h-[500px] max-w-2xl">
+                        <canvas id="competitorRadarChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-slate-500 mt-4">각 항목은 '선도(4점)'부터 '제한적(1점)'까지의 역량을 기준으로 평가되었습니다.</p>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold text-center mb-12">핵심 기술: 에너지 효율과 냉각 혁신</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                        <h3 class="font-bold text-xl text-center mb-4">액침냉각의 압도적 효율</h3>
+                         <p class="text-center text-slate-600 mb-6">SK엔무브가 주도하는 액침냉각 기술은 서버를 비전도성 유체에 직접 담가 열을 식히는 차세대 방식입니다. 기존 공랭식 대비 냉각 전력을 획기적으로 줄여 데이터센터의 전체 전력 사용 효율(PUE)을 크게 개선하고 운영 비용을 절감합니다.</p>
+                        <div class="chart-container h-80 max-w-xl">
+                            <canvas id="coolingEfficiencyChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                        <h3 class="font-bold text-xl text-center mb-4">SK의 AI DC 통합 에너지 솔루션</h3>
+                        <p class="text-center text-slate-600 mb-6">SK E&S와 이노베이션은 AI 데이터센터의 막대한 전력 수요에 대응하기 위해 LNG 발전을 통한 안정적 기저 전력과 신재생에너지 PPA(전력구매계약)를 결합한 맞춤형 솔루션을 제공합니다. 이는 안정성과 친환경성을 동시에 확보하는 전략입니다.</p>
+                        <div class="chart-container h-80 max-w-xs">
+                             <canvas id="energyMixChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <h2 class="text-3xl font-bold text-center mb-12">2025년 전망: 기회와 도전</h2>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-r-lg">
+                        <h3 class="font-bold text-xl text-green-800 mb-3">주요 기회 요인</h3>
+                        <ul class="list-disc list-inside text-green-700 space-y-2">
+                            <li>폭발적인 글로벌 AI 컴퓨팅 수요</li>
+                            <li>데이터 주권(Sovereign AI) 시장 성장</li>
+                            <li>HBM 시장에서의 압도적 리더십</li>
+                            <li>에너지-냉각-반도체 통합 솔루션 시너지</li>
+                            <li>정부의 디지털 인프라 투자 확대</li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-lg">
+                         <h3 class="font-bold text-xl text-red-800 mb-3">잠재적 장애물</h3>
+                         <ul class="list-disc list-inside text-red-700 space-y-2">
+                            <li>하이퍼스케일 DC 구축의 막대한 자본 부담</li>
+                            <li>글로벌 빅테크 기업과의 치열한 경쟁</li>
+                            <li>복잡한 그룹사 간 시너지 조율의 어려움</li>
+                            <li>핵심 기술 개발 지연 및 비용 초과 리스크</li>
+                             <li>에너지 가격 변동성 및 규제 환경 변화</li>
+                         </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="text-center mt-16 md:mt-24 py-8 border-t border-slate-200">
+            <p class="text-slate-500">SK Group AI Data Center Strategy Infographic | July 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        const chartColors = {
+            blue1: '#004AAD',
+            blue2: '#0079FF',
+            blue3: '#58AFFF',
+            blue4: '#B3D9FF',
+            slate: '#64748b'
+        };
+
+        const competitorColors = {
+            sk: 'rgba(0, 121, 255, 0.8)', 
+            samsung: 'rgba(239, 68, 68, 0.8)',
+            lg: 'rgba(22, 163, 74, 0.8)',
+            hanwha: 'rgba(249, 115, 22, 0.8)'
+        };
+
+        function wrapLabel(str, maxLen = 16) {
+            if (str.length <= maxLen) {
+                return str;
+            }
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLen && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const defaultTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            } else {
+                              return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const competitorRadarCtx = document.getElementById('competitorRadarChart');
+            if(competitorRadarCtx) {
+                new Chart(competitorRadarCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: [
+                            wrapLabel('AI 반도체 (HBM, Logic)'), 
+                            wrapLabel('DC 건설'), 
+                            wrapLabel('DC 운영 & IT 서비스'), 
+                            wrapLabel('전력 공급 (신재생 포함)'), 
+                            wrapLabel('ESS & 배터리'), 
+                            wrapLabel('첨단 냉각 솔루션'),
+                            wrapLabel('AI S/W & 플랫폼'),
+                            wrapLabel("'원스톱' 전략 명료성")
+                        ],
+                        datasets: [
+                            {
+                                label: 'SK 그룹',
+                                data: [4, 3, 3, 4, 3, 4, 3, 4],
+                                fill: true,
+                                backgroundColor: 'rgba(0, 121, 255, 0.2)',
+                                borderColor: competitorColors.sk,
+                                pointBackgroundColor: competitorColors.sk,
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: competitorColors.sk
+                            },
+                             {
+                                label: '삼성 그룹',
+                                data: [3, 4, 4, 2, 4, 3, 2, 2],
+                                fill: true,
+                                backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                                borderColor: competitorColors.samsung,
+                                pointBackgroundColor: competitorColors.samsung,
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: competitorColors.samsung
+                            },
+                             {
+                                label: 'LG 그룹',
+                                data: [1, 2, 4, 2, 4, 3, 3, 2],
+                                fill: true,
+                                backgroundColor: 'rgba(22, 163, 74, 0.2)',
+                                borderColor: competitorColors.lg,
+                                pointBackgroundColor: competitorColors.lg,
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: competitorColors.lg
+                            },
+                            {
+                                label: '한화 그룹',
+                                data: [1, 4, 2, 4, 1, 1, 2, 1],
+                                fill: true,
+                                backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                                borderColor: competitorColors.hanwha,
+                                pointBackgroundColor: competitorColors.hanwha,
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: competitorColors.hanwha
+                            }
+                        ]
+                    },
+                    options: {
+                        ...defaultTooltipOptions,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 4,
+                                min: 0,
+                                ticks: {
+                                    stepSize: 1,
+                                    backdropColor: 'rgba(255, 255, 255, 0.75)',
+                                    callback: function(value) {
+                                        const labels = ['제한적', '개발중/보통', '강력', '선도'];
+                                        return labels[value-1] || '';
+                                    }
+                                },
+                                pointLabels: {
+                                    font: {
+                                        size: 12
+                                    }
+                                },
+                                grid: {
+                                    color: '#e2e8f0'
+                                },
+                                angleLines: {
+                                    color: '#e2e8f0'
+                                }
+                            }
+                        },
+                        plugins: {
+                           ...defaultTooltipOptions.plugins,
+                            legend: {
+                                position: 'top',
+                            },
+                        }
+                    }
+                });
+            }
+
+            const coolingEfficiencyCtx = document.getElementById('coolingEfficiencyChart');
+            if (coolingEfficiencyCtx) {
+                new Chart(coolingEfficiencyCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['기존 공랭식', '액침냉각'],
+                        datasets: [{
+                            label: '전력 사용 효율 (PUE)',
+                            data: [1.67, 1.05],
+                            backgroundColor: [chartColors.slate, chartColors.blue2],
+                            borderColor: [chartColors.slate, chartColors.blue2],
+                            borderWidth: 1,
+                            borderRadius: 5,
+                            barThickness: 50,
+                        }]
+                    },
+                    options: {
+                        ...defaultTooltipOptions,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'PUE (낮을수록 효율적)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            ...defaultTooltipOptions.plugins,
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                ...defaultTooltipOptions.plugins.tooltip,
+                                callbacks: {
+                                     ...defaultTooltipOptions.plugins.tooltip.callbacks,
+                                    label: function(context) {
+                                        return ` PUE: ${context.raw}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            const energyMixCtx = document.getElementById('energyMixChart');
+            if(energyMixCtx) {
+                 new Chart(energyMixCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['안정적 기저전력 (LNG 등)', '친환경 전력 (신재생에너지 PPA)'],
+                        datasets: [{
+                            data: [60, 40],
+                            backgroundColor: [
+                                chartColors.blue1,
+                                chartColors.blue3
+                            ],
+                            borderColor: '#fff',
+                            borderWidth: 4,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        ...defaultTooltipOptions,
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        cutout: '60%',
+                        plugins: {
+                            ...defaultTooltipOptions.plugins,
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                   boxWidth: 15,
+                                   padding: 20
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+        });
+    </script>
+</body>
+</html>
