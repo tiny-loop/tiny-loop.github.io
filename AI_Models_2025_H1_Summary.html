@@ -3,24 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2025년 상반기 AI 지형도: 인터랙티브 분석 (AI 인사이트 ✨)</title>
+    <title>2025년 상반기 AI 지형도: 인터랙티브 분석</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutral (Slate & Amber) -->
-    <!-- Application Structure Plan: A single-page dashboard application with a sticky top navigation. This non-linear, thematic structure allows users to freely explore different facets of the report—Overview, Key Players, Benchmark Comparisons, and Economic Analysis—without being forced into a linear reading order. The design prioritizes user-driven exploration and direct comparison, transforming the static report into a dynamic analysis tool. For instance, the "Key Players" section uses a tab-like interface for easy side-by-side comparison of corporate strategies, while the "Benchmark Battle" provides interactive charts to let users perform their own comparative analysis, which is far more engaging and insightful than a static table. -->
-    <!-- Visualization & Content Choices: 
-        - Timeline (Report Table 1) -> Goal: Show Change -> Viz: Interactive Horizontal Chronological Timeline (HTML/CSS Grid) -> Interaction: Hover for emphasis -> Justification: Chronological sorting with specific dates within a horizontal monthly grid provides a clear overview of the timeline while retaining detailed temporal information, addressing user feedback.
-        - Company Analysis (Report Sections 1 & 2) -> Goal: Inform & Compare -> Viz: Tabbed content cards (HTML/CSS) -> Interaction: Click tabs to switch between company details -> Justification: Organizes dense text into manageable, user-selectable chunks, facilitating easy comparison.
-        - ✨ Gemini Feature 1: Strategic SWOT Analysis -> Goal: Synthesize & Analyze -> Viz: Generated text block -> Interaction: Button click to call Gemini API -> Justification: Provides deeper, on-demand analysis of a company's strategic position beyond the static report text.
-        - Benchmark Scores (Report Table 4) -> Goal: Compare -> Viz: Dynamic Horizontal Bar Chart (Chart.js) -> Interaction: Dropdown to select benchmark, chart updates dynamically -> Justification: The most effective way to visually compare and rank quantitative performance data.
-        - ✨ Gemini Feature 2: Benchmark Insight -> Goal: Explain & Contextualize -> Viz: Generated text block -> Interaction: Button click to call Gemini API -> Justification: Explains the significance of complex benchmarks and results in plain language, making the data more accessible.
-        - Pricing Data (Report Table 5) -> Goal: Compare -> Viz: Grouped Bar Chart (Chart.js) -> Interaction: Buttons to filter by model tier (Premium/Economy) -> Justification: Clearly visualizes the significant cost differences between model tiers.
-        - Cost vs. Performance -> Goal: Show Relationships -> Viz: Scatter Plot (Chart.js) -> Interaction: Hover on points for tooltips with detailed info -> Justification: Powerfully illustrates the economic trade-offs, making the "economics of intelligence" concept tangible.
-        - Model Routing Diagram -> Goal: Explain a process -> Viz: HTML/CSS Diagram -> Interaction: Static visual aid -> Justification: Provides a clear, simple visual explanation without violating the no-SVG/Mermaid constraint. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body { font-family: 'Noto Sans KR', sans-serif; }
         .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 400px; max-height: 50vh; }
@@ -34,23 +22,6 @@
         .player-tab:not(.active) { background-color: #e5e7eb; color: #374151; }
         .kpi-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .kpi-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
-        .gemini-btn {
-            background: linear-gradient(45deg, #fde047, #f59e0b);
-            transition: all 0.3s ease;
-        }
-        .gemini-btn:hover { transform: scale(1.05); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4); }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #f59e0b;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
@@ -59,7 +30,7 @@
 
         <header class="text-center mb-8">
             <h1 class="text-3xl md:text-4xl font-bold text-slate-900">2025년 상반기 AI 지형도</h1>
-            <p class="mt-2 text-lg text-slate-600">프론티어 모델 경쟁, 성능, 경제성 인터랙티브 분석 (AI 인사이트 ✨)</p>
+            <p class="mt-2 text-lg text-slate-600">프론티어 모델 경쟁, 성능, 경제성 인터랙티브 분석</p>
         </header>
 
         <nav id="main-nav" class="sticky top-0 bg-slate-50/80 backdrop-blur-sm z-10 border-b border-slate-200 mb-8">
@@ -70,20 +41,13 @@
                 <button data-section="players" class="nav-btn p-3 md:p-4 text-sm md:text-base font-semibold border-b-2">
                     <span class="hidden md:inline">🏢 </span>핵심 플레이어
                 </button>
-                <button data-section="benchmarks" class="nav-btn p-3 md:p-4 text-sm md:text-base font-semibold border-b-2">
-                    <span class="hidden md:inline">🏆 </span>성능 비교
-                </button>
                 <button data-section="economics" class="nav-btn p-3 md:p-4 text-sm md:text-base font-semibold border-b-2">
                     <span class="hidden md:inline">💰 </span>경제성 분석
-                </button>
-                 <button data-section="outlook" class="nav-btn p-3 md:p-4 text-sm md:text-base font-semibold border-b-2">
-                    <span class="hidden md:inline">🧭 </span>전략 및 전망
                 </button>
             </div>
         </nav>
 
         <main id="main-content">
-            <!-- Section 1: Overview -->
             <section id="overview" class="content-section space-y-8">
                 <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h2 class="text-2xl font-bold mb-4 text-slate-900">서론: 지능의 새로운 규칙</h2>
@@ -106,50 +70,21 @@
                  <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h2 class="text-2xl font-bold mb-6 text-slate-900">주요 모델 출시 타임라인 (2025년 상반기)</h2>
                     <div id="timeline-container" class="relative w-full overflow-x-auto pb-4">
-                        <!-- JS will populate this -->
-                    </div>
+                        </div>
                 </div>
             </section>
 
-            <!-- Section 2: Key Players -->
             <section id="players" class="content-section space-y-8">
                  <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h2 class="text-2xl font-bold mb-2 text-slate-900">서비스형 AI의 거인들: 전략적 재편</h2>
-                    <p class="text-slate-600 leading-relaxed">지배적인 서비스형 모델 제공업체들은 오픈소스의 거센 도전에 맞서 새로운 가치 제안을 창출하고, 고부가가치 시장을 선점하기 위해 각기 다른 경로를 선택했습니다. 아래 탭을 클릭하여 각 기업의 핵심 전략을 확인하고, AI에게 직접 심층 분석을 요청해보세요.</p>
+                    <p class="text-slate-600 leading-relaxed">지배적인 서비스형 모델 제공업체들은 오픈소스의 거센 도전에 맞서 새로운 가치 제안을 창출하고, 고부가가치 시장을 선점하기 위해 각기 다른 경로를 선택했습니다. 아래 탭을 클릭하여 각 기업의 핵심 전략과 2025년 상반기 주요 동향을 확인하세요.</p>
                 </div>
                 <div class="flex flex-wrap justify-center gap-2 mb-6" id="player-tabs">
-                    <!-- JS will populate this -->
-                </div>
+                    </div>
                 <div id="player-content">
-                    <!-- JS will populate this -->
-                </div>
+                    </div>
             </section>
 
-            <!-- Section 3: Benchmarks -->
-            <section id="benchmarks" class="content-section space-y-8">
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h2 class="text-2xl font-bold mb-2 text-slate-900">성능 직접 비교: The Benchmark Battle</h2>
-                    <p class="text-slate-600 leading-relaxed">2025년 중반, 최상위 모델들의 일반 추론 성능은 극도로 치열해졌습니다. 이제 핵심 차별점은 모델이 추론할 수 있는지 여부가 아니라, 얼마나 안정적이고 효율적으로, 그리고 특정 전문 분야에서 뛰어난 성능을 보이는지로 이동하고 있습니다. 아래 드롭다운 메뉴에서 벤치마크를 선택하여 모델별 성능을 비교해보세요.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                     <div class="flex flex-col md:flex-row justify-center items-center mb-6 gap-4">
-                        <select id="benchmark-selector" class="p-2 border rounded-md bg-white shadow-sm focus:ring-amber-500 focus:border-amber-500">
-                            <option value="MMLU">일반 추론 (MMLU)</option>
-                            <option value="GSM8K">수학 능력 (GSM8K)</option>
-                            <option value="GPQA">전문가 수준 Q&A (GPQA Diamond)</option>
-                            <option value="SWE-bench">코딩 능력 (SWE-bench)</option>
-                            <option value="MMMU">멀티모달 이해 (MMMU)</option>
-                        </select>
-                        <button id="gemini-benchmark-btn" class="gemini-btn text-white font-bold py-2 px-4 rounded-full shadow-md">✨ 벤치마크 인사이트</button>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="benchmarkChart"></canvas>
-                    </div>
-                    <div id="benchmark-insight-container" class="mt-6 p-4 border border-amber-200 rounded-lg bg-amber-50/50" style="display: none;"></div>
-                </div>
-            </section>
-
-            <!-- Section 4: Economics -->
             <section id="economics" class="content-section space-y-8">
                  <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h2 class="text-2xl font-bold mb-2 text-slate-900">지능의 경제학: 비용-편익 분석</h2>
@@ -163,53 +98,6 @@
                     </div>
                     <div class="chart-container">
                         <canvas id="priceChart"></canvas>
-                    </div>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 class="text-xl font-bold text-center mb-4">비용 대비 성능 (MMLU 기준)</h3>
-                    <p class="text-center text-sm text-slate-500 mb-4">차트의 왼쪽 위로 갈수록 비용 대비 성능이 우수함을 의미합니다.</p>
-                    <div class="chart-container">
-                        <canvas id="costPerformanceChart"></canvas>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Section 5: Outlook -->
-            <section id="outlook" class="content-section space-y-8">
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h2 class="text-2xl font-bold mb-4 text-slate-900">전략적 전망 및 결론</h2>
-                     <p class="text-slate-600 leading-relaxed mb-6">2025년 상반기의 격동은 미래 AI 경쟁의 향방을 결정할 세 가지 핵심 동향, 즉 **지능의 상품화**, **에이전트 플랫폼의 부상**, **효율성-성능 프론티어의 재정의**를 명확히 했습니다. 이러한 환경에서 기업은 단일 모델이 아닌, 목적에 맞는 최적의 '모델 포트폴리오' 전략을 수립해야 합니다.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 class="text-xl font-bold mb-4">모델 채택을 위한 하이브리드 의사결정 프레임워크</h3>
-                    <div class="space-y-4">
-                        <div class="p-4 border border-blue-200 rounded-lg bg-blue-50">
-                            <h4 class="font-bold text-blue-800">기반 계층: 오픈소스 모델 (Llama 4, DeepSeek 등)</h4>
-                            <p class="text-sm text-blue-700 mt-1"><strong>사용 사례:</strong> 비용 효율성이 중요한 대규모 작업, 데이터 프라이버시가 중요한 사내 미세 조정.</p>
-                        </div>
-                        <div class="p-4 border border-green-200 rounded-lg bg-green-50">
-                            <h4 class="font-bold text-green-800">중간 계층: 이코노미 API (Gemini Flash, Claude Sonnet 등)</h4>
-                            <p class="text-sm text-green-700 mt-1"><strong>사용 사례:</strong> 안정성과 적정 성능이 필요한 대부분의 범용 애플리케이션.</p>
-                        </div>
-                        <div class="p-4 border border-amber-200 rounded-lg bg-amber-50">
-                            <h4 class="font-bold text-amber-800">최상위 계층: 프리미엄 API (Claude Opus 4, o3-pro 등)</h4>
-                            <p class="text-sm text-amber-700 mt-1"><strong>사용 사례:</strong> 정확성과 신뢰성이 타협 불가능한 미션 크리티컬 작업.</p>
-                        </div>
-                    </div>
-                </div>
-                 <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 class="text-xl font-bold mb-4">최적 전략: 모델 라우팅 (캐스케이드)</h3>
-                    <p class="text-slate-600 leading-relaxed mb-4">최적의 전략은 '모델 라우팅' 시스템을 구현하는 것입니다. 쿼리는 먼저 저렴하고 빠른 모델로 전송되고, 실패하거나 낮은 신뢰도를 보일 경우에만 더 강력하고 비싼 모델로 자동 에스컬레이션됩니다. 이 하이브리드 접근 방식은 비용과 품질을 모두 최적화합니다.</p>
-                    <div class="border border-slate-200 rounded-lg p-4 flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 bg-slate-50">
-                        <div class="text-center">
-                            <div class="p-3 bg-green-100 text-green-800 rounded-lg shadow-sm">이코노미 모델</div>
-                            <div class="font-mono text-sm mt-1">95% 처리</div>
-                        </div>
-                        <div class="text-2xl font-bold text-slate-400">→</div>
-                        <div class="text-center">
-                             <div class="p-3 bg-amber-100 text-amber-800 rounded-lg shadow-sm">프리미엄 모델</div>
-                            <div class="font-mono text-sm mt-1">5% 에스컬레이션</div>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -248,33 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
             meta: { name: "Meta (OS)", logo: "🔗", content: `<h4>전략: 스케일, 컨텍스트, 멀티모달의 재정의</h4><p class="mt-2 text-sm text-slate-600 leading-relaxed">프론티어급 성능(1000만 토큰 컨텍스트, 네이티브 멀티모달)의 Llama 4를 오픈소스로 공개. 핵심 기술을 상품화하여 서비스형 모델의 API 비즈니스를 약화시키고, 개발자 생태계의 중심이 되어 AI 시대의 '운영 체제'를 장악하려는 파괴적인 전략.</p><h5 class="font-bold mt-4 mb-2 text-sm">주요 동향 (2025 상반기)</h5><ul class="list-disc list-inside text-sm space-y-1"><li><b>4월:</b> Llama 4 제품군(Scout, Maverick, Behemoth) 공개</li></ul>` },
             deepseek: { name: "DeepSeek (OS)", logo: "🚀", content: `<h4>전략: 효율성 혁명과 시장 파괴</h4><p class="mt-2 text-sm text-slate-600 leading-relaxed">혁신적인 아키텍처와 저비용 훈련으로 프론티어급 성능을 달성. MIT 라이선스로 최고 수준의 추론 엔진을 공개하며 시장에 막대한 가격 압력을 가하고, '스케일'이 아닌 '효율성'으로도 경쟁할 수 있음을 증명.</p><h5 class="font-bold mt-4 mb-2 text-sm">주요 동향 (2025 상반기)</h5><ul class="list-disc list-inside text-sm space-y-1"><li><b>1월:</b> 프론티어 추론 모델 DeepSeek-R1 출시</li><li><b>3월, 5월:</b> V3 및 R1 모델 지속 업데이트</li></ul>` },
         },
-        benchmarks: {
-            'MMLU': {
-                name: '일반 추론 (MMLU)',
-                labels: ['Claude Opus 4', 'Gemini 2.5 Pro', 'Llama 4 Maverick', 'DeepSeek V3'],
-                scores: [88.8, 87.2, 85.5, 85.4]
-            },
-            'GSM8K': {
-                name: '수학 능력 (GSM8K)',
-                labels: ['GPT-4o', 'Claude Opus 4', 'Gemini 2.5 Pro'],
-                scores: [95.2, 94.1, 93.8]
-            },
-            'GPQA': {
-                name: '전문가 수준 Q&A (GPQA Diamond)',
-                labels: ['Grok 3 (Think)', 'Claude Opus 4', 'Llama 4 Maverick'],
-                scores: [84.6, 74.9, 69.8]
-            },
-            'SWE-bench': {
-                name: '코딩 능력 (SWE-bench)',
-                labels: ['Claude Sonnet 4', 'Claude Opus 4', 'Gemini 2.5 Pro', 'OpenAI o3'],
-                scores: [72.7, 72.5, 63.8, 0] // o3 is SOTA, but score not public, set to 0 to indicate placeholder
-            },
-            'MMMU': {
-                name: '멀티모달 이해 (MMMU)',
-                labels: ['Llama 4 Maverick', 'Claude Opus 4', 'OpenAI o3'],
-                scores: [73.4, 73.7, 0] // o3 is SOTA, but score not public
-            }
-        },
         prices: {
             premium: [
                 { model: 'Claude Opus 4', input: 15.00, output: 75.00 },
@@ -288,17 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 { model: 'Gemini 2.5 Flash-Lite', input: 0.10, output: 0.40 },
                 { model: 'Grok 3 Mini Beta', input: 0.30, output: 0.50 }
             ]
-        },
-        costPerformance: [ // {x: MMLU, y: Cost per 1M output tokens, r: parameter size (visual only)}
-            { model: 'Claude Opus 4', x: 88.8, y: 75.00, r: 15 },
-            { model: 'Gemini 2.5 Pro', x: 87.2, y: 2.50, r: 12 },
-            { model: 'Llama 4 Maverick', x: 85.5, y: 0, r: 20 },
-            { model: 'DeepSeek V3', x: 85.4, y: 0, r: 25 },
-            { model: 'OpenAI o3', x: 90, y: 8.00, r: 12 }, // Assuming SOTA is ~90% for MMLU
-        ]
+        }
     };
 
-    let benchmarkChart, priceChart, costPerformanceChart;
+    let priceChart;
     const navButtons = document.querySelectorAll('.nav-btn');
     const sections = document.querySelectorAll('.content-section');
     const playerTabsContainer = document.getElementById('player-tabs');
@@ -309,49 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setupNavigation();
         populateTimeline();
         populatePlayers();
-        setupBenchmarkSelector();
         setupPriceTierSelector();
-        setupGeminiButtons();
         showSection('overview');
-    }
-
-    async function callGeminiAPI(prompt) {
-        const apiKey = ""; // Leave empty as per instructions
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-        
-        const payload = {
-            contents: [{
-                role: "user",
-                parts: [{ text: prompt }]
-            }]
-        };
-
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                throw new Error(`API Error: ${response.statusText}`);
-            }
-
-            const result = await response.json();
-            
-            if (result.candidates && result.candidates.length > 0 &&
-              result.candidates[0].content && result.candidates[0].content.parts &&
-              result.candidates[0].content.parts.length > 0) {
-                return result.candidates[0].content.parts[0].text;
-            } else {
-                console.error("Unexpected API response structure:", result);
-                return "AI 분석을 생성하는 데 실패했습니다. 응답 형식이 올바르지 않습니다.";
-            }
-
-        } catch (error) {
-            console.error("Error calling Gemini API:", error);
-            return "AI 분석 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
-        }
     }
 
     function setupNavigation() {
@@ -371,15 +184,9 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.toggle('active', button.dataset.section === sectionId);
         });
 
-        switch(sectionId) {
-            case 'benchmarks':
-                createBenchmarkChart(document.getElementById('benchmark-selector').value);
-                break;
-            case 'economics':
-                createPriceChart('premium');
-                document.querySelector('#price-tier-selector button[data-tier="premium"]').classList.add('active');
-                createCostPerformanceChart();
-                break;
+        if (sectionId === 'economics') {
+            createPriceChart('premium');
+            document.querySelector('#price-tier-selector button[data-tier="premium"]').classList.add('active');
         }
     }
     
@@ -392,9 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const months = ['1월', '2월', '3월', '4월', '5월', '6월'];
         
-        let timelineHtml = `
-            <div class="grid grid-cols-1 md:grid-cols-6 gap-x-8 gap-y-4">
-        `;
+        let timelineHtml = `<div class="grid grid-cols-1 md:grid-cols-6 gap-x-8 gap-y-4">`;
 
         months.forEach((month, index) => {
             const monthIndex = index + 1;
@@ -436,12 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let contentHtml = '';
         Object.entries(reportData.players).forEach(([key, player]) => {
             tabsHtml += `<button data-player="${key}" class="player-tab px-3 py-2 rounded-md font-semibold text-sm">${player.logo} ${player.name}</button>`;
-            const geminiSection = `
-                <div class="mt-6">
-                    <button data-player-key="${key}" class="gemini-btn gemini-player-btn text-white font-bold py-2 px-4 rounded-full shadow-md w-full md:w-auto">✨ AI 전략 분석 (SWOT)</button>
-                    <div id="gemini-player-${key}-output" class="mt-4 p-4 border border-amber-200 rounded-lg bg-amber-50/50" style="display: none;"></div>
-                </div>`;
-            contentHtml += `<div id="player-${key}" class="player-content-pane bg-white p-6 rounded-lg shadow-sm" style="display: none;">${player.content}${geminiSection}</div>`;
+            contentHtml += `<div id="player-${key}" class="player-content-pane bg-white p-6 rounded-lg shadow-sm" style="display: none;">${player.content}</div>`;
         });
         playerTabsContainer.innerHTML = tabsHtml;
         playerContentContainer.innerHTML = contentHtml;
@@ -467,80 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
     Chart.defaults.color = '#334155';
     
     const chartColors = ['#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f97316'];
-
-    function createBenchmarkChart(benchmarkKey) {
-        if (benchmarkChart) benchmarkChart.destroy();
-        const data = reportData.benchmarks[benchmarkKey];
-        
-        let customLabels = data.labels;
-        if(benchmarkKey === 'SWE-bench' || benchmarkKey === 'MMMU'){
-            customLabels = data.labels.map(label => label.includes('o3') ? `${label} (SOTA)` : label);
-        }
-        
-        const ctx = document.getElementById('benchmarkChart').getContext('2d');
-        benchmarkChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: customLabels,
-                datasets: [{
-                    label: `${data.name} 점수 (%)`,
-                    data: data.scores,
-                    backgroundColor: chartColors,
-                    borderColor: chartColors.map(c => c + 'B3'),
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    title: { display: true, text: `모델별 ${data.name} 성능 비교`, font: {size: 16} },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed.x !== null) {
-                                    if(context.raw === 0 && context.label.includes('SOTA')) {
-                                        label += 'SOTA (점수 미공개)';
-                                    } else {
-                                        label += context.parsed.x + '%';
-                                    }
-                                }
-                                return label;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        title: { display: true, text: '점수 (%)' }
-                    },
-                    y: {
-                         ticks: {
-                            autoSkip: false,
-                             callback: function(value, index, values) {
-                                const label = this.getLabelForValue(value);
-                                return label.length > 20 ? label.substring(0, 20) + '...' : label;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-    
-    function setupBenchmarkSelector() {
-        document.getElementById('benchmark-selector').addEventListener('change', (e) => {
-            createBenchmarkChart(e.target.value);
-            document.getElementById('benchmark-insight-container').style.display = 'none';
-        });
-    }
 
     function createPriceChart(tier) {
         if (priceChart) priceChart.destroy();
@@ -595,83 +321,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.add('active');
                 createPriceChart(button.dataset.tier);
             });
-        });
-    }
-    
-    function createCostPerformanceChart() {
-        if(costPerformanceChart) costPerformanceChart.destroy();
-        const ctx = document.getElementById('costPerformanceChart').getContext('2d');
-        costPerformanceChart = new Chart(ctx, {
-            type: 'scatter',
-            data: {
-                datasets: [{
-                    label: '모델 비용-성능',
-                    data: reportData.costPerformance.map(d => ({x: d.x, y: d.y})),
-                    backgroundColor: chartColors,
-                    radius: reportData.costPerformance.map(d => d.r)
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                         callbacks: {
-                            label: function(context) {
-                                const modelData = reportData.costPerformance[context.dataIndex];
-                                let costLabel = modelData.y === 0 ? '오픈소스 (자체 호스팅 비용)' : `$${modelData.y.toFixed(2)}`;
-                                return `${modelData.model}: MMLU ${modelData.x}%, 출력 비용 ${costLabel}`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        title: { display: true, text: 'MMLU 성능 (%)' },
-                        min: 80
-                    },
-                    y: {
-                        title: { display: true, text: '출력 비용 ($/1M 토큰) - Log Scale' },
-                        type: 'logarithmic',
-                        min: 0.1,
-                    }
-                }
-            }
-        })
-    }
-
-    function setupGeminiButtons() {
-        document.body.addEventListener('click', async (e) => {
-            if (e.target.matches('.gemini-player-btn')) {
-                const playerKey = e.target.dataset.playerKey;
-                const player = reportData.players[playerKey];
-                const outputContainer = document.getElementById(`gemini-player-${playerKey}-output`);
-                
-                outputContainer.style.display = 'block';
-                outputContainer.innerHTML = '<div class="flex justify-center items-center"><div class="loader"></div><span class="ml-4 text-slate-600">AI가 전략을 분석하는 중입니다...</span></div>';
-
-                const rawContent = document.getElementById(`player-${playerKey}`).querySelector('p').textContent;
-                const prompt = `당신은 최고의 AI 산업 분석가입니다. 다음은 ${player.name}의 2025년 상반기 AI 시장 전략 요약입니다. 이 정보를 바탕으로 이 회사의 SWOT(강점, 약점, 기회, 위협) 분석을 명확하고 간결하게 생성해주세요. 각 항목은 글머리 기호로 정리해주세요.\n\n전략 요약: "${rawContent}"`;
-                
-                const analysis = await callGeminiAPI(prompt);
-                outputContainer.innerHTML = analysis.replace(/\n/g, '<br>');
-            }
-
-            if (e.target.matches('#gemini-benchmark-btn')) {
-                const benchmarkKey = document.getElementById('benchmark-selector').value;
-                const benchmarkData = reportData.benchmarks[benchmarkKey];
-                const outputContainer = document.getElementById('benchmark-insight-container');
-
-                outputContainer.style.display = 'block';
-                outputContainer.innerHTML = '<div class="flex justify-center items-center"><div class="loader"></div><span class="ml-4 text-slate-600">AI가 벤치마크 결과를 분석하는 중입니다...</span></div>';
-                
-                const resultsText = benchmarkData.labels.map((label, index) => `${label}: ${benchmarkData.scores[index]}%`).join(', ');
-                const prompt = `당신은 AI 연구 과학자입니다. "${benchmarkData.name}" 벤치마크의 중요성에 대해 설명해주세요. 그리고 다음 결과 데이터를 바탕으로, 이 결과가 2025년 AI 산업의 경쟁 구도에 어떤 전략적 의미를 갖는지 비즈니스 전문가가 이해하기 쉽게 설명해주세요.\n\n결과: ${resultsText}`;
-
-                const insight = await callGeminiAPI(prompt);
-                outputContainer.innerHTML = insight.replace(/\n/g, '<br>');
-            }
         });
     }
     
