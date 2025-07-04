@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서울 아이랑 물놀이 지도 (모바일 최적화)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Slate, Amber, Teal) -->
+    <!-- Application Structure Plan: This version is optimized for mobile-first viewing. The structure is a single-column, linear flow to facilitate easy scrolling. Key elements: 1) A simplified header. 2) Stacked filter controls that are sticky for constant access without taking up too much screen real estate. 3) A single-column card list for clear, sequential browsing of locations. 4) A full-screen modal for details to focus the user's attention. 5) A single, horizontally-scrollable chart for timeline data. This structure was chosen to eliminate horizontal scrolling and complex grids, providing the most intuitive experience on a narrow screen. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: List of all facilities. -> Goal: Find a place on mobile. -> Viz/Method: Single-column interactive card list. -> Interaction: Tap to view details in a modal. -> Justification: The most common and effective pattern for mobile list-detail views.
+        - Report Info: Operating periods. -> Goal: Plan based on dates. -> Viz/Method: Horizontal Bar (Gantt-style) Chart (Chart.js). -> Interaction: Hover/tap tooltips. -> Justification: This remains the best way to show timelines. It is placed in a container that allows horizontal scrolling on mobile if needed, preventing layout breakage.
+        - Removed: Distribution chart and AI Planner were removed as per user request to simplify the app.
+        - Removed: The AI review summary in the modal was also removed to further streamline the experience and focus on core information.
+        - All charts are implemented using the <canvas> element via Chart.js, adhering to the no-SVG/Mermaid constraint. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px; /* Taller for better readability of y-axis labels */
+            max-height: 50vh;
+        }
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        .modal-content {
+            transition: transform 0.25s ease;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-20">
+        <div class="container mx-auto px-4 py-4 text-center">
+            <h1 class="text-2xl font-bold text-teal-600">🌊 서울 아이랑 물놀이 지도</h1>
+            <p class="text-slate-600 mt-1 text-sm">모바일 최적화 버전</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4">
+        
+        <!-- Intro Text -->
+        <section class="mb-6 p-4 bg-white rounded-lg shadow-sm">
+            <h2 class="text-lg font-bold text-slate-700 mb-2">우리 동네 물놀이터를 찾아보세요!</h2>
+            <p class="text-slate-600 text-sm">아래 필터를 사용해 원하는 조건의 물놀이터를 찾고, 카드를 눌러 상세 정보를 확인하세요.</p>
+        </section>
+
+        <!-- Filters -->
+        <section id="filters" class="mb-6 p-4 bg-white/80 backdrop-blur-sm rounded-lg shadow-md sticky top-[76px] z-10">
+            <div class="flex flex-col gap-4">
+                <div>
+                    <h3 class="font-bold mb-2 text-slate-700">🔎 지역으로 찾기</h3>
+                    <div id="district-filters" class="flex flex-wrap gap-2">
+                        <!-- District filter buttons will be inserted here -->
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-2 text-slate-700">⚙️ 유형으로 찾기</h3>
+                    <div id="type-filters" class="flex flex-wrap gap-2">
+                        <!-- Type filter buttons will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results -->
+        <section id="results-section">
+            <div class="flex justify-between items-center mb-4 px-1">
+                <h2 class="text-xl font-bold text-slate-700">검색 결과</h2>
+                <div id="results-count" class="text-slate-600 font-semibold"></div>
+            </div>
+            <div id="results-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Water play location cards will be inserted here -->
+            </div>
+        </section>
+        
+        <!-- Charts Section -->
+        <section id="charts" class="my-12">
+            <div class="bg-white p-4 rounded-lg shadow-sm">
+                <h3 class="text-lg font-bold text-center mb-2">주요 시설 운영 기간</h3>
+                <p class="text-center text-xs text-slate-500 mb-4">7월 1일부터 8월 31일까지를 기준으로 합니다.</p>
+                <div class="chart-container">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Expert Recommendations -->
+        <section class="mt-12 p-6 bg-white rounded-lg shadow-sm">
+            <h2 class="text-xl font-bold text-center mb-6 text-slate-700">💡 전문가 추천: 이럴 땐 여기!</h2>
+            <div id="recommendation-tabs" class="flex flex-wrap justify-center gap-2 mb-6">
+                <!-- Recommendation tabs will be inserted here -->
+            </div>
+            <div id="recommendation-content" class="text-slate-600 p-4 bg-slate-50 rounded-md transition-all">
+                <!-- Recommendation content will be displayed here -->
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Footer / Checklist -->
+    <footer class="bg-slate-800 text-white mt-12 py-8 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-xl font-bold text-center mb-6">✅ 물놀이 준비물 체크리스트</h2>
+            <div class="max-w-2xl mx-auto grid grid-cols-2 gap-4 text-slate-200 text-sm">
+                <div class="flex items-center"><span class="mr-2">👕</span><span>수영복, 래쉬가드</span></div>
+                <div class="flex items-center"><span class="mr-2">🧢</span><span>수영모 (필수!)</span></div>
+                <div class="flex items-center"><span class="mr-2">👟</span><span>아쿠아슈즈, 크록스</span></div>
+                <div class="flex items-center"><span class="mr-2">🛁</span><span>수건 (넉넉하게)</span></div>
+                <div class="flex items-center"><span class="mr-2">👚</span><span>갈아입을 옷</span></div>
+                <div class="flex items-center"><span class="mr-2">🧴</span><span>자외선 차단제</span></div>
+                <div class="flex items-center"><span class="mr-2">🩹</span><span>간단한 구급약</span></div>
+                <div class="flex items-center"><span class="mr-2">💧</span><span>마실 물, 간식</span></div>
+                <div class="flex items-center"><span class="mr-2">돗</span><span>돗자리</span></div>
+            </div>
+            <p class="text-center text-slate-400 mt-8 text-xs">
+                본 정보는 '궁극의 2025 여름 바캉스 가이드' 보고서를 기반으로 제작되었습니다.<br>
+                출발 전 각 시설의 공식 홈페이지나 구청 공지사항에서 최신 운영 정보를 꼭 확인하세요.
+            </p>
+        </div>
+    </footer>
+
+
+    <!-- Modal -->
+    <div id="modal" class="modal fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none">
+        <div id="modal-content" class="modal-content bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto transform scale-95">
+            <!-- Modal content will be injected here -->
+        </div>
+    </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const locations = [
+            { id: 1, name: '중앙근린공원', district: '서대문구', type: '무료 동네 놀이터', period: [15, 46], features: '조합놀이대, 기존 인기 장소', address: '북가좌1동 480', hours: '12:30 ~ 17:30', closed: '월요일', fee: '무료', note: '야외 샤워기, 간이 탈의실, 그늘막 등 편의시설 구비. 매일 수돗물 교체.' },
+            { id: 2, name: '가재울어린이공원', district: '서대문구', type: '무료 동네 놀이터', period: [15, 46], features: '⭐ 유아 전용 풀장 보유', address: '남가좌1동 385-2', hours: '12:30 ~ 17:30', closed: '월요일', fee: '무료', note: '어린 자녀를 둔 가족에게 최적. 안전관리요원 상시 배치.' },
+            { id: 3, name: '문화촌어린이공원', district: '서대문구', type: '무료 동네 놀이터', period: [15, 46], features: '미끄럼틀, 작은 물폭포 조합', address: '홍제3동 277-82', hours: '12:30 ~ 17:30', closed: '월요일', fee: '무료', note: '다채로운 놀이 경험 제공.' },
+            { id: 4, name: '해달별어린이공원', district: '서대문구', type: '무료 동네 놀이터', period: [15, 46], features: '2024년 신규 개장', address: '연희동 747-1', hours: '12:30 ~ 17:30', closed: '월요일', fee: '무료', note: '새로운 시설로 쾌적함 기대.' },
+            { id: 5, name: '은가어린이공원', district: '서대문구', type: '무료 동네 놀이터', period: [15, 46], features: '2024년 신규 개장', address: '북가좌2동 3-39', hours: '12:30 ~ 17:30', closed: '월요일', fee: '무료', note: '생활밀착형 공공 서비스 확대 사례.' },
+            { id: 6, name: '매바위어린이공원', district: '은평구', type: '무료 동네 놀이터', period: [5, 48], features: '비교적 큰 놀이기구', address: '은평구', hours: '12:00 ~ 17:00 (50분 가동, 10분 휴식)', closed: '7/27까지 주말만, 이후 매일 운영', fee: '무료', note: '⚠️ 주차장, 화장실 없음. 도보 접근 권장.' },
+            { id: 7, name: '대조어린이공원', district: '은평구', type: '무료 동네 놀이터', period: [5, 48], features: '안정적으로 운영되는 시설', address: '대조동 연서로**길 *-**', hours: '12:00 ~ 17:00', closed: '7/27까지 주말만, 이후 매일 운영', fee: '무료', note: '7세 이하는 보호자 동반 필수.' },
+            { id: 8, name: '은평평화공원', district: '은평구', type: '무료 동네 놀이터', period: [5, 48], features: '역촌역 인근, 대중교통 편리', address: '역촌동 통일로62길 17', hours: '12:00 ~ 17:00', closed: '7/27까지 주말만, 이후 매일 운영', fee: '무료', note: '매일 용수 교체 및 2주 1회 수질검사 실시.' },
+            { id: 9, name: '구산동마을공원', district: '은평구', type: '무료 동네 놀이터', period: [5, 48], features: '유료주차장/화장실 있음', address: '구산동 갈현로15길 27-1', hours: '12:00 ~ 17:00', closed: '7/27까지 주말만, 이후 매일 운영', fee: '무료', note: '수심이 얕아 영유아에게 더 적합.' },
+            { id: 10, name: '신도근린공원', district: '은평구', type: '무료 동네 놀이터', period: [5, 48], features: '⭐ 보호자용 친수공간', address: '신사동 산80-4', hours: '12:00 ~ 17:00', closed: '7/27까지 주말만, 이후 매일 운영', fee: '무료', note: '어린 아이와 함께 발 담그고 쉬기 좋음.' },
+            { id: 11, name: '신흥어린이공원', district: '은평구', type: '무료 동네 놀이터', period: [5, 48], features: '⭐ 보호자용 친수공간', address: '증산로19길 28-12', hours: '12:00 ~ 17:00', closed: '7/27까지 주말만, 이후 매일 운영', fee: '무료', note: '신도근린공원과 유사한 컨셉.' },
+            { id: 12, name: '연지물놀이터', district: '종로구', type: '무료 동네 놀이터', period: [15, 62], features: '대형 조합놀이대, 슬라이드, 터널분수', address: '연지동 1-38', hours: '10:00 ~ 17:00', closed: '월요일', fee: '무료', note: '종로구 최초 본격 물놀이장. 주말 혼잡 예상, 주차 어려움.' },
+            { id: 13, name: '효창/응봉공원 물놀이장', district: '용산구', type: '무료 동네 놀이터', period: [25, 46], features: '여름방학 단기 집중 운영', address: '효창원로 177-18', hours: '10:00 ~ 17:00', closed: '없음', fee: '무료', note: '36개월~13세 이용 가능. 임시 간이 수영장 형태.' },
+            { id: 14, name: '용산어린이정원', district: '용산구', type: '특별 체험/축제', period: [5, 62], features: '넓고 얕은 분수형, 최상급 편의시설', address: '용산어린이정원 내', hours: '요일별 상이', closed: '월요일', fee: '무료', note: '⚠️ 방문 자체에 사전 예약 및 성인 신분증 필수! (yongsanparkstory.kr)' },
+            { id: 15, name: '별빛내린천 물놀이장', district: '관악구', type: '무료 동네 놀이터', period: [1, 62], features: '9세 이하 맞춤, 접근성 우수', address: '신림동 1642-7', hours: '10:00 ~ 18:00', closed: '우천 시', fee: '무료', note: '신림역, 순대타운 인접. 위생 관리 철저.' },
+            { id: 16, name: '관악구 신규 물놀이터', district: '관악구', type: '무료 동네 놀이터', period: [19, 62], features: '낙성대, 관악산공원 등 6곳 추가 개장', address: '관악구 전역', hours: '미정', closed: '미정', fee: '무료', note: '7월 19일부터 순차 개장 예정.' },
+            { id: 17, name: '난지한강공원 물놀이장', district: '마포구', type: '대형 공원/수영장', period: [20, 62], features: '한강뷰 인피니티풀, 얕은 수심 (80cm)', address: '상암동 482-182', hours: '09:00 ~ 18:00', closed: '없음', fee: '유료', note: '네이버 예약 권장. 다자녀 할인 등 확인. 배달음식/주류 반입 금지.' },
+            { id: 18, name: '키즈풀 알로하서울', district: '마포구', type: '프라이빗/실내', period: [1, 62], features: '완전한 프라이빗 공간, 완벽한 편의시설', address: '독막로 291', hours: '시간 단위 대여', closed: '예약에 따름', fee: '유료 (고가)', note: '생일파티, 비 오는 날 추천. 네이버 예약.' },
+            { id: 19, name: '한강페스티벌 여름', district: '서울 전역', type: '특별 체험/축제', period: [32, 48], features: '카약, 영화제, 음악피크닉 등', address: '한강공원 전역', hours: '프로그램별 상이', closed: '없음', fee: '일부 유료', note: '8월 1일부터 17일까지. 온가족 여름 축제.' },
+            { id: 20, name: '진관사 계곡', district: '은평구', type: '특별 체험/축제', period: [1, 62], features: '자연 계곡, 얕은 물', address: '진관동', hours: '상시', closed: '없음', fee: '무료', note: '자연 속에서 즐기는 안전한 물놀이.' }
+        ];
+
+        const districts = ['전체', ...new Set(locations.map(l => l.district))];
+        const types = ['전체', ...new Set(locations.map(l => l.type))];
+        
+        const districtFilters = document.getElementById('district-filters');
+        const typeFilters = document.getElementById('type-filters');
+        const resultsGrid = document.getElementById('results-grid');
+        const resultsCount = document.getElementById('results-count');
+
+        let activeDistrictFilter = '전체';
+        let activeTypeFilter = '전체';
+
+        function createFilterButtons() {
+            districtFilters.innerHTML = '';
+            typeFilters.innerHTML = '';
+            districts.forEach(district => {
+                const button = document.createElement('button');
+                button.className = `px-3 py-1 text-xs font-semibold border rounded-full transition-colors ${activeDistrictFilter === district ? 'bg-teal-500 text-white border-teal-500' : 'border-slate-300 bg-white'}`;
+                button.textContent = district;
+                button.dataset.filter = district;
+                button.dataset.type = 'district';
+                districtFilters.appendChild(button);
+            });
+            types.forEach(type => {
+                const button = document.createElement('button');
+                button.className = `px-3 py-1 text-xs font-semibold border rounded-full transition-colors ${activeTypeFilter === type ? 'bg-teal-500 text-white border-teal-500' : 'border-slate-300 bg-white'}`;
+                button.textContent = type;
+                button.dataset.filter = type;
+                button.dataset.type = 'type';
+                typeFilters.appendChild(button);
+            });
+        }
+
+        function handleFilterClick(e) {
+            if (e.target.tagName !== 'BUTTON') return;
+            const button = e.target;
+            const filter = button.dataset.filter;
+            const type = button.dataset.type;
+
+            if (type === 'district') {
+                activeDistrictFilter = filter;
+            } else {
+                activeTypeFilter = filter;
+            }
+            createFilterButtons();
+            renderCards();
+        }
+
+        districtFilters.addEventListener('click', handleFilterClick);
+        typeFilters.addEventListener('click', handleFilterClick);
+
+        function renderCards() {
+            resultsGrid.innerHTML = '';
+            const filteredLocations = locations.filter(location => {
+                const districtMatch = activeDistrictFilter === '전체' || activeDistrictFilter === location.district;
+                const typeMatch = activeTypeFilter === '전체' || activeTypeFilter === location.type;
+                return districtMatch && typeMatch;
+            });
+            
+            resultsCount.textContent = `총 ${filteredLocations.length}개`;
+
+            if(filteredLocations.length === 0) {
+                resultsGrid.innerHTML = `<p class="text-slate-500 col-span-full text-center py-10">선택한 조건에 맞는 결과가 없습니다.</p>`;
+                return;
+            }
+
+            filteredLocations.forEach(location => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg shadow-sm p-4 flex flex-col justify-between cursor-pointer transition-transform transform hover:scale-105 active:scale-95';
+                card.dataset.id = location.id;
+                
+                let feeTag = location.fee === '무료' 
+                    ? `<span class="bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">💧 무료</span>`
+                    : `<span class="bg-rose-100 text-rose-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">🎟️ 유료</span>`;
+                
+                let reservationTag = location.note && location.note.includes('예약') 
+                    ? `<span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">📅 예약</span>` 
+                    : '';
+
+                card.innerHTML = `
+                    <div>
+                        <h3 class="font-bold text-base mb-1 text-slate-900">${location.name}</h3>
+                        <p class="text-xs text-slate-500 mb-2">${location.district} | ${location.type}</p>
+                        <p class="text-sm text-slate-700 mb-3">${location.features}</p>
+                    </div>
+                    <div class="flex flex-wrap items-center mt-auto pt-2 border-t border-slate-100">
+                        ${feeTag}
+                        ${reservationTag}
+                    </div>
+                `;
+                resultsGrid.appendChild(card);
+            });
+        }
+        
+        // Modal Logic
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
+
+        resultsGrid.addEventListener('click', (e) => {
+            const card = e.target.closest('.cursor-pointer');
+            if (card) {
+                const locationId = parseInt(card.dataset.id);
+                const location = locations.find(l => l.id === locationId);
+                openModal(location);
+            }
+        });
+        
+        function openModal(location) {
+            modalContent.innerHTML = `
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-4">
+                        <h2 class="text-xl font-bold text-teal-700 pr-4">${location.name}</h2>
+                        <button id="closeModal" class="text-4xl font-light text-slate-400 hover:text-slate-800">&times;</button>
+                    </div>
+                    <div class="space-y-3 text-slate-700 text-sm">
+                        <p><strong class="w-20 inline-block text-slate-500">📍 위치</strong> ${location.address}</p>
+                        <p><strong class="w-20 inline-block text-slate-500">⏰ 시간</strong> ${location.hours}</p>
+                        <p><strong class="w-20 inline-block text-slate-500">🗓️ 휴장</strong> ${location.closed}</p>
+                        <p><strong class="w-20 inline-block text-slate-500">💰 요금</strong> ${location.fee}</p>
+                        <p><strong class="w-20 inline-block text-slate-500">✨ 특징</strong> ${location.features}</p>
+                        <div class="mt-4 pt-3 border-t">
+                            <strong class="text-slate-600">💡 Tip</strong>
+                            <p class="text-slate-600 mt-1">${location.note || '특별한 유의사항 없음'}</p>
+                        </div>
+                    </div>
+                </div>`;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-95');
+            document.getElementById('closeModal').addEventListener('click', closeModal);
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.add('scale-95');
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // Chart.js implementation
+        function createTimelineChart() {
+            const ctx = document.getElementById('timelineChart').getContext('2d');
+            const timelineData = locations
+                .filter(l => l.period && l.period.length === 2 && !l.name.includes('신규'))
+                .map(l => ({
+                    y: l.name,
+                    x: [new Date(2025, 6, l.period[0]), new Date(2025, 6, l.period[1])]
+                }));
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: timelineData.map(d => d.y),
+                    datasets: [{
+                        label: '운영 기간',
+                        data: timelineData.map(d => d.x),
+                        backgroundColor: 'rgba(245, 158, 11, 0.6)', // amber-500
+                        borderColor: 'rgba(180, 83, 9, 1)', // amber-700
+                        borderWidth: 1,
+                        barPercentage: 0.6,
+                        categoryPercentage: 0.7
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: { unit: 'week', tooltipFormat: 'PP' },
+                            min: '2025-07-01',
+                            max: '2025-08-31',
+                            title: { display: false }
+                        },
+                        y: {
+                            ticks: {
+                                font: { size: 10 }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const start = new Date(context.raw[0]).toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' });
+                                    const end = new Date(context.raw[1]).toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' });
+                                    return `운영: ${start} ~ ${end}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Recommendations logic
+        const recommendations = {
+            '👶 영유아 동반': { text: '수심이 얕고 안전한 시설이 중요해요. 유아 전용 풀이나 보호자가 함께 쉴 수 있는 친수공간이 있는 곳을 추천합니다.', ids: [2, 9, 10, 11, 15] },
+            '🤸 활동적인 아이': { text: '에너지가 넘치는 아이들을 위해! 대형 놀이기구나 슬라이드 등 다채로운 시설이 있는 곳이 좋습니다.', ids: [1, 12, 17] },
+            '📅 예약/계획 필수': { text: '최고의 경험을 위해선 약간의 준비가 필요해요. 예약이 필수거나 인기가 많아 일찍 출발해야 하는 곳들입니다.', ids: [14, 17, 18] },
+            '🌧️ 비 오는 날': { text: '날씨 걱정 없이 물놀이를 즐기고 싶다면? 프라이빗한 실내 워터룸이 완벽한 대안이 될 수 있어요.', ids: [18] }
+        };
+
+        const recTabs = document.getElementById('recommendation-tabs');
+        const recContent = document.getElementById('recommendation-content');
+        
+        Object.keys(recommendations).forEach(key => {
+            const tab = document.createElement('button');
+            tab.className = 'px-4 py-2 text-sm font-semibold border border-slate-300 rounded-full transition-colors bg-white hover:bg-slate-100';
+            tab.textContent = key;
+            tab.dataset.rec = key;
+            recTabs.appendChild(tab);
+        });
+
+        recTabs.addEventListener('click', e => {
+            if (e.target.tagName === 'BUTTON') {
+                const recKey = e.target.dataset.rec;
+                const recData = recommendations[recKey];
+                
+                Array.from(recTabs.children).forEach(child => child.classList.remove('bg-amber-400', 'text-slate-900', 'border-amber-400'));
+                e.target.classList.add('bg-amber-400', 'text-slate-900', 'border-amber-400');
+
+                let contentHtml = `<p class="mb-4 text-sm">${recData.text}</p><ul class="list-disc list-inside space-y-2 text-sm">`;
+                recData.ids.forEach(id => {
+                    const loc = locations.find(l => l.id === id);
+                    if (loc) contentHtml += `<li class="hover:text-teal-600 cursor-pointer" data-id="${loc.id}">${loc.name} (${loc.district})</li>`;
+                });
+                contentHtml += '</ul>';
+                recContent.innerHTML = contentHtml;
+            }
+        });
+        
+        recContent.addEventListener('click', e => {
+            if (e.target.tagName === 'LI' && e.target.dataset.id) {
+                const locationId = parseInt(e.target.dataset.id);
+                const location = locations.find(l => l.id === locationId);
+                openModal(location);
+            }
+        });
+        
+        // Initial setup
+        if (recTabs.children[0]) {
+            recTabs.children[0].click();
+        }
+        createFilterButtons();
+        renderCards();
+        createTimelineChart();
+    });
+    </script>
+</body>
+</html>
