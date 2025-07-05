@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini CLI: Reddit Q&A 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Cool Neutrals & Blue Accent -->
+    <!-- Application Structure Plan: The application is redesigned to focus on the Q&A nature of the source material. The main title "The Current State of Agents" is removed. The hero section now explicitly states this is an analysis of the Reddit Q&A. The sentiment analysis chart is removed and replaced with a dedicated, interactive "Key Q&A" section using an accordion layout. This allows users to directly engage with the core dialogues. The structure remains a single-page narrative, flowing from context (Team Intro), to summarized conflicts (Core Debates), to direct evidence (Key Q&A), and finally to a conclusion (Path Forward). This is more aligned with a technical writer's summary of a Q&A event. -->
+    <!-- Visualization & Content Choices: 
+    - Report Info: User questions and team answers. -> Goal: Present the direct dialogue in an explorable format. -> Viz/Method: Interactive Accordion (HTML/Tailwind/JS). -> Interaction: Clicking a question toggles the visibility of the answer. Justification: This replaces the abstract chart with direct, specific information, which is more valuable for understanding the nuances of the AMA. It's clean, space-efficient, and lets users control the information flow.
+    - Other sections (Team, Debates, Forward) are kept as they provide necessary context and analysis around the Q&A content. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. NO Chart.js used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #2563eb; /* blue-600 */
+            border-bottom-color: #2563eb;
+        }
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .qna-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+        .qna-answer.open {
+            max-height: 500px; /* Adjust as needed */
+        }
+        .qna-toggle-icon {
+            transition: transform 0.3s ease-out;
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
+        <nav class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-xl font-bold text-blue-600">Gemini CLI: Q&A 분석</a>
+                <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+                    <a href="#team" class="nav-link hover:text-blue-600 border-b-2 border-transparent pb-1">팀 소개</a>
+                    <a href="#debates" class="nav-link hover:text-blue-600 border-b-2 border-transparent pb-1">핵심 논쟁</a>
+                    <a href="#qna" class="nav-link hover:text-blue-600 border-b-2 border-transparent pb-1">주요 Q&A</a>
+                    <a href="#forward" class="nav-link hover:text-blue-600 border-b-2 border-transparent pb-1">결론</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-slate-600 hover:bg-slate-100">
+                    <span id="menu-open-icon">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </span>
+                    <span id="menu-close-icon" class="hidden">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </span>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 flex flex-col space-y-2">
+                <a href="#team" class="nav-link block text-slate-600 hover:text-blue-600 py-2 text-center rounded-md hover:bg-slate-100">팀 소개</a>
+                <a href="#debates" class="nav-link block text-slate-600 hover:text-blue-600 py-2 text-center rounded-md hover:bg-slate-100">핵심 논쟁</a>
+                <a href="#qna" class="nav-link block text-slate-600 hover:text-blue-600 py-2 text-center rounded-md hover:bg-slate-100">주요 Q&A</a>
+                <a href="#forward" class="nav-link block text-slate-600 hover:text-blue-600 py-2 text-center rounded-md hover:bg-slate-100">결론</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="text-center py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-6">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">Gemini CLI: Reddit Q&A 분석</h1>
+                <p class="mt-4 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
+                    이 문서는 <a href="https://www.reddit.com/r/Bard/comments/1lms62v/gemini_cli_team_ama/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-medium">Reddit에서 진행된 Google Gemini CLI 팀의 Q&A 세션</a>에 대한 심층 분석입니다. 사용자의 질문과 팀의 답변을 통해 제품의 현주소와 미래를 조망합니다.
+                </p>
+                <div class="mt-8">
+                    <a href="https://www.reddit.com/r/Bard/comments/1lms62v/gemini_cli_team_ama/" target="_blank" rel="noopener noreferrer" class="inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg">
+                        원본 AMA 스레드 보기 &rarr;
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="team" class="py-16 md:py-24 bg-slate-50 scroll-mt-16 section-fade-in">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Meet the Team: 답변자들</h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-2xl mx-auto">이번 Q&A에는 Google의 핵심 인력들이 참여하여 프로젝트의 중요성을 보여주었습니다.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 text-center" id="team-grid">
+                </div>
+            </div>
+        </section>
+
+        <section id="debates" class="py-16 md:py-24 bg-white scroll-mt-16 section-fade-in">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">핵심 논쟁: 4가지 주요 쟁점</h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-2xl mx-auto">사용자들의 날카로운 질문과 팀의 답변을 통해 드러난 핵심적인 기술 및 전략적 쟁점들입니다.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="card bg-slate-50 p-6 rounded-xl">
+                        <h3 class="text-xl font-bold mb-3 flex items-center"><span class="text-2xl mr-3">⚠️</span>성능 저하 논란</h3>
+                        <p class="text-slate-600">예고 없이 Gemini 2.5 Pro에서 Flash 모델로 전환되는 문제. 제품 신뢰도를 심각하게 훼손했습니다.</p>
+                    </div>
+                    <div class="card bg-slate-50 p-6 rounded-xl">
+                        <h3 class="text-xl font-bold mb-3 flex items-center"><span class="text-2xl mr-3">⚔️</span>기능 격차: vs Claude Code</h3>
+                        <p class="text-slate-600">사용자들은 지속적으로 Anthropic의 Claude Code를 기준으로 삼으며, 에이전트 능력의 격차를 지적했습니다.</p>
+                    </div>
+                    <div class="card bg-slate-50 p-6 rounded-xl">
+                        <h3 class="text-xl font-bold mb-3 flex items-center"><span class="text-2xl mr-3">🏗️</span>기술 아키텍처: 왜 TypeScript?</h3>
+                        <p class="text-slate-600">Go나 Rust 대신 TypeScript를 선택한 이유에 대해, 팀은 생태계 전반의 '이식성'을 핵심 이유로 설명했습니다.</p>
+                    </div>
+                    <div class="card bg-slate-50 p-6 rounded-xl">
+                        <h3 class="text-xl font-bold mb-3 flex items-center"><span class="text-2xl mr-3">💰</span>비즈니스 모델의 모호성</h3>
+                        <p class="text-slate-600">관대한 무료 정책의 지속 가능성과 유료 구독자가 얻는 실질적인 혜택 부족에 대한 의문이 제기되었습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="qna" class="py-16 md:py-24 bg-slate-50 scroll-mt-16 section-fade-in">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">주요 Q&A 보기</h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-2xl mx-auto">Q&A 세션에서 가장 주목받았던 질문과 답변을 직접 확인해 보세요.</p>
+                </div>
+                <div class="max-w-4xl mx-auto space-y-4" id="qna-accordion">
+                    <!-- Q&A items will be injected here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <section id="forward" class="py-16 md:py-24 bg-white scroll-mt-16 section-fade-in">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">결론: 나아갈 길</h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-2xl mx-auto">이번 Q&A를 통해 도출된 Gemini 팀과 사용자를 위한 실행 가능한 제언입니다.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-blue-50 border border-blue-200 p-6 rounded-xl">
+                        <h3 class="text-xl font-bold mb-3 flex items-center text-blue-800"><span class="text-2xl mr-3">🎯</span>Gemini 팀을 위한 제언</h3>
+                        <ul class="space-y-3 list-disc list-inside text-slate-700">
+                            <li><b>투명성 확보:</b> 모델 전환 문제를 즉시 해결하고, 사용 중인 모델을 명확히 표시해야 합니다.</li>
+                            <li><b>로드맵 공유:</b> 공개 로드맵을 게시하여 커뮤니티의 신뢰를 회복하고 기대를 관리해야 합니다.</li>
+                            <li><b>가치 제안 명확화:</b> 유료 구독자가 얻는 구체적인 혜택을 정의하고 명확하게 전달해야 합니다.</li>
+                            <li><b>에이전트 역량 강화:</b> 모델 자체를 넘어, 계획, 도구 사용 등 에이전트 프레임워크 성숙에 집중 투자해야 합니다.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-6 rounded-xl">
+                        <h3 class="text-xl font-bold mb-3 flex items-center text-green-800"><span class="text-2xl mr-3">💡</span>사용자를 위한 제언</h3>
+                        <ul class="space-y-3 list-disc list-inside text-slate-700">
+                            <li><b>기대치 관리:</b> 현재 제품이 초기 "미리보기" 단계임을 인지하고 사용해야 합니다.</li>
+                            <li><b>강점 활용:</b> 대규모 코드베이스 요약 등, 큰 컨텍스트 창의 이점을 활용하는 작업에 적합합니다.</li>
+                            <li><b>API 키 사용:</b> 일관된 Pro 성능이 필요하다면, 예측 불가능성을 피하기 위해 API 키 사용을 고려해볼 수 있습니다.</li>
+                            <li><b>적극적 참여:</b> 팀이 GitHub 이슈를 적극적으로 모니터링하므로, 버그 리포트와 기능 요청을 통해 개선에 기여할 수 있습니다.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400 mt-16">
+        <div class="container mx-auto px-6 py-8 text-center text-sm">
+            <p>&copy; 2025 Interactive Analysis. All rights reserved.</p>
+            <p class="mt-1">본 자료는 공개된 Reddit AMA 내용을 기반으로 재구성되었습니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const teamData = [
+                { name: 'Ryan J. Salva', role: '제품 관리, 수석 디렉터', user: 'u/ryanjsalva', icon: '🎯' },
+                { name: 'Taylor Mullen', role: '수석 스태프 엔지니어', user: 'u/NTaylorMullen', icon: '🛠️' },
+                { name: 'Scott Densmore', role: '수석 디렉터', user: 'u/scottdensmore', icon: '🚀' },
+                { name: 'Keith Ballinger', role: '부사장 / 총괄 관리자', user: 'u/Jumpy_Celery2392', icon: '📈' },
+                { name: 'Allen Hutchinson', role: '수석 디렉터', user: 'u/allen_hutchison', icon: '🔗' },
+                { name: 'Matt Korwel', role: '공동 호스트', user: 'u/mattkorwel', icon: '👨‍💻' },
+                { name: 'CK Perry', role: '공동 호스트', user: 'u/ckperry', icon: '🤝' },
+                { name: 'Juliette', role: '프로토타입 제작자', user: 'u/simpsoka', icon: '🎨' },
+            ];
+
+            const teamGrid = document.getElementById('team-grid');
+            teamData.forEach(member => {
+                const memberEl = document.createElement('div');
+                memberEl.className = 'card bg-white p-4 rounded-lg';
+                memberEl.innerHTML = `
+                    <div class="text-4xl mb-2">${member.icon}</div>
+                    <h4 class="font-bold text-slate-900">${member.name}</h4>
+                    <p class="text-sm text-slate-500">${member.role}</p>
+                    <p class="text-xs text-slate-400 font-mono mt-1">${member.user}</p>
+                `;
+                teamGrid.appendChild(memberEl);
+            });
+
+            const qnaData = [
+                { 
+                    question: "왜 CLI를 Go나 Rust가 아닌 TypeScript로 작성했나요?",
+                    asker: "u/horse_tinder",
+                    answer: "주된 동기는 이식성(portability)과 네이티브 임베딩 가능성(native embedability)입니다. 즉, 브라우저에서 Gemini CLI를 실행하거나 VSCode와 같은 곳에서 핵심 구성 요소를 참조할 수 있도록 하기 위함입니다.",
+                    responder: "u/NTaylorMullen (팀)"
+                },
+                {
+                    question: "Gemini 2.5 Pro는 훌륭한 모델인데 왜 Gemini CLI는 Claude Code만큼 좋지 않은가요?",
+                    asker: "u/deadcoder0904",
+                    answer: "Claude Code는 정말 훌륭한 일을 해냈습니다. 우리는 Gemini가 제공할 수 있는 잠재력의 극히 일부만 활용했습니다. 가까운 미래에 이 분야에서 훨씬 더 많은 것을 할 것입니다.",
+                    responder: "u/scottdensmore (팀)"
+                },
+                {
+                    question: "왜 한도에 도달하지 않았는데도, 종종 처음 두 메시지 직후에 Flash 모델로 전환되는 거죠?",
+                    asker: "u/Brawl345",
+                    answer: "두 번 이상의 느린 응답이 있을 때 Pro에서 Flash로 대체합니다. 무료 등급 내에서 경험을 최적화하기 위함입니다. 특정 모델을 사용하고 싶다면 언제든지 API 키를 사용할 수 있습니다.",
+                    responder: "u/ryanjsalva (팀)"
+                },
+                {
+                    question: "단일 바이너리 실행 파일을 출시해 주실 수 있나요?",
+                    asker: "ZeroCool2u",
+                    answer: "전적으로 동의합니다! Node를 좋아하지만, 많은 사람들에게는 그냥 '실행'할 수 있는 것이 핵심입니다. 우리는 이 작업을 할 것이니, 계속 지켜봐 주세요.",
+                    responder: "u/mattkorwel (팀)"
+                },
+                {
+                    question: "유료 구독자(AI Pro/Ultra)는 CLI에서 어떤 혜택을 받나요?",
+                    asker: "다수",
+                    answer: "현재 작업 중입니다! (팀은 아직 유료 구독자를 위한 명확한 가치 제안을 제공하지 못했습니다.)",
+                    responder: "팀 답변 요약"
+                }
+            ];
+
+            const qnaAccordion = document.getElementById('qna-accordion');
+            qnaData.forEach(item => {
+                const qnaItem = document.createElement('div');
+                qnaItem.className = 'bg-white rounded-xl shadow-sm overflow-hidden';
+                qnaItem.innerHTML = `
+                    <button class="qna-toggle w-full text-left p-4 md:p-5 flex justify-between items-center hover:bg-slate-50 transition-colors">
+                        <span class="font-medium text-slate-800">${item.question}</span>
+                        <span class="qna-toggle-icon text-slate-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </button>
+                    <div class="qna-answer">
+                        <div class="p-4 md:p-5 border-t border-slate-200">
+                            <p class="italic text-slate-600">"${item.answer}"</p>
+                            <p class="text-right text-sm font-semibold mt-3 text-blue-600">- ${item.responder}</p>
+                            <p class="text-right text-xs text-slate-400">질문자: ${item.asker}</p>
+                        </div>
+                    </div>
+                `;
+                qnaAccordion.appendChild(qnaItem);
+            });
+
+            document.querySelectorAll('.qna-toggle').forEach(button => {
+                button.addEventListener('click', () => {
+                    const answer = button.nextElementSibling;
+                    const icon = button.querySelector('.qna-toggle-icon');
+                    
+                    if (answer.classList.contains('open')) {
+                        answer.classList.remove('open');
+                        answer.style.paddingTop = '0';
+                        answer.style.paddingBottom = '0';
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        answer.classList.add('open');
+                        answer.style.paddingTop = ''; // Revert to CSS values
+                        answer.style.paddingBottom = ''; // Revert to CSS values
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const openIcon = document.getElementById('menu-open-icon');
+            const closeIcon = document.getElementById('menu-close-icon');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                openIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            const observerOptions = { rootMargin: '-80px 0px -50% 0px' };
+            const sectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+            sections.forEach(section => sectionObserver.observe(section));
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if (mobileMenu.classList.contains('hidden') === false) {
+                        mobileMenu.classList.add('hidden');
+                        openIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                    }
+                });
+            });
+
+            const fadeElements = document.querySelectorAll('.section-fade-in');
+            const fadeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            fadeElements.forEach(el => fadeObserver.observe(el));
+        });
+    </script>
+</body>
+</html>
