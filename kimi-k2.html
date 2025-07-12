@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kimi-K2 AI 모델 대화형 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Background: Slate-50, Text: Slate-800, Accent: Indigo-600) -->
+    <!-- Application Structure Plan: An interactive dashboard SPA. Top-level navigation allows users to jump to thematic sections: Kimi-K2 Deep Dive, Model Comparison, Economic Analysis, and Strategic Insights. This non-linear structure prioritizes user-driven exploration over the report's linear format. Key interactions include dynamic chart updates for performance benchmarks and API pricing, allowing for direct, focused comparisons which is more usable than static data tables. -->
+    <!-- Visualization & Content Choices: Report Info: Table 2 (Benchmarks) -> Goal: Compare -> Viz: Interactive Bar Chart (Chart.js) -> Interaction: User selects benchmark from a button group to update the chart -> Justification: Transforms a dense data table into an engaging, explorable visual tool. Report Info: Table 3 (Pricing) -> Goal: Compare Costs -> Viz: Toggable Bar Chart (Chart.js) -> Interaction: User toggles between input/output costs -> Justification: Simplifies complex pricing comparison. Report Info: Section 2.3 (Features) -> Goal: Compare Qualitatively -> Viz: HTML/CSS Card Grid -> Justification: Breaks down narrative comparisons into scannable, parallel blocks. All charts use Canvas. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #4f46e5;
+            border-bottom-color: #4f46e5;
+        }
+        .benchmark-btn {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .benchmark-btn.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-indigo-600">Kimi-K2 분석</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#intro" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">소개</a>
+                        <a href="#deep-dive" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">심층 분석</a>
+                        <a href="#comparison" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">모델 비교</a>
+                        <a href="#economics" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">경제성 분석</a>
+                        <a href="#strategy" class="nav-link px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">전략적 제언</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+
+        <section id="intro" class="text-center py-16 fade-in">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+                Moonshot AI <span class="text-indigo-600">Kimi-K2-Instruct</span> 모델 분석
+            </h1>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">
+                에이전트 지능과 비용 효율성으로 LLM 시장의 판도를 바꾸는 Kimi-K2를 심층 분석하고, 최신 상용 모델들과의 경쟁 구도를 시각적으로 탐색합니다.
+            </p>
+        </section>
+
+        <section id="deep-dive" class="py-16 fade-in">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight">Kimi-K2 심층 분석</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">Kimi-K2는 거대한 규모와 효율적인 설계를 바탕으로, 특정 작업에 고도로 전문화된 '반사적 등급'의 에이전트 지능을 구현합니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-2">MoE 아키텍처</h3>
+                    <p class="text-slate-600">총 1조 개의 파라미터를 보유하지만, 추론 시에는 320억 개의 활성 파라미터만 사용하여 계산 효율성을 극대화합니다. 384개의 '전문가' 네트워크가 특정 작업에 필요한 지식만 선택적으로 활용합니다.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-2">에이전트 중심 학습</h3>
+                    <p class="text-slate-600">15.5조 개의 방대한 토큰으로 사전 학습되었으며, 수천 개의 도구 사용 시나리오를 시뮬레이션하여 복잡한 작업을 자율적으로 계획하고 실행하는 능력을 내재화했습니다.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-2">'반사적 등급' 지능</h3>
+                    <p class="text-slate-600">별도의 '사고' 과정 없이 즉각적인 응답에 추론 능력이 내재되어 있습니다. 이를 통해 빠르고 지연 시간이 낮은 상호작용 속에서 자율적인 코드 생성, 데이터 분석 등을 수행합니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparison" class="py-16 fade-in">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight">주요 LLM 성능 비교</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">Kimi-K2와 최신 상용 모델들의 성능을 다양한 벤치마크를 통해 비교합니다. 아래 버튼을 클릭하여 특정 벤치마크의 결과를 확인하세요.</p>
+            </div>
+
+            <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                    <button class="benchmark-btn px-4 py-2 text-sm font-medium rounded-full border border-slate-300 active" data-benchmark="swe_bench">SWE-bench (코딩)</button>
+                    <button class="benchmark-btn px-4 py-2 text-sm font-medium rounded-full border border-slate-300" data-benchmark="live_code_bench">LiveCodeBench (코딩)</button>
+                    <button class="benchmark-btn px-4 py-2 text-sm font-medium rounded-full border border-slate-300" data-benchmark="math_500">MATH-500 (수학)</button>
+                    <button class="benchmark-btn px-4 py-2 text-sm font-medium rounded-full border border-slate-300" data-benchmark="aime_2025">AIME 2025 (수학)</button>
+                    <button class="benchmark-btn px-4 py-2 text-sm font-medium rounded-full border border-slate-300" data-benchmark="gpqa_diamond">GPQA-Diamond (과학)</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="benchmarkChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="economics" class="py-16 fade-in">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight">API 가격 및 경제성 분석</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">Kimi-K2의 파괴적인 가격 정책은 AI 시장에 큰 영향을 미치고 있습니다. 다른 모델들과의 API 비용을 비교해보세요.</p>
+            </div>
+            <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+                 <div class="flex justify-center gap-4 mb-8">
+                    <button id="inputCostBtn" class="benchmark-btn px-4 py-2 text-sm font-medium rounded-full border border-slate-300">입력 비용 ($/M 토큰)</button>
+                    <button id="outputCostBtn" class="benchmark-btn px-4 py-2 text-sm font-medium rounded-full border border-slate-300 active">출력 비용 ($/M 토큰)</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="pricingChart"></canvas>
+                </div>
+            </div>
+             <div class="mt-12 text-center bg-indigo-50 p-8 rounded-xl">
+                <h3 class="text-2xl font-bold mb-4">자체 호스팅의 현실: Open Weights, Closed Hardware</h3>
+                <p class="max-w-3xl mx-auto text-slate-600">
+                    Kimi-K2는 가중치가 공개되어 있지만, 원활한 운영을 위해서는 16-32개의 NVIDIA H100 GPU 클러스터가 필요합니다. 이는 수십억 원의 초기 투자 비용을 의미하며, 대부분의 사용자에게 API가 유일한 현실적 대안이 되는 이유입니다. 이 전략은 오픈소스의 투명성과 독점 API의 수익 모델을 결합한 새로운 시장 접근 방식입니다.
+                </p>
+            </div>
+        </section>
+
+        <section id="strategy" class="py-16 fade-in">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight">전략적 제언 및 결론</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">Kimi-K2의 등장은 기술 리더와 연구자들에게 새로운 기회와 과제를 제시합니다.</p>
+            </div>
+
+             <div class="space-y-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-3">AI 환경 내 Kimi-K2의 위상</h3>
+                    <p class="text-slate-600">'반사적 등급의 에이전트 전문가'로서, 자율적 코딩과 태스크 실행에 고도로 최적화된 도구입니다. 최고 수준의 에이전트 성능, 압도적인 가격 경쟁력, 오픈 웨이트의 투명성이 결합되어 자동화된 개발 워크플로우에 매우 매력적인 선택지입니다.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-3">기술 리더를 위한 제언</h3>
+                    <p class="text-slate-600">자율적인 코드 생성, 태스크 자동화, 도구 사용과 관련된 워크플로우에 대해 Kimi-K2를 즉시 평가해야 합니다. 낮은 비용과 높은 성능은 특정 기능에 대해 더 비싼 독점 모델을 대체할 강력한 근거를 제공합니다. 단, 멀티모달 애플리케이션이나 일반 고객 대면 챗봇에는 o3나 Gemini가 더 나은 선택일 수 있습니다.</p>
+                </div>
+                 <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-indigo-600 mb-3">전략적 결론</h3>
+                    <p class="text-slate-600">Kimi-K2와 같은 전문화되고 비용 효율적인 모델의 등장은 '하나의 모델이 모든 것을 해결한다'는 전략에서 벗어나, '작업에 가장 적합한 도구를 선택하는' 정교한 접근 방식이 필수적임을 시사합니다. 미래의 성공적인 AI 통합 전략은 다양한 모델의 강점을 조합하여 최적의 가치를 창출하는 능력에 달려 있습니다.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const modelData = {
+                'Kimi-K2-Instruct': { color: '#4f46e5' },
+                'OpenAI o3': { color: '#10b981' },
+                'Gemini 2.5 Pro': { color: '#f59e0b' },
+                'Claude Opus 4': { color: '#d946ef' },
+                'Claude Sonnet 4': { color: '#8b5cf6' },
+                'DeepSeek R1-0528': { color: '#3b82f6' },
+                'Grok-4 (Heavy)': { color: '#ef4444' }
+            };
+
+            const benchmarkData = {
+                swe_bench: {
+                    label: 'SWE-bench Verified (Agentic, Acc %)',
+                    data: { 'Kimi-K2-Instruct': 65.8, 'OpenAI o3': 71.7, 'Gemini 2.5 Pro': 63.8, 'Claude Opus 4': 72.5, 'Claude Sonnet 4': 72.7, 'DeepSeek R1-0528': 57.6, 'Grok-4 (Heavy)': 73.5 }
+                },
+                live_code_bench: {
+                    label: 'LiveCodeBench v6 (Pass@1 %)',
+                    data: { 'Kimi-K2-Instruct': 53.7, 'OpenAI o3': 72.0, 'Gemini 2.5 Pro': 69.0, 'Claude Opus 4': 47.4, 'Claude Sonnet 4': 48.5, 'DeepSeek R1-0528': 73.3 }
+                },
+                math_500: {
+                    label: 'MATH-500 (Acc %)',
+                    data: { 'Kimi-K2-Instruct': 97.4, 'OpenAI o3': 96.7, 'Gemini 2.5 Pro': 95.4, 'Claude Opus 4': 94.4, 'Claude Sonnet 4': 94.0, 'DeepSeek R1-0528': 97.3 }
+                },
+                aime_2025: {
+                    label: 'AIME 2025 (Avg@64 %)',
+                    data: { 'Kimi-K2-Instruct': 49.5, 'OpenAI o3': 91.6, 'Gemini 2.5 Pro': 88.0, 'Claude Opus 4': 33.9, 'Claude Sonnet 4': 33.1, 'DeepSeek R1-0528': 87.5, 'Grok-4 (Heavy)': 95.0 }
+                },
+                gpqa_diamond: {
+                    label: 'GPQA-Diamond (Avg@8 %)',
+                    data: { 'Kimi-K2-Instruct': 75.1, 'OpenAI o3': 87.7, 'Gemini 2.5 Pro': 86.4, 'Claude Opus 4': 74.9, 'Claude Sonnet 4': 70.0, 'DeepSeek R1-0528': 81.0, 'Grok-4 (Heavy)': 87.5 }
+                }
+            };
+
+            const pricingData = {
+                input: {
+                    label: 'API 입력 비용 ($/M 토큰)',
+                    data: { 'DeepSeek R1-0528': 0.55, 'Kimi-K2-Instruct': 0.60, 'Gemini 2.5 Pro': 1.88, 'OpenAI o3': 2.00, 'Claude Sonnet 4': 3.00, 'Grok-4': 3.00, 'Claude Opus 4': 15.00, 'OpenAI o3-pro': 20.00 }
+                },
+                output: {
+                    label: 'API 출력 비용 ($/M 토큰)',
+                    data: { 'DeepSeek R1-0528': 2.19, 'Kimi-K2-Instruct': 2.50, 'OpenAI o3': 8.00, 'Gemini 2.5 Pro': 12.50, 'Claude Sonnet 4': 15.00, 'Grok-4': 15.00, 'Claude Opus 4': 75.00, 'OpenAI o3-pro': 80.00 }
+                }
+            };
+
+            let benchmarkChart, pricingChart;
+
+            const createChart = (ctx, type, data, options) => {
+                return new Chart(ctx, { type, data, options });
+            };
+
+            const chartOptions = (title) => ({
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: title, font: { size: 16 }, padding: { bottom: 20 } }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#e2e8f0' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            });
+            
+            const pricingChartOptions = (title) => ({
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: title, font: { size: 16 }, padding: { bottom: 20 } }
+                },
+                scales: {
+                     x: {
+                        beginAtZero: true,
+                        grid: { color: '#e2e8f0' }
+                    },
+                    y: {
+                        grid: { display: false }
+                    }
+                }
+            });
+
+
+            const updateBenchmarkChart = (benchmarkKey) => {
+                const chartData = benchmarkData[benchmarkKey];
+                const labels = Object.keys(chartData.data);
+                const data = Object.values(chartData.data);
+                const colors = labels.map(label => modelData[label]?.color || '#94a3b8');
+
+                if (benchmarkChart) {
+                    benchmarkChart.destroy();
+                }
+                const ctx = document.getElementById('benchmarkChart').getContext('2d');
+                benchmarkChart = createChart(ctx, 'bar', {
+                    labels: labels,
+                    datasets: [{
+                        label: chartData.label,
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: colors.map(c => c + 'FF'),
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                }, chartOptions(chartData.label));
+            };
+
+            const updatePricingChart = (type) => {
+                const chartData = pricingData[type];
+                const labels = Object.keys(chartData.data);
+                const data = Object.values(chartData.data);
+                const colors = labels.map(label => modelData[label.replace(' o3-pro','')]?.color || modelData[label.replace(' Grok-4','')]?.color || '#94a3b8');
+
+                if (pricingChart) {
+                    pricingChart.destroy();
+                }
+                const ctx = document.getElementById('pricingChart').getContext('2d');
+                pricingChart = createChart(ctx, 'bar', {
+                    labels: labels,
+                    datasets: [{
+                        label: chartData.label,
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: colors.map(c => c + 'FF'),
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                }, pricingChartOptions(chartData.label));
+            };
+
+            document.querySelectorAll('.benchmark-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelector('.benchmark-btn.active').classList.remove('active');
+                    e.target.classList.add('active');
+                    updateBenchmarkChart(e.target.dataset.benchmark);
+                });
+            });
+
+            const inputCostBtn = document.getElementById('inputCostBtn');
+            const outputCostBtn = document.getElementById('outputCostBtn');
+            inputCostBtn.addEventListener('click', () => {
+                updatePricingChart('input');
+                inputCostBtn.classList.add('active');
+                outputCostBtn.classList.remove('active');
+            });
+            outputCostBtn.addEventListener('click', () => {
+                updatePricingChart('output');
+                outputCostBtn.classList.add('active');
+                inputCostBtn.classList.remove('active');
+            });
+
+
+            updateBenchmarkChart('swe_bench');
+            updatePricingChart('output');
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 70) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+             navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
