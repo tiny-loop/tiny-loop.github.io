@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H-Net: 한국어 AI의 미래를 여는 열쇠</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Amber -->
+    <!-- Application Structure Plan: A single-page narrative application divided into four logical sections: 1. The Problem (Why is the current way flawed?), 2. The Solution (How does H-Net work?), 3. The Proof (How good is it?), and 4. The Future (What changes?). This story-driven structure is chosen over a direct report-to-page mapping to guide a non-expert user (like a university student) from a relatable problem to a hopeful future, making complex information digestible and engaging. Key interactions include an initial tokenizer comparison demo, visual diagrams for the architecture, and interactive charts for performance data, all designed to foster intuitive understanding. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: BPE's failure on Korean slang. -> Goal: Inform/Engage. -> Viz: Interactive Text Input. -> Interaction: User types text, sees broken vs. smart tokenization. -> Justification: Immediately demonstrates the core problem in a personal, tangible way. -> Library/Method: Vanilla JS.
+        - Report Info: Over-segmentation, OOV, pipeline complexity. -> Goal: Inform. -> Viz: Icon-based cards. -> Interaction: Static display. -> Justification: Breaks down multiple abstract problems into simple, visually distinct concepts. -> Library/Method: HTML/Tailwind.
+        - Report Info: H-Net architecture (Dynamic Chunking, Hierarchy). -> Goal: Organize/Explain. -> Viz: Styled HTML diagrams & tabbed content. -> Interaction: Clickable tabs for different modules. -> Justification: Simplifies a complex system into its core components without overwhelming the user. -> Library/Method: HTML/Tailwind/JS.
+        - Report Info: Performance data (Perplexity, Downstream Tasks). -> Goal: Compare/Prove. -> Viz: Line and Bar charts. -> Interaction: Buttons to switch charts, hover tooltips for details. -> Justification: Allows users to actively explore the quantitative evidence and compare H-Net's performance across different scenarios. -> Library/Method: Chart.js.
+        - Report Info: Summary of benefits. -> Goal: Summarize. -> Viz: Comparison Table. -> Interaction: Static display. -> Justification: Provides a clear, concise "before and after" summary of H-Net's impact. -> Library/Method: HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFBF8;
+            color: #333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .token {
+            transition: all 0.3s ease-in-out;
+        }
+        .token-bpe {
+            background-color: #FECACA;
+            border-color: #F87171;
+        }
+        .token-hnet {
+            background-color: #A7F3D0;
+            border-color: #34D399;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="sticky top-0 bg-white/80 backdrop-blur-lg z-50 shadow-sm">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#hero" class="text-2xl font-bold text-amber-600">H-Net</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#problem" class="text-gray-600 hover:text-amber-600 px-3 py-2 rounded-md text-sm font-medium">문제점</a>
+                        <a href="#solution" class="text-gray-600 hover:text-amber-600 px-3 py-2 rounded-md text-sm font-medium">해결책</a>
+                        <a href="#proof" class="text-gray-600 hover:text-amber-600 px-3 py-2 rounded-md text-sm font-medium">성능 검증</a>
+                        <a href="#future" class="text-gray-600 hover:text-amber-600 px-3 py-2 rounded-md text-sm font-medium">미래</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 sm:py-28 bg-amber-50">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-800 leading-tight">
+                    AI, 드디어 한국어를 제대로 배우나?
+                </h1>
+                <p class="mt-6 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+                    낡은 '단어 사전'을 버리고 AI가 스스로 단어의 의미를 배우게 하는 혁명.
+                    <br class="hidden sm:block">
+                    한국어 AI의 미래를 바꿀 <span class="font-bold text-amber-600">H-Net</span>을 만나보세요.
+                </p>
+                <div class="mt-12 w-full max-w-2xl mx-auto">
+                     <label for="tokenizer-input" class="text-left block text-sm font-medium text-gray-700 mb-2">신조어나 띄어쓰기를 무시한 문장을 입력하고 AI의 반응을 비교해보세요:</label>
+                    <input type="text" id="tokenizer-input" class="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:ring-amber-500 focus:border-amber-500 text-lg" placeholder="예: 어쩔티비ㅋ 아버지가방에들어가신다" value="킹받네... 이걸 이렇게 쪼갠다고?">
+                    
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                        <div>
+                            <h3 class="font-bold text-gray-700">기존 AI (BPE 방식)</h3>
+                            <div id="bpe-output" class="mt-2 p-3 bg-white rounded-lg border border-gray-200 min-h-[60px] flex flex-wrap gap-1 items-center"></div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-amber-600">H-Net (새로운 방식)</h3>
+                            <div id="hnet-output" class="mt-2 p-3 bg-white rounded-lg border border-gray-200 min-h-[60px] flex flex-wrap gap-1 items-center"></div>
+                        </div>
+                    </div>
+                     <p class="mt-4 text-xs text-gray-500">위 결과는 H-Net의 동작 원리를 보여주기 위한 시뮬레이션입니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="problem" class="py-20 sm:py-24">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-800">지금 AI는 한국어가 너무 어려워요</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">
+                        현재 대부분의 AI는 영어에 맞춰진 '낡은 사전'으로 한국어를 배웁니다. 이 때문에 세 가지 심각한 문제가 발생합니다.
+                    </p>
+                </div>
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-red-100 text-3xl">💥</div>
+                        <h3 class="mt-6 text-xl font-bold text-gray-800">의미 파괴 (과분절)</h3>
+                        <p class="mt-2 text-gray-600">'정부는'이라는 단어를 '정', '부는' 처럼 의미 없는 조각으로 쪼개버립니다. 단어의 진짜 뜻이 사라져 AI가 엉뚱하게 이해하는 원인이 됩니다.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-3xl">🆕</div>
+                        <h3 class="mt-6 text-xl font-bold text-gray-800">신조어 처리 불가</h3>
+                        <p class="mt-2 text-gray-600">'어쩔티비', '킹받네' 같은 새 말은 AI 사전에 없습니다. 결국 '어', '쩔', '티', '비' 처럼 글자로 분해되어 의미를 완전히 잃게 됩니다.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-green-100 text-3xl">✍️</div>
+                        <h3 class="mt-6 text-xl font-bold text-gray-800">띄어쓰기 & 오타에 취약</h3>
+                        <p class="mt-2 text-gray-600">'아버지가방에들어가신다' 처럼 띄어쓰기를 틀리거나 오타가 나면, AI는 단어를 제대로 인식하지 못하고 크게 혼란을 겪습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="solution" class="py-20 sm:py-24 bg-amber-50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-800">해결책: AI에게 '눈치'를 가르치다</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                        H-Net은 '단어 쪼개기'를 AI의 학습 과정에 포함시켰습니다. 낡은 사전을 버리고, 문맥을 보며 실시간으로 단어를 쪼개는 법을 스스로 배우게 한 것이죠.
+                    </p>
+                </div>
+                <div class="mt-16">
+                    <div class="flex flex-col md:flex-row gap-8 items-center">
+                        <div class="w-full md:w-1/2 p-6 bg-white rounded-lg shadow-md border">
+                             <h3 class="text-xl font-bold text-center text-red-600 mb-4">기존 방식: 복잡한 땜질 처방</h3>
+                             <div class="flex flex-col items-center space-y-3 text-center">
+                                <div class="p-3 bg-gray-100 rounded-lg w-full">"아버지가방에"</div>
+                                <div class="text-2xl">⬇️</div>
+                                <div class="p-3 bg-red-100 rounded-lg w-full font-mono">1. 문법 검사기 (외부 프로그램)</div>
+                                <div class="text-2xl">⬇️</div>
+                                <div class="p-3 bg-gray-100 rounded-lg w-full">"아버지 가방에"</div>
+                                <div class="text-2xl">⬇️</div>
+                                <div class="p-3 bg-red-100 rounded-lg w-full font-mono">2. 단어 쪼개기 (BPE)</div>
+                                <div class="text-2xl">⬇️</div>
+                                <div class="p-3 bg-gray-100 rounded-lg w-full flex justify-center gap-1">
+                                    <span class="p-1 bg-red-200 rounded">아버</span><span class="p-1 bg-red-200 rounded">지</span><span class="p-1 bg-red-200 rounded">가방</span><span class="p-1 bg-red-200 rounded">에</span>
+                                </div>
+                             </div>
+                        </div>
+                        <div class="w-full md:w-1/2 p-6 bg-white rounded-lg shadow-lg border-2 border-amber-500">
+                             <h3 class="text-xl font-bold text-center text-amber-600 mb-4">H-Net: 똑똑한 통합 모델</h3>
+                             <div class="flex flex-col items-center space-y-3 text-center">
+                                <div class="p-3 bg-gray-100 rounded-lg w-full">"아버지가방에"</div>
+                                <div class="text-2xl">⬇️</div>
+                                <div class="p-3 bg-amber-100 rounded-lg w-full font-mono">H-Net AI 모델</div>
+                                <div class="text-2xl">⬇️</div>
+                                <div class="p-3 bg-gray-100 rounded-lg w-full flex justify-center gap-1">
+                                    <span class="p-1 bg-green-200 rounded">아버지</span><span class="p-1 bg-green-200 rounded">가방에</span>
+                                </div>
+                                <div class="text-2xl">⬇️</div>
+                                <div class="p-3 bg-amber-100 rounded-lg w-full">의미 이해 & 문제 해결</div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-16 max-w-4xl mx-auto">
+                    <h3 class="text-2xl font-bold text-center mb-8">H-Net의 두 가지 비밀 병기 ⚙️</h3>
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <div class="border-b border-gray-200">
+                            <nav class="-mb-px flex space-x-6" id="hnet-tabs">
+                                <button data-tab="detector" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg text-amber-600 border-amber-500">1. 경계선 탐지기</button>
+                                <button data-tab="smoother" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300">2. 학습 도우미</button>
+                            </nav>
+                        </div>
+                        <div class="pt-6">
+                            <div id="detector-content" class="tab-content">
+                                <h4 class="text-xl font-semibold text-gray-800">🕵️‍♀️ 경계선 탐지기 (Routing Module)</h4>
+                                <p class="mt-2 text-gray-600">글을 읽으며 단어와 단어 사이의 '의미 변화'를 감지해 경계선을 찾아냅니다. 예를 들어, '나는'과 '밥을'은 의미가 다르니 그 사이를 경계선으로 예측하는 식이죠. 정해진 규칙이 아니라 내용에 따라 유연하게 판단합니다.</p>
+                            </div>
+                            <div id="smoother-content" class="tab-content hidden">
+                                <h4 class="text-xl font-semibold text-gray-800">🧑‍🏫 학습 도우미 (Smoothing Module)</h4>
+                                <p class="mt-2 text-gray-600">AI가 '경계선일까, 아닐까?' 헷갈려 할 때, 앞뒤 단어의 의미를 살짝 섞어서 "일단 부드럽게 넘어가면서 좀 더 배워보자"고 도와주는 천재적인 장치입니다. 이 덕분에 AI는 길을 잃지 않고 최적의 단어 쪼개기 실력을 연마할 수 있습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="proof" class="py-20 sm:py-24">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-800">그래서, H-Net 얼마나 똑똑해졌나?</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">
+                        H-Net은 다양한 실험에서 기존 AI 모델을 압도하는 성능을 보였습니다. 특히 단어 쪼개기가 어려운 언어일수록 그 진가가 드러났습니다.
+                    </p>
+                </div>
+
+                <div class="mt-12 text-center">
+                    <div id="chart-controls" class="inline-flex rounded-md shadow-sm" role="group">
+                        <button type="button" data-chart="perplexity" class="chart-btn bg-amber-600 text-white relative inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-200 rounded-l-lg hover:bg-amber-700 focus:z-10 focus:ring-2 focus:ring-amber-500">
+                            AI 기본기 (언어 예측)
+                        </button>
+                        <button type="button" data-chart="downstream" class="chart-btn bg-white text-gray-900 relative inline-flex items-center px-4 py-2 text-sm font-medium border-t border-b border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-amber-500">
+                            실전 문제 해결 능력
+                        </button>
+                        <button type="button" data-chart="efficiency" class="chart-btn bg-white text-gray-900 relative inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-200 rounded-r-md hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-amber-500">
+                            효율성 & 강건성
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <div id="perplexity-chart-container" class="chart-wrapper">
+                         <p class="text-center text-gray-600 mb-2">AI가 다음 단어를 얼마나 잘 맞추는지 보여주는 '언어 예측 능력'입니다. (점수가 낮을수록 똑똑함)</p>
+                        <div class="chart-container"><canvas id="perplexityChart"></canvas></div>
+                    </div>
+                    <div id="downstream-chart-container" class="chart-wrapper hidden">
+                        <p class="text-center text-gray-600 mb-2">번역, 질문 답변 등 실제 문제를 얼마나 잘 푸는지 보여주는 점수입니다. (점수가 높을수록 똑똑함)</p>
+                        <div class="chart-container"><canvas id="downstreamChart"></canvas></div>
+                    </div>
+                     <div id="efficiency-chart-container" class="chart-wrapper hidden">
+                        <p class="text-center text-gray-600 mb-2">H-Net은 더 적은 자원으로 더 튼튼하게 작동합니다.</p>
+                        <div class="mt-8 max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                            <div class="bg-white p-6 rounded-lg shadow-md">
+                                <h4 class="text-xl font-bold">💪 강건성</h4>
+                                <p class="mt-2 text-6xl">🛡️</p>
+                                <p class="mt-2 text-gray-600">오타나 비문이 섞여도 성능이 크게 떨어지지 않는 강한 맷집을 보여줬습니다.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-md">
+                                <h4 class="text-xl font-bold">⚡ 효율성</h4>
+                                <p class="mt-2 text-6xl">💡</p>
+                                <p class="mt-2 text-gray-600">기존 모델의 <span class="font-bold text-amber-600">절반 크기</span>로도 비슷한 성능을 달성했습니다. 훨씬 경제적이죠.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="future" class="py-20 sm:py-24 bg-amber-50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-800">H-Net이 바꾸는 한국어 AI의 미래</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                        H-Net 도입은 단순한 성능 향상을 넘어, 한국어 AI 개발 방식 자체를 바꾸는 혁신입니다. 흩어져 있던 문제들이 하나의 열쇠로 풀립니다.
+                    </p>
+                </div>
+                <div class="mt-16 overflow-x-auto">
+                    <div class="bg-white shadow-xl rounded-lg p-1 min-w-[700px]">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b-2 border-gray-200">
+                                    <th class="p-4 text-lg font-bold">한국어 AI의 난제</th>
+                                    <th class="p-4 text-lg font-bold text-red-600">기존 방식의 한계</th>
+                                    <th class="p-4 text-lg font-bold text-amber-600">H-Net의 해결책</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100">
+                                    <td class="p-4 font-semibold">의미 파괴</td>
+                                    <td class="p-4 text-gray-700">통계에만 의존해 의미 무시 ('정' + '부는')</td>
+                                    <td class="p-4 text-gray-700">문맥을 보고 의미 단위로 묶음 ('정부는')</td>
+                                </tr>
+                                <tr class="border-b border-gray-100 bg-gray-50">
+                                    <td class="p-4 font-semibold">띄어쓰기/오타</td>
+                                    <td class="p-4 text-gray-700">띄어쓰기가 없으면 단어 인식 실패</td>
+                                    <td class="p-4 text-gray-700">글자 단위로 보기에 영향 거의 없음</td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="p-4 font-semibold">신조어</td>
+                                    <td class="p-4 text-gray-700">사전에 없어 의미 없는 글자로 분해</td>
+                                    <td class="p-4 text-gray-700">사전이 필요 없음! 문맥으로 바로 학습</td>
+                                </tr>
+                                 <tr class="border-b border-gray-100 bg-gray-50">
+                                    <td class="p-4 font-semibold">복잡한 시스템</td>
+                                    <td class="p-4 text-gray-700">별도의 문법 검사기 등 여러 프로그램 필요</td>
+                                    <td class="p-4 text-gray-700">AI 모델 하나로 모든 과정 통합!</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-semibold">비효율</td>
+                                    <td class="p-4 text-gray-700">단어 조각이 많아져 AI가 더 힘들게 일함</td>
+                                    <td class="p-4 text-gray-700">정보량을 줄여 AI가 더 효율적으로 일함</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                 <div class="mt-16 text-center max-w-3xl mx-auto">
+                    <h3 class="text-2xl font-bold">물론, 쉬운 길은 아닙니다</h3>
+                    <p class="mt-4 text-gray-600">H-Net은 구현이 매우 어렵고 복잡해 높은 수준의 연구 개발 투자가 필요합니다. 하지만 '토크나이저'라는 근본적인 문제를 해결하는 기술이기에, 그 잠재력은 엄청납니다.</p>
+                    <p class="mt-6 text-xl font-semibold text-amber-700">H-Net은 '포스트-토크나이저' 시대의 문을 여는 기술이며, 이 미래를 먼저 준비하는 자가 차세대 AI 경쟁의 승자가 될 것입니다.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>&copy; 2025 H-Net Interactive Explainer. All Rights Reserved.</p>
+            <p class="mt-1 text-gray-400">이 페이지는 H-Net 논문 및 관련 자료를 기반으로 교육적 목적으로 제작되었습니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const tokenizerInput = document.getElementById('tokenizer-input');
+            const bpeOutput = document.getElementById('bpe-output');
+            const hnetOutput = document.getElementById('hnet-output');
+            
+            const simpleBpeTokenize = (text) => {
+                let tokens = text.split(/(\s+)/).filter(t => t.trim().length > 0);
+                const finalTokens = [];
+                tokens.forEach(token => {
+                    if (token.length > 2 && !/^[a-zA-Z0-9]+$/.test(token)) {
+                        for(let i = 0; i < token.length; i+=2) {
+                            finalTokens.push(token.substring(i, i+2));
+                        }
+                    } else {
+                         finalTokens.push(token);
+                    }
+                });
+                return finalTokens.map(t => t.replace(' ', '␣'));
+            };
+
+            const simpleHnetTokenize = (text) => {
+                 const patterns = [/킹받네/g, /어쩔티비/g, /아버지가방에들어가신다/g, /이걸 이렇게 쪼갠다고/g];
+                 const replacements = ['킹받네', '어쩔티비', '아버지 가방에 들어가신다', '이걸 이렇게 쪼갠다고'];
+                 let processedText = text;
+                 patterns.forEach((p, i) => {
+                     processedText = processedText.replace(p, replacements[i]);
+                 });
+                 return processedText.split(/(\s+)/).filter(t => t.trim().length > 0).map(t => t.replace(' ', '␣'));
+            };
+            
+            const updateTokenizer = () => {
+                const text = tokenizerInput.value;
+                
+                bpeOutput.innerHTML = '';
+                simpleBpeTokenize(text).forEach(token => {
+                    const span = document.createElement('span');
+                    span.textContent = token;
+                    span.className = 'token token-bpe p-1 border rounded text-sm';
+                    bpeOutput.appendChild(span);
+                });
+
+                hnetOutput.innerHTML = '';
+                simpleHnetTokenize(text).forEach(token => {
+                    const span = document.createElement('span');
+                    span.textContent = token;
+                    span.className = 'token token-hnet p-1 border rounded text-sm';
+                    hnetOutput.appendChild(span);
+                });
+            };
+
+            tokenizerInput.addEventListener('input', updateTokenizer);
+            updateTokenizer();
+
+            const hnetTabs = document.getElementById('hnet-tabs');
+            const tabContents = {
+                detector: document.getElementById('detector-content'),
+                smoother: document.getElementById('smoother-content')
+            };
+
+            hnetTabs.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const tabName = e.target.dataset.tab;
+                    
+                    hnetTabs.querySelectorAll('.tab-btn').forEach(btn => {
+                        btn.classList.remove('text-amber-600', 'border-amber-500');
+                        btn.classList.add('text-gray-500', 'border-transparent', 'hover:text-gray-700', 'hover:border-gray-300');
+                    });
+
+                    e.target.classList.add('text-amber-600', 'border-amber-500');
+                    e.target.classList.remove('text-gray-500', 'border-transparent', 'hover:text-gray-700', 'hover:border-gray-300');
+
+                    Object.values(tabContents).forEach(content => content.classList.add('hidden'));
+                    tabContents[tabName].classList.remove('hidden');
+                }
+            });
+
+
+            const chartControls = document.getElementById('chart-controls');
+            const chartWrappers = {
+                perplexity: document.getElementById('perplexity-chart-container'),
+                downstream: document.getElementById('downstream-chart-container'),
+                efficiency: document.getElementById('efficiency-chart-container')
+            };
+            let perplexityChartInstance, downstreamChartInstance;
+            let chartsInitialized = false;
+
+            const initCharts = () => {
+                if (chartsInitialized) return;
+
+                const perplexityCtx = document.getElementById('perplexityChart').getContext('2d');
+                perplexityChartInstance = new Chart(perplexityCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['영어', '중국어', '프로그래밍 코드', 'DNA 서열'],
+                        datasets: [
+                            {
+                                label: '기존 AI (BPE)',
+                                data: [100, 100, 100, 100],
+                                borderColor: '#F87171',
+                                backgroundColor: '#FECACA',
+                                tension: 0.1
+                            },
+                            {
+                                label: 'H-Net',
+                                data: [92, 85, 88, 75],
+                                borderColor: '#34D399',
+                                backgroundColor: '#A7F3D0',
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: { display: true, text: 'AI 언어 예측 능력 비교 (낮을수록 좋음)' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += `${100 - context.parsed.y}% 성능 향상 (상대값)`;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: { y: { beginAtZero: false, suggestedMin: 70, ticks: { callback: (v) => `${v} (상대점수)`} } }
+                    }
+                });
+
+                const downstreamCtx = document.getElementById('downstreamChart').getContext('2d');
+                downstreamChartInstance = new Chart(downstreamCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['실전 문제 평균', '중국어 상식 추론', '영어 문장 완성'],
+                        datasets: [
+                            {
+                                label: '기존 AI (BPE)',
+                                data: [80.0, 59.9, 78.5],
+                                backgroundColor: '#F87171',
+                            },
+                            {
+                                label: 'H-Net',
+                                data: [82.6, 66.3, 81.2],
+                                backgroundColor: '#34D399',
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: { display: true, text: '실전 문제 해결 능력 비교 (높을수록 좋음)' }
+                        },
+                        scales: { y: { beginAtZero: false, suggestedMin: 50, ticks: { callback: (v) => `${v}점` } } }
+                    }
+                });
+                chartsInitialized = true;
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting){
+                    initCharts();
+                    observer.disconnect(); 
+                }
+            }, { threshold: 0.1 });
+
+            observer.observe(document.getElementById('proof'));
+
+            chartControls.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const chartName = e.target.dataset.chart;
+
+                    chartControls.querySelectorAll('.chart-btn').forEach(btn => {
+                        btn.classList.remove('bg-amber-600', 'text-white');
+                        btn.classList.add('bg-white', 'text-gray-900');
+                    });
+                    e.target.classList.add('bg-amber-600', 'text-white');
+                    e.target.classList.remove('bg-white', 'text-gray-900');
+                    
+                    Object.values(chartWrappers).forEach(wrapper => wrapper.classList.add('hidden'));
+                    chartWrappers[chartName].classList.remove('hidden');
+                }
+            });
+            
+             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
