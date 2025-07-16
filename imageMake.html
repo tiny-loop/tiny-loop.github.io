@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>생성형 AI 발표 자료 (Figma Export용)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
+        :root {
+            --slide-width: 1280px;
+            --slide-height: 720px;
+            --bg-color: #333;
+            --slide-bg-color: #1a1a1a;
+            --text-color: #E0E0E0;
+            --primary-color: #4A90E2;
+            --secondary-color: #7ED321;
+            --header-font: 'Noto Sans KR', sans-serif;
+            --body-font: 'Noto Sans KR', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--body-font);
+            margin: 0;
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .slide {
+            width: var(--slide-width);
+            height: var(--slide-height);
+            background-color: var(--slide-bg-color);
+            border: 1px solid #444;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 40px 60px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.title-slide {
+            justify-content: center;
+            text-align: center;
+            background: radial-gradient(circle, #2a3a4f 0%, #1a1a1a 70%);
+        }
+        
+        .title-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h4v-9H0v-1h4v-9H0v-1h4v-9H0v-1h4v-9H0v-1h4v-9H0v-1h4v-9H0v-1h4v-9H0v-1h4v-9H0v-1h4V0h1v4h9V0h1v4h9V0h1v4h9V0h1v4h9V0h1v4h9V0h1v4h9V0h1v4h9V0h1v4h9V0h1v4h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v5h-1v-5h-9v5h-1v-5h-9v5h-1v-5h-9v5h-1v-5h-9v5h-1v-5h-9v5h-1v-5h-9v5h-1v-5H0v-1h5v-9H0v-1h5v-9H0v-1h5v-9H0v-1h5v-9H0v-1h5v-9H0v-1h5v-9H0v-1h5v-9H0v-1h5V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5h9V0h1v5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .slide h1 {
+            font-family: var(--header-font);
+            font-size: 72px;
+            font-weight: 700;
+            color: white;
+            margin: 0 0 20px 0;
+            text-shadow: 0 0 15px rgba(74, 144, 226, 0.7);
+            z-index: 1;
+        }
+
+        .slide h2 {
+            font-family: var(--header-font);
+            font-size: 38px;
+            font-weight: 400;
+            color: var(--primary-color);
+            margin: 0 0 50px 0;
+            z-index: 1;
+        }
+        
+        .slide h3 {
+            font-family: var(--header-font);
+            font-size: 44px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 30px;
+            width: 100%;
+            text-align: left;
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 15px;
+        }
+
+        .presenter-info {
+            position: absolute;
+            bottom: 60px;
+            width: 100%;
+            left: 0;
+            text-align: center;
+            font-size: 24px;
+            color: #aaa;
+            z-index: 1;
+        }
+
+        .slide-content {
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide p, .slide li {
+            font-size: 24px;
+            line-height: 1.6;
+            text-align: left;
+            width: 100%;
+        }
+
+        .slide ul {
+            list-style-type: none;
+            padding-left: 0;
+            width: 100%;
+        }
+
+        .slide ul li {
+            font-size: 24px;
+            padding-left: 35px;
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .slide ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 24px;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            align-items: start;
+            flex-grow: 1;
+        }
+        
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .card-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            flex: 1;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+        .stat-card .value {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        .stat-card .label {
+            font-size: 20px;
+            color: var(--text-color);
+            line-height: 1.4;
+        }
+        .stat-card .source {
+            font-size: 16px;
+            color: #888;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            margin: 20px 0;
+        }
+        .flow-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            font-size: 22px;
+            flex: 1;
+        }
+        .flow-arrow {
+            font-size: 48px;
+            color: var(--primary-color);
+        }
+
+        .chart-container {
+            width: 100%;
+            max-width: 900px;
+            height: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .logo.stability { color: #fff; background-color: #222; border: 1px solid #555; }
+        .logo.openai { color: #fff; background-color: #222; border: 1px solid #555; }
+        .logo.google { color: #fff; background-color: #222; border: 1px solid #555; }
+        .logo.midjourney { color: #fff; background-color: #222; border: 1px solid #555; }
+        .logo.runway { color: #fff; background-color: #222; border: 1px solid #555; }
+
+        .slide-number {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .reference {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 12px;
+            color: #777;
+            text-align: right;
+        }
+
+        .visual-block {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .visual-block .icon-placeholder {
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .visual-block .text-content {
+            text-align: left;
+        }
+        .visual-block h4 {
+            margin: 0 0 5px 0;
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+        .visual-block p {
+            margin: 0;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Title -->
+    <section class="slide title-slide">
+        <div class="title-overlay"></div>
+        <h1>2025년 생성형 AI 현황</h1>
+        <h2>폭발적 성장에서 산업적 통합으로</h2>
+        <div class="presenter-info">
+            <p>2025년 7월 16일</p>
+            <p>Tiny</p>
+        </div>
+        <div class="slide-number">1 / 16</div>
+    </section>
+
+    <!-- Slide 2: Market Growth -->
+    <section class="slide">
+        <h3>새로운 산업 혁명: 조 단위 시장으로의 성장</h3>
+        <div class="slide-content">
+            <div class="card-container">
+                <div class="stat-card">
+                    <div class="value">$6,440억</div>
+                    <div class="label">2025년 전 세계 생성형 AI 지출 전망 (전년 대비 76.4% 급증)</div>
+                    <div class="source">Gartner</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">$1조</div>
+                    <div class="label">2034년 글로벌 시장 규모 돌파 예상 (연평균 44.2% 성장)</div>
+                    <div class="source">Precedence Research</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">$4.4조</div>
+                    <div class="label">연간 최대 추가 경제적 가치 창출 잠재력</div>
+                    <div class="source">McKinsey</div>
+                </div>
+            </div>
+            <p style="margin-top: 40px; text-align:center; font-style: italic; font-size: 28px;">단순한 기술 유행을 넘어, 글로벌 경제의 핵심 동력으로 자리매김하고 있습니다.</p>
+        </div>
+        <div class="reference">Source: Gartner (2024), Precedence Research (2024), McKinsey (2023)</div>
+        <div class="slide-number">2 / 16</div>
+    </section>
+
+    <!-- Slide 3: Paradigm Shift -->
+    <section class="slide">
+        <h3>패러다임 전환: 실험에서 기업 통합으로</h3>
+        <div class="slide-content">
+            <div class="flow-diagram">
+                <div class="flow-box">"AI를 사용할 수 있을까?"<br><small>(초기 실험 단계)</small></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">"AI로 어떻게 성과를 낼 것인가?"<br><small>(ROI 중심 통합 단계)</small></div>
+            </div>
+            <div class="content-grid" style="margin-top: 30px; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div class="visual-block">
+                    <div class="icon-placeholder"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+                    <div class="text-content"><h4>핵심 과제 변화</h4><p>기술적 문제(인재 부족)에서 조직적 문제(규제, 리스크)로 이동</p></div>
+                </div>
+                <div class="visual-block">
+                    <div class="icon-placeholder"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5L12 10"></path><path d="M18 20.5L18 10"></path><path d="M6 20.5L6 10"></path><path d="M12 6.5L12 3.5"></path><path d="M18 6.5L18 3.5"></path><path d="M6 6.5L6 3.5"></path></svg></div>
+                    <div class="text-content"><h4>성공의 열쇠</h4><p>단순 도입을 넘어, 워크플로우를 근본적으로 재설계 (도입 기업의 21%)</p></div>
+                </div>
+                <div class="visual-block">
+                    <div class="icon-placeholder"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"></path><path d="M16 4h-4"></path><path d="M16 4v4"></path><path d="M20 12h-4"></path><path d="M20 12v4"></path><path d="M4 12v4"></path><path d="M4 12H8"></path><path d="M8 20v-4"></path><path d="M12 20v-4"></path><path d="M16 20v-4"></path></svg></div>
+                    <div class="text-content"><h4>차세대 트렌드</h4><p>에이전틱 AI (Agentic AI): 자율적으로 계획하고 행동하는 AI 시스템</p></div>
+                </div>
+                <div class="visual-block">
+                    <div class="icon-placeholder"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m9 12 2 2 4-4"></path></svg></div>
+                    <div class="text-content"><h4>전략 변화</h4><p>자체 개발 축소, 기존 소프트웨어에 통합된 AI 기능 활용으로 선회</p></div>
+                </div>
+            </div>
+        </div>
+        <div class="reference">Source: McKinsey (2025), Deloitte (2024), Gartner (2024)</div>
+        <div class="slide-number">3 / 16</div>
+    </section>
+    
+    <!-- Slide 4: UI Paradigm -->
+    <section class="slide">
+        <h3>UI 패러다임: 스테이블 디퓨전의 두 얼굴</h3>
+        <div class="slide-content">
+            <div class="content-grid">
+                <div class="column" style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; align-items: center;">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line><line x1="12" y1="8" x2="12" y2="16"></line></svg>
+                    <h4>AUTOMATIC1111 (WebUI)</h4>
+                    <ul>
+                        <li><strong>컨셉:</strong> 사용자 친화적, 직관적 인터페이스</li>
+                        <li><strong>타겟:</strong> 초보자, 빠른 반복 테스트</li>
+                        <li><strong>역할:</strong> 스테이블 디퓨전 생태계의 '관문'</li>
+                    </ul>
+                </div>
+                <div class="column" style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; align-items: center;">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20V16"></path></svg>
+                    <h4>ComfyUI</h4>
+                    <ul>
+                        <li><strong>컨셉:</strong> 노드 기반, 모듈식, 고성능</li>
+                        <li><strong>타겟:</strong> 파워 유저, 복잡한 워크플로우</li>
+                        <li><strong>역할:</strong> 고급 기술을 위한 '엔진'</li>
+                    </ul>
+                </div>
+            </div>
+             <p style="margin-top: 40px; text-align:center; font-style: italic; font-size: 28px;">기술의 발전이 사용자의 요구와 상호작용하며 생태계를 진화시키는 대표적 사례입니다.</p>
+        </div>
+        <div class="reference">Source: Reddit r/StableDiffusion & Community Blogs (2023-2025)</div>
+        <div class="slide-number">4 / 16</div>
+    </section>
+
+    <!-- Slide 5: Data Chart -->
+    <section class="slide">
+        <h3>데이터로 보는 패러다임 전환</h3>
+        <div class="slide-content" style="align-items: center;">
+            <div class="chart-container">
+                <canvas class="github-chart"></canvas>
+            </div>
+            <p style="font-size:24px; text-align:center; margin-top: 20px;"><strong>GitHub Stars & Google Trends:</strong> ComfyUI의 스타 증가율과 검색량은 WebUI를 압도하며, 커뮤니티의 폭발적 관심과 고급 기능에 대한 사용자층의 확대를 증명합니다.</p>
+        </div>
+        <div class="reference">Source: OSS Insight & Google Trends (Data retrieved 2025)</div>
+        <div class="slide-number">5 / 16</div>
+    </section>
+
+    <!-- Slide 6: Foundation Models -->
+    <section class="slide">
+        <h3>파운데이션 모델 군비 경쟁: 주요 플레이어</h3>
+        <div class="slide-content">
+            <p style="font-size: 28px; text-align: center; margin-bottom: 40px;">경쟁의 축이 '미학'에서 '프롬프트 충실도'와 '기능성'으로 이동하고 있습니다. <br>'예쁜 그림'을 넘어 '유용한 그림'을 만드는 것이 핵심 과제가 되었습니다.</p>
+            <div class="logo-container">
+                <div class="logo stability">Stability AI</div>
+                <div class="logo openai">OpenAI</div>
+                <div class="logo google">Google</div>
+                <div class="logo midjourney">Midjourney</div>
+            </div>
+            <div class="content-grid" style="margin-top: 40px;">
+                <div class="column" style="text-align: center;"><h4>오픈소스 진영</h4><p>Stable Diffusion 3, FLUX.1</p></div>
+                <div class="column" style="text-align: center;"><h4>폐쇄소스 진영</h4><p>DALL-E 3, Imagen, Midjourney</p></div>
+            </div>
+        </div>
+        <div class="slide-number">6 / 16</div>
+    </section>
+
+    <!-- Slide 7: SD3 -->
+    <section class="slide">
+        <h3>오픈소스 플레이어 ①: Stable Diffusion 3</h3>
+        <div class="slide-content">
+             <div class="content-grid">
+                <div class="column">
+                    <h4>핵심 기술: MMDiT 아키텍처</h4>
+                    <div class="flow-diagram" style="margin: 10px 0;">
+                        <div class="flow-box" style="font-size: 18px;">Text<br>Transformer</div>
+                        <div class="flow-arrow">+</div>
+                        <div class="flow-box" style="font-size: 18px;">Image<br>Transformer</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box" style="font-size: 18px;">Combined<br>Attention</div>
+                    </div>
+                     <p>텍스트와 이미지 임베딩에 별도 트랜스포머를 사용 후 결합하여 상호 이해도를 높임</p>
+                </div>
+                <div class="column">
+                    <h4>주요 개선점</h4>
+                    <ul>
+                        <li><strong>프롬프트 충실도:</strong> 복잡한 공간 관계, 다중 피사체 이해도 비약적 향상</li>
+                        <li><strong>타이포그래피:</strong> 확산 모델의 오랜 난제였던 '읽을 수 있는 텍스트' 생성 가능</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="margin-top: 40px; text-align:center; font-style: italic; font-size: 28px;">SD3는 상업적 디자인, 광고 카피 등 '기능성'이 중요한 영역에서 새로운 가능성을 제시합니다.</p>
+        </div>
+        <div class="reference">Source: Stability AI, "Stable Diffusion 3" Research Paper (2024)</div>
+        <div class="slide-number">7 / 16</div>
+    </section>
+
+    <!-- Slide 8: FLUX.1 -->
+    <section class="slide">
+        <h3>오픈소스 플레이어 ②: FLUX.1</h3>
+        <div class="slide-content">
+            <div class="content-grid">
+                <div class="column">
+                    <h4>성능 프로필</h4>
+                    <ul>
+                        <li><strong>장점:</strong> SDXL을 능가하는 프롬프트 충실도와 세부 묘사 능력</li>
+                        <li><strong>단점:</strong> 상대적으로 긴 생성 시간, 높은 VRAM 요구 (16GB+ 권장)</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4>전략: 효율성과 접근성</h4>
+                    <ul>
+                        <li><strong>Schnell 버전:</strong> 속도와 품질의 균형을 맞춘 경량화 버전</li>
+                        <li><strong>양자화 모델:</strong> FP8 등 저정밀도 모델로 저사양 GPU 지원 확대</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="margin-top: 40px; text-align:center; font-style: italic; font-size: 28px;">최고 품질을 추구하는 전문가와 효율성을 중시하는 일반 사용자 모두를 공략하는 투-트랙 전략을 구사합니다.</p>
+        </div>
+        <div class="reference">Source: Black Forest Labs (2024), Community Benchmarks</div>
+        <div class="slide-number">8 / 16</div>
+    </section>
+    
+    <!-- Slide 9: Closed Source -->
+    <section class="slide">
+        <h3>폐쇄형 소스 타이탄: 3강 3색</h3>
+        <div class="slide-content">
+            <div class="content-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                <div class="column" style="align-items: center; text-align: center; background: rgba(138, 43, 226, 0.1); border-radius: 10px; padding: 20px;">
+                    <h4 style="color:#8A2BE2;">Midjourney</h4>
+                    <ul><li>압도적인 예술성</li><li>영화적 분위기</li><li>창의적 재해석</li></ul>
+                </div>
+                <div class="column" style="align-items: center; text-align: center; background: rgba(16, 163, 127, 0.1); border-radius: 10px; padding: 20px;">
+                    <h4 style="color:#10A37F;">DALL-E 3</h4>
+                    <ul><li>뛰어난 프롬프트 이해력</li><li>대화형 편집</li><li>우수한 텍스트 생성</li></ul>
+                </div>
+                <div class="column" style="align-items: center; text-align: center; background: rgba(66, 133, 244, 0.1); border-radius: 10px; padding: 20px;">
+                    <h4 style="color:#4285F4;">Google Imagen</h4>
+                    <ul><li>사진 같은 사실성</li><li>빠른 속도</li><li>균형 잡힌 성능</li></ul>
+                </div>
+            </div>
+        </div>
+        <div class="reference">Source: Tech Media & Community Reviews (2024-2025)</div>
+        <div class="slide-number">9 / 16</div>
+    </section>
+
+    <!-- Slide 10: Text-to-Video -->
+    <section class="slide">
+        <h3>데모에서 상업적 활용으로: Text-to-Video</h3>
+        <div class="slide-content">
+            <p style="text-align: center; font-size: 28px; margin-bottom: 40px;">단순 기술 시연을 넘어, 실제 상업 프로젝트에 적용되며 새로운 콘텐츠 제작의 지평을 열고 있습니다.</p>
+            <div class="content-grid">
+                <div class="column">
+                    <h4>OpenAI Sora</h4>
+                    <ul>
+                        <li><strong>사례:</strong> Washed Out 뮤직비디오 "The Hardest Part"</li>
+                        <li><strong>특징:</strong> 예술적 표현, 초현실적 비주얼</li>
+                        <li><strong>시사점:</strong> AI의 '환각'을 창의적 장치로 활용</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4>Google Veo</h4>
+                    <ul>
+                        <li><strong>사례:</strong> 가상 브랜드 광고, 교육 콘텐츠 제작</li>
+                        <li><strong>특징:</strong> 실용성, 통합 오디오 생성</li>
+                        <li><strong>시사점:</strong> 마케팅, 프로토타이핑 등 상업적 실용성에 집중</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="reference">Source: PetaPixel, The Verge (2024), Google AI Blog (2024)</div>
+        <div class="slide-number">10 / 16</div>
+    </section>
+
+    <!-- Slide 11: Runway -->
+    <section class="slide">
+        <h3>생성을 넘어 편집으로: 창의적 파트너 AI</h3>
+        <div class="slide-content">
+            <p style="text-align:center; font-size: 28px;">Runway Gen-3는 단순 생성을 넘어, 감독 수준의 세밀한 제어 기능에 집중합니다.</p>
+            <div class="card-container" style="margin-top: 40px;">
+                <div class="stat-card" style="text-align: left;">
+                    <h4 style="font-size: 28px;">Motion Brush</h4>
+                    <p>이미지의 특정 영역에만 움직임을 지정하여 미세 제어</p>
+                </div>
+                <div class="stat-card" style="text-align: left;">
+                    <h4 style="font-size: 28px;">Director Mode</h4>
+                    <p>팬, 줌, 돌리 등 카메라 워크를 직접 지시하여 영화적 연출 제어</p>
+                </div>
+            </div>
+            <p style="margin-top: 40px; text-align:center; font-style: italic; font-size: 28px;">AI를 '콘텐츠 공장'에서 '후반 작업 스위트'로 변모시키고 있습니다.</p>
+        </div>
+        <div class="reference">Source: RunwayML Blog (2024)</div>
+        <div class="slide-number">11 / 16</div>
+    </section>
+    
+    <!-- Slide 12: Consistency -->
+    <section class="slide">
+        <h3>사용자의 핵심 요구 ① 일관성</h3>
+        <div class="slide-content">
+            <p style="text-align:center; font-size: 28px; margin-bottom: 30px;">동일 캐릭터, 스타일, 객체를 일관되게 표현하는 것은 상업적 활용의 최대 난제이자 성배입니다.</p>
+            <div class="flow-diagram">
+                <div class="flow-box" style="font-size: 18px;">캐릭터 이미지<br>+<br>LoRA</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box" style="font-size: 18px; border-color: var(--secondary-color);">일관된 정체성<br>(Who/What)</div>
+                <div class="flow-arrow">+</div>
+                <div class="flow-box" style="font-size: 18px; border-color: var(--secondary-color);">일관된 구조<br>(How/Where)</div>
+                <div class="flow-arrow">←</div>
+                <div class="flow-box" style="font-size: 18px;">포즈/스케치<br>+<br>ControlNet</div>
+            </div>
+            <p style="margin-top: 30px; text-align:center; font-style: italic; font-size: 28px;"><strong>시너지:</strong> LoRA로 캐릭터를 고정하고, ControlNet으로 새로운 포즈를 취하게 하는 워크플로우가 표준입니다.</p>
+        </div>
+        <div class="reference">Source: Hugging Face, Reddit r/StableDiffusion Community Guides</div>
+        <div class="slide-number">12 / 16</div>
+    </section>
+
+    <!-- Slide 13: Korean Language -->
+    <section class="slide">
+        <h3>사용자의 핵심 요구 ② 한글</h3>
+        <div class="slide-content">
+            <p style="text-align:center; font-size: 28px; margin-bottom: 30px;">한국 시장의 성패를 가를 중요한 사용성 격차. 단순 폰트 지원이 아닌, 데이터와 모델 아키텍처에 뿌리박힌 근본적인 문제입니다.</p>
+            <div class="content-grid">
+                <div class="column">
+                    <h4>문제점</h4>
+                    <ul>
+                        <li>깨진 문자, 외계어, 타 언어 혼합 등 심각한 렌더링 오류</li>
+                        <li>영어 중심 데이터셋으로 인한 한글 구조 이해 부족</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4>해결 과제</h4>
+                    <ul>
+                        <li><strong>현재 최선:</strong> ChatGPT의 DALL-E 3가 상대적으로 가장 우수</li>
+                        <li><strong>궁극적 해결:</strong> 한국 시장 특화 모델 또는 다국어 이해력이 높은 차세대 모델 필요</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="reference">Source: Reddit & Korean AI Community User Feedback (2024-2025)</div>
+        <div class="slide-number">13 / 16</div>
+    </section>
+
+    <!-- Slide 14: Conclusion -->
+    <section class="slide">
+        <h3>결론: AI 네이티브 콘텐츠의 미래 비전</h3>
+        <div class="slide-content">
+            <p style="text-align:center; font-size: 28px; margin-bottom: 30px;">기술 거인들이 그리는 두 가지 상호 보완적인 미래상.</p>
+            <div class="content-grid">
+                <div class="column">
+                    <h4 style="color:#76B900;">NVIDIA (젠슨 황)</h4>
+                    <blockquote>"데이터를 검색하는 대신 이제는 답을 생성합니다."</blockquote>
+                    <ul>
+                        <li><strong>비전:</strong> AI 팩토리 (AI Factory)</li>
+                        <li><strong>핵심:</strong> 산업 규모의 자율적 생성, 물리적 세계와의 상호작용(Physical AI)</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4 style="color:#FF0000;">Adobe (샨타누 나라옌)</h4>
+                    <blockquote>"생성형 AI 모델은 우리의 상상력을 더욱 밀어붙이고 있습니다."</blockquote>
+                    <ul>
+                        <li><strong>비전:</strong> 디자인의 황금기</li>
+                        <li><strong>핵심:</strong> 인간 중심의 창의성 증폭, 크리에이터 경제의 부상</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="reference">Source: NVIDIA GTC 2025 Keynote, Adobe MAX 2024 Keynote</div>
+        <div class="slide-number">14 / 16</div>
+    </section>
+
+    <!-- Slide 15: Demo -->
+    <section class="slide" style="justify-content:center;">
+        <h1>Live Demo</h1>
+        <h2>실시간 데모</h2>
+        <div class="slide-number">15 / 16</div>
+    </section>
+
+    <!-- Slide 16: Q&A -->
+    <section class="slide" style="justify-content:center;">
+        <h1>Q & A</h1>
+        <h2>질의응답</h2>
+        <div class="slide-number">16 / 16</div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- GitHub Chart ---
+            const chartCanvases = document.querySelectorAll('.github-chart');
+            chartCanvases.forEach(chartCanvas => {
+                const ctx = chartCanvas.getContext('2d');
+                const labels = Array.from({length: 24}, (_, i) => {
+                    const d = new Date();
+                    d.setMonth(d.getMonth() - 23 + i);
+                    return d.toLocaleDateString('ko-KR', { year: '2-digit', month: 'short' });
+                });
+                
+                const webUiData = [75, 80, 85, 90, 94, 98, 102, 105, 108, 111, 114, 117, 120, 123, 126, 129, 132, 135, 138, 141, 144, 146, 148, 150].map(v => v * 1000);
+                const comfyUiData = [1, 2, 3, 5, 8, 11, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 64, 67, 70, 72, 73, 74, 74.5, 75.5].map(v => v * 1000);
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'AUTOMATIC1111/stable-diffusion-webui Stars',
+                            data: webUiData,
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            fill: false,
+                            tension: 0.4
+                        }, {
+                            label: 'comfyanonymous/ComfyUI Stars',
+                            data: comfyUiData,
+                            borderColor: 'rgba(74, 144, 226, 1)',
+                            backgroundColor: 'rgba(74, 144, 226, 0.2)',
+                            fill: false,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'GitHub Star History (지난 2년간 추이)',
+                                color: 'white',
+                                font: { size: 20 }
+                            },
+                            legend: {
+                                labels: {
+                                    color: 'white'
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: { color: '#ccc' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            },
+                            y: {
+                                ticks: { 
+                                    color: '#ccc',
+                                    callback: function(value) {
+                                        return value / 1000 + 'k';
+                                    }
+                                },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                title: {
+                                    display: true,
+                                    text: 'Star 수',
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
