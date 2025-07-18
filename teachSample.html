@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT 요정쌤과 알아보는 LLM과 MCP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+        .highlight {
+            background: linear-gradient(to top, #fde68a 50%, transparent 50%);
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .teacher-bubble {
+            position: relative;
+            background: #f3e8ff;
+            border-radius: .4em;
+            padding: 1.5rem;
+            border: 2px solid #d8b4fe;
+        }
+        .teacher-bubble:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border: 20px solid transparent;
+            border-right-color: #f3e8ff;
+            border-left: 0;
+            border-bottom: 0;
+            margin-top: -10px;
+            margin-left: -20px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-purple-700 mb-2">IT 요정쌤의 쪽집게 특강! 📝</h1>
+            <p class="text-xl text-gray-600">LLM의 도구 호출 vs MCP, 뭐가 다를까?</p>
+        </header>
+
+        <!-- Introduction Section -->
+        <div class="flex flex-col md:flex-row items-center gap-8 mb-16">
+            <div class="w-48 h-48 md:w-56 md:h-56 flex-shrink-0">
+                <!-- Image URL is confirmed and should be visible. -->
+                <img src="https://storage.googleapis.com/aai-web-samples/it-teacher.png" alt="세련되고 자신감 넘치는 IT 선생님 일러스트" class="rounded-full object-cover w-full h-full border-4 border-white shadow-lg">
+            </div>
+            <div class="teacher-bubble w-full">
+                <p class="text-lg">
+                    안녕, 친구들! IT 요정쌤이야. 😊<br>
+                    요즘 AI, 특히 LLM이 정말 핫하지? 이 똑똑한 친구들이 어떻게 외부 도구를 사용하는지 궁금했던 적 없어? 오늘은 LLM의 자율적인 <span class="font-bold text-purple-600">도구 호출</span>과, 정해진 계획대로 움직이는 <span class="font-bold text-green-600">MCP(모델 컨텍스트 프로토콜)</span>를 비교하며 쉽고 재미있게 파헤쳐 볼 거야. 잘 따라와 봐!
+                </p>
+            </div>
+        </div>
+
+        <!-- Main Comparison Section -->
+        <div class="grid md:grid-cols-2 gap-8 mb-16">
+            <!-- LLM Tool Calling -->
+            <div class="card border-t-4 border-purple-400">
+                <h2 class="text-2xl font-bold mb-4 text-purple-700">🧠 스스로 판단하는 천재, LLM의 도구 호출</h2>
+                <p class="mb-4">LLM은 마치 눈치 빠른 만능 비서 같아. 대화의 <span class="highlight">맥락을 스스로 파악</span>해서 "아, 지금 계산기가 필요하겠군!"하고 알아서 도구를 찾아 쓰는 방식이야.</p>
+                <ul class="space-y-3 list-inside list-disc">
+                    <li><strong class="text-purple-600">구현 과정:</strong> 개발자는 LLM에게 '이런 도구들이 있어' 하고 <span class="font-bold">도구 목록(Toolbox)</span>만 알려주면 끝! "날씨 물어보면 날씨 API 써~" 하고 간단한 설명만 덧붙여 줘.</li>
+                    <li><strong class="text-purple-600">호출 과정:</strong> 사용자가 "오늘 부산 날씨 어때?"라고 물으면, LLM이 대화 내용을 이해하고 <span class="font-bold">자율적으로 판단</span>해서 날씨 API라는 도구를 호출해. 이 결정 과정은 우리 눈에 보이지 않는 '블랙박스' 같아.</li>
+                    <li><strong class="text-purple-600">실행 과정:</strong> 도구가 실행되고 나온 결과(예: "부산은 맑음, 28도")를 다시 LLM이 받아서, "오늘 부산 날씨는 맑고 28도예요! ☀️"처럼 자연스러운 문장으로 만들어서 대답해 줘.</li>
+                </ul>
+            </div>
+
+            <!-- MCP -->
+            <div class="card border-t-4 border-green-400">
+                <h2 class="text-2xl font-bold mb-4 text-green-700">📜 계획대로 움직이는 모범생, MCP</h2>
+                <p class="mb-4">MCP는 잘 짜인 <span class="highlight">요리 레시피</span>나 대본 같아. '1번: 재료 확인', '2번: 재료 굽기'처럼 <span class="font-bold">정해진 순서와 조건</span>에 따라 도구를 호출하는 명확한 프로토콜(약속)이야.</p>
+                <ul class="space-y-3 list-inside list-disc">
+                    <li><strong class="text-green-600">구현 과정:</strong> 개발자가 <span class="font-bold">"만약 사용자가 '레시피 추천'이라고 말하면, '재료 검색' 도구를 반드시 호출해라"</span> 와 같이 모든 단계를 명시적으로 코딩해야 해. 아주 꼼꼼한 계획표를 짜는 거지.</li>
+                    <li><strong class="text-green-600">호출 과정:</strong> LLM의 자율적인 판단은 없어. 오직 개발자가 <span class="font-bold">미리 정해놓은 조건</span>이 충족될 때만 도구가 '자동으로' 호출돼. 예측 가능성이 아주 높아!</li>
+                    <li><strong class="text-green-600">실행 과정:</strong> 도구 실행 결과는 계획표의 다음 단계로 전달돼. 예를 들어 '재료 검색' 결과로 나온 '돼지고기, 양파'를 가지고, 다음 단계인 '레시피 생성' 도구를 호출하는 식이야.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Debugging Analysis Section -->
+        <div class="card mb-12 border-t-4 border-blue-400">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-6 text-blue-700">
+                🔬 MCP로 LLM의 속마음을 엿볼 수 있을까?
+            </h2>
+            <div class="text-center text-lg mb-6">
+                <p>정답은 <span class="font-bold text-2xl text-red-500">"네, 가능해요!"</span> 에요.</p>
+                <p class="mt-2">이게 왜 중요한지 선생님이 설명해 줄게!</p>
+            </div>
+            <div class="prose max-w-none text-left md:text-center text-lg">
+                <p>
+                    LLM의 판단 과정은 '블랙박스'라서 왜 그런 결정을 내렸는지 알기 어려울 때가 많아. 하지만 MCP를 사용하면 이야기가 달라져. 우리는 <span class="font-bold">특정 단계에서 특정 도구를 강제로 호출</span>하게 만들 수 있잖아?
+                </p>
+                <p>
+                    이건 마치 과학 실험에서 <span class="highlight">'통제된 변수'</span>를 만드는 것과 같아. 우리가 의도한 시점에 도구의 결과(정보)를 LLM에게 '짠!' 하고 보여주는 거지.
+                </p>
+                <p>
+                    그때 LLM이 그 정보를 어떻게 해석하고, 다음 행동을 어떻게 만들어내는지 관찰하면, 우리는 LLM의 동작 원리, 즉 <span class="font-bold text-blue-600">'생각의 흐름'</span>에 대한 중요한 힌트를 얻을 수 있어. 중간 과정을 딱 멈춰서 디버깅하는 효과를 내는 거야. 정말 흥미롭지 않니?
+                </p>
+            </div>
+        </div>
+
+        <!-- Summary Table -->
+        <div class="card">
+            <h3 class="text-2xl font-bold text-center mb-6">한눈에 보는 비교 정리!</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="border-b-2 p-4 font-bold">구분</th>
+                            <th class="border-b-2 p-4 font-bold text-purple-700">LLM 도구 호출</th>
+                            <th class="border-b-2 p-4 font-bold text-green-700">MCP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-gray-100">
+                            <td class="border-b p-4 font-semibold">핵심 특징</td>
+                            <td class="border-b p-4">자율적, 맥락 기반 판단</td>
+                            <td class="border-b p-4">명시적, 규칙 기반 실행</td>
+                        </tr>
+                        <tr class="hover:bg-gray-100">
+                            <td class="border-b p-4 font-semibold">호출 주체</td>
+                            <td class="border-b p-4">LLM 모델 자신</td>
+                            <td class="border-b p-4">미리 정의된 코드(규칙)</td>
+                        </tr>
+                        <tr class="hover:bg-gray-100">
+                            <td class="border-b p-4 font-semibold">예측 가능성</td>
+                            <td class="border-b p-4">낮음 (유연함)</td>
+                            <td class="border-b p-4">높음 (엄격함)</td>
+                        </tr>
+                        <tr class="hover:bg-gray-100">
+                            <td class="p-4 font-semibold">디버깅</td>
+                            <td class="p-4">어려움 (블랙박스)</td>
+                            <td class="p-4">용이함 (투명한 흐름)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Conclusion -->
+        <footer class="text-center mt-16">
+            <p class="text-lg text-gray-700">어때, 친구들? 이제 LLM과 MCP의 차이가 확실히 느껴지지? 😉</p>
+            <p class="text-lg text-gray-700 mt-2">둘 다 훌륭한 기술이지만, 상황에 맞게 사용하는 지혜가 필요하단다. 궁금한 게 있으면 언제든지 또 쌤을 찾아줘!</p>
+            <p class="mt-8 text-sm text-gray-500">&copy; 2025 IT 요정쌤의 즐거운 코딩 교실</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
