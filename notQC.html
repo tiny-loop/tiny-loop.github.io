@@ -27,14 +27,14 @@
         - Donut Chart (Section 5): Goal: Compare/Composition. Library: Chart.js. Justification: Shows the proportion of different user complaints, highlighting the most common issues. NO SVG.
         - Organized List (Section 6): Goal: Organize. Method: Styled HTML `<ul>`. Justification: Clearly and concisely presents the core demands for change. NO SVG.
 
-        Color Palette Chosen: 'Brilliant Blues' (#003F5C, #365B7D, #6A7A9B, #9E9ABD, #D4B9DE) for a professional, tech-focused, yet vibrant feel.
+        Color Palette Chosen: 'Energetic & Playful' (#073B4C, #118AB2, #06D6A0, #FFD166, #FF6B6B) for a vibrant, high-contrast and clear presentation.
         
         Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output. All visuals are created with Chart.js (Canvas) or styled HTML elements.
     -->
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #F0F4F8; 
+            background-color: #f7fafc; 
         }
         .chart-container {
             position: relative;
@@ -51,98 +51,99 @@
             }
         }
         .gradient-text {
-            background: linear-gradient(to right, #365B7D, #9E9ABD);
+            background: linear-gradient(to right, #118AB2, #06D6A0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .card {
             background-color: white;
             border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
         }
     </style>
 </head>
-<body class="text-[#003F5C]">
+<body class="text-[#073B4C]">
 
     <div class="container mx-auto p-4 md:p-8 max-w-7xl">
 
         <header class="text-center my-8 md:my-16">
             <h1 class="text-4xl md:text-6xl font-black gradient-text">생성형 AI의 블랙박스</h1>
-            <p class="text-lg md:text-xl mt-4 text-[#365B7D]">사용자들은 시시각각 변하는 AI 구독 서비스에 대해 투명성을 요구하고 있습니다.</p>
+            <p class="text-lg md:text-xl mt-4 text-[#118AB2]">사용자들은 시시각각 변하는 AI 구독 서비스에 대해 투명성을 요구하고 있습니다.</p>
         </header>
 
         <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
             <section class="lg:col-span-3 card text-center">
-                 <h2 class="text-2xl font-bold text-[#003F5C] mb-4">신뢰의 위기</h2>
-                 <p class="text-base text-[#365B7D] mb-4 max-w-3xl mx-auto">유료 AI 도구 도입을 저해하는 핵심 문제는 명확하고 안정적인 서비스 계약의 부재입니다. 기존 소프트웨어와 달리, AI 구독 서비스의 기능과 한도는 예고 없이 변경될 수 있어 사용자들은 속았다고 느끼게 됩니다.</p>
-                <div class="text-7xl md:text-9xl font-black text-[#6A7A9B]">75%</div>
-                <p class="text-lg font-semibold text-[#365B7D] mt-2">전문직 사용자 설문조사에서 AI 구독 서비스의 사용량 한도에 대해 혼란을 겪고 있다고 응답했습니다.</p>
+                 <h2 class="text-2xl font-bold text-[#073B4C] mb-4">신뢰의 위기</h2>
+                 <p class="text-base text-[#118AB2] mb-4 max-w-3xl mx-auto">유료 AI 도구 도입을 저해하는 핵심 문제는 명확하고 안정적인 서비스 계약의 부재입니다. 기존 소프트웨어와 달리, AI 구독 서비스의 기능과 한도는 예고 없이 변경될 수 있어 사용자들은 속았다고 느끼게 됩니다.</p>
+                <div class="text-7xl md:text-9xl font-black text-[#FF6B6B]">75%</div>
+                <p class="text-lg font-semibold text-[#073B4C] mt-2">전문직 사용자 설문조사에서 AI 구독 서비스의 사용량 한도에 대해 혼란을 겪고 있다고 응답했습니다.</p>
             </section>
             
             <section class="md:col-span-2 lg:col-span-3 card">
-                <h2 class="text-2xl font-bold text-center mb-6 text-[#003F5C]">사용자의 실망스러운 여정</h2>
+                <h2 class="text-2xl font-bold text-center mb-6 text-[#073B4C]">사용자의 실망스러운 여정</h2>
                 <div class="flex flex-col md:flex-row items-center justify-around text-center">
                     <div class="flex flex-col items-center p-2">
-                        <div class="w-24 h-24 bg-[#D4B9DE] rounded-full flex items-center justify-center text-4xl font-bold text-white">1</div>
+                        <div class="w-24 h-24 bg-[#FFD166] rounded-full flex items-center justify-center text-4xl font-extrabold text-[#073B4C]">1</div>
                         <h3 class="font-bold mt-2">구독</h3>
-                        <p class="text-sm text-[#365B7D]">'우선 접속'을 위해 '프로' 요금제 결제</p>
+                        <p class="text-sm text-[#118AB2]">'우선 접속'을 위해 '프로' 요금제 결제</p>
                     </div>
-                    <div class="text-4xl text-[#9E9ABD] my-4 md:my-0">&#10230;</div>
+                    <div class="text-4xl text-[#FFD166] my-4 md:my-0 font-light">&#10230;</div>
                     <div class="flex flex-col items-center p-2">
-                        <div class="w-24 h-24 bg-[#9E9ABD] rounded-full flex items-center justify-center text-4xl font-bold text-white">2</div>
+                        <div class="w-24 h-24 bg-[#06D6A0] rounded-full flex items-center justify-center text-4xl font-extrabold text-[#073B4C]">2</div>
                         <h3 class="font-bold mt-2">프로젝트 시작</h3>
-                        <p class="text-sm text-[#365B7D]">중요 업무에 서비스를 본격적으로 사용</p>
+                        <p class="text-sm text-[#118AB2]">중요 업무에 서비스를 본격적으로 사용</p>
                     </div>
-                     <div class="text-4xl text-[#6A7A9B] my-4 md:my-0">&#10230;</div>
+                     <div class="text-4xl text-[#06D6A0] my-4 md:my-0 font-light">&#10230;</div>
                     <div class="flex flex-col items-center p-2">
-                        <div class="w-24 h-24 bg-[#6A7A9B] rounded-full flex items-center justify-center text-4xl font-bold text-white">3</div>
+                        <div class="w-24 h-24 bg-[#118AB2] rounded-full flex items-center justify-center text-4xl font-extrabold text-white">3</div>
                         <h3 class="font-bold mt-2">한도 변경</h3>
-                        <p class="text-sm text-[#365B7D]">예고 없이 메시지 사용량이 갑자기 줄어듦</p>
+                        <p class="text-sm text-[#118AB2]">예고 없이 메시지 사용량이 갑자기 줄어듦</p>
                     </div>
-                     <div class="text-4xl text-[#365B7D] my-4 md:my-0">&#10230;</div>
+                     <div class="text-4xl text-[#118AB2] my-4 md:my-0 font-light">&#10230;</div>
                     <div class="flex flex-col items-center p-2">
-                        <div class="w-24 h-24 bg-[#003F5C] rounded-full flex items-center justify-center text-4xl font-bold text-white">4</div>
+                        <div class="w-24 h-24 bg-[#FF6B6B] rounded-full flex items-center justify-center text-4xl font-extrabold text-white">4</div>
                         <h3 class="font-bold mt-2">업무 중단</h3>
-                        <p class="text-sm text-[#365B7D]">프로젝트가 중단되고 서비스 신뢰도 하락</p>
+                        <p class="text-sm text-[#118AB2]">프로젝트가 중단되고 서비스 신뢰도 하락</p>
                     </div>
                 </div>
             </section>
             
             <section class="lg:col-span-3 card">
-                <h2 class="text-2xl font-bold text-center mb-4 text-[#003F5C]">구독 서비스의 미로</h2>
-                <p class="text-base text-center text-[#365B7D] mb-6">주요 AI 기업들은 비슷한 혜택을 약속하지만, 세부 조건이 모호하여 소비자에게 혼란을 야기합니다.</p>
+                <h2 class="text-2xl font-bold text-center mb-4 text-[#073B4C]">구독 서비스의 미로</h2>
+                <p class="text-base text-center text-[#118AB2] mb-6">주요 AI 기업들은 비슷한 혜택을 약속하지만, 세부 조건이 모호하여 소비자에게 혼란을 야기합니다.</p>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
-                        <thead class="bg-[#D4B9DE] text-white">
+                        <thead class="bg-[#073B4C] text-white">
                             <tr>
-                                <th class="p-3 font-semibold">서비스 제공사</th>
+                                <th class="p-3 font-semibold rounded-tl-lg">서비스 제공사</th>
                                 <th class="p-3 font-semibold">주요 약속</th>
-                                <th class="p-3 font-semibold">보고된 불만 사항</th>
+                                <th class="p-3 font-semibold rounded-tr-lg">보고된 불만 사항</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="border-b border-gray-200">
-                                <td class="p-3 font-medium text-[#003F5C]">OpenAI (ChatGPT)</td>
-                                <td class="p-3 text-[#365B7D]">GPT-4 "더 높은 사용량 한도"</td>
-                                <td class="p-3 text-[#365B7D]">예고 없이 한도가 심하게 변동됨</td>
+                                <td class="p-3 font-medium text-[#073B4C]">OpenAI (ChatGPT)</td>
+                                <td class="p-3 text-[#118AB2]">GPT-4 "더 높은 사용량 한도"</td>
+                                <td class="p-3 text-[#118AB2]">예고 없이 한도가 심하게 변동됨</td>
                             </tr>
                             <tr class="border-b border-gray-200 bg-gray-50">
-                                <td class="p-3 font-medium text-[#003F5C]">Anthropic (Claude)</td>
-                                <td class="p-3 text-[#365B7D]">"최소 5배 더 많은 사용량"</td>
-                                <td class="p-3 text-[#365B7D]">"5배"의 기준이 되는 무료 사용량이 불분명</td>
+                                <td class="p-3 font-medium text-[#073B4C]">Anthropic (Claude)</td>
+                                <td class="p-3 text-[#118AB2]">"최소 5배 더 많은 사용량"</td>
+                                <td class="p-3 text-[#118AB2]">"5배"의 기준이 되는 무료 사용량이 불분명</td>
                             </tr>
                              <tr class="border-b border-gray-200">
-                                <td class="p-3 font-medium text-[#003F5C]">Google (Gemini)</td>
-                                <td class="p-3 text-[#365B7D]">고급 모델 우선 이용</td>
-                                <td class="p-3 text-[#365B7D]">모델 제공이 느리고 예측 불가능함</td>
+                                <td class="p-3 font-medium text-[#073B4C]">Google (Gemini)</td>
+                                <td class="p-3 text-[#118AB2]">고급 모델 우선 이용</td>
+                                <td class="p-3 text-[#118AB2]">모델 제공이 느리고 예측 불가능함</td>
                             </tr>
                             <tr class="bg-gray-50">
-                                <td class="p-3 font-medium text-[#003F5C]">xAI (Grok)</td>
-                                <td class="p-3 text-[#365B7D]">X Premium+ 통한 접근</td>
-                                <td class="p-3 text-[#365B7D]">사용량 한도가 명확히 정의되지 않음</td>
+                                <td class="p-3 font-medium text-[#073B4C] rounded-bl-lg">xAI (Grok)</td>
+                                <td class="p-3 text-[#118AB2]">X Premium+ 통한 접근</td>
+                                <td class="p-3 text-[#118AB2] rounded-br-lg">사용량 한도가 명확히 정의되지 않음</td>
                             </tr>
                         </tbody>
                     </table>
@@ -151,69 +152,69 @@
 
 
             <section class="card">
-                <h2 class="text-2xl font-bold text-center mb-4 text-[#003F5C]">EU의 규제 방패</h2>
-                <p class="text-base text-[#365B7D] mb-4">유럽연합은 기존 및 신규 규제를 활용하여 소비자를 보호하고 있습니다. 역사적인 **EU AI 법**은 투명성의 기틀을 마련했으며, **유럽소비자연맹(BEUC)** 등은 **불공정 상업 관행 지침(UCPD)**을 근거로 불분명한 서비스 조건을 기만 행위로 간주해야 한다고 주장합니다.</p>
+                <h2 class="text-2xl font-bold text-center mb-4 text-[#073B4C]">EU의 규제 방패</h2>
+                <p class="text-base text-[#118AB2] mb-4">유럽연합은 기존 및 신규 규제를 활용하여 소비자를 보호하고 있습니다. 역사적인 **EU AI 법**은 투명성의 기틀을 마련했으며, **유럽소비자연맹(BEUC)** 등은 **불공정 상업 관행 지침(UCPD)**을 근거로 불분명한 서비스 조건을 기만 행위로 간주해야 한다고 주장합니다.</p>
             </section>
 
             <section class="card">
-                <h2 class="text-2xl font-bold text-center mb-4 text-[#003F5C]">미국의 분산된 접근</h2>
-                <p class="text-base text-[#365B7D] mb-4">미국에서는 연방 기관과 주법이 규제를 주도합니다. **연방거래위원회(FTC)**는 기만적인 AI 광고에 대해 경고했으며, **백악관의 AI 권리장전**은 "고지 및 설명" 원칙을 강조하며 명확한 상업적 조건을 요구하는 목소리에 힘을 싣고 있습니다.</p>
+                <h2 class="text-2xl font-bold text-center mb-4 text-[#073B4C]">미국의 분산된 접근</h2>
+                <p class="text-base text-[#118AB2] mb-4">미국에서는 연방 기관과 주법이 규제를 주도합니다. **연방거래위원회(FTC)**는 기만적인 AI 광고에 대해 경고했으며, **백악관의 AI 권리장전**은 "고지 및 설명" 원칙을 강조하며 명확한 상업적 조건을 요구하는 목소리에 힘을 싣고 있습니다.</p>
             </section>
             
             <section class="card">
-                <h2 class="text-2xl font-bold text-center mb-4 text-[#003F5C]">소비자 우려 수준</h2>
-                 <p class="text-base text-center text-[#365B7D] mb-4">설문조사에 따르면, 두 지역의 유료 사용자 모두 서비스 투명성 부족에 대해 높은 수준의 우려를 표하고 있습니다.</p>
+                <h2 class="text-2xl font-bold text-center mb-4 text-[#073B4C]">소비자 우려 수준</h2>
+                 <p class="text-base text-center text-[#118AB2] mb-4">설문조사에 따르면, 두 지역의 유료 사용자 모두 서비스 투명성 부족에 대해 높은 수준의 우려를 표하고 있습니다.</p>
                 <div class="chart-container">
                     <canvas id="concernChart"></canvas>
                 </div>
             </section>
             
             <section class="lg:col-span-2 card">
-                <h2 class="text-2xl font-bold text-center mb-4 text-[#003F5C]">사용자의 목소리</h2>
-                 <p class="text-base text-center text-[#365B7D] mb-4">사용자 포럼 분석 결과, 일관된 불만 패턴이 드러났습니다. 주된 불만은 사용량 제한 자체가 아니라, 예측 불가능성으로 인해 신뢰가 무너지고 전문적인 사용이 어렵다는 점입니다.</p>
+                <h2 class="text-2xl font-bold text-center mb-4 text-[#073B4C]">사용자의 목소리</h2>
+                 <p class="text-base text-center text-[#118AB2] mb-4">사용자 포럼 분석 결과, 일관된 불만 패턴이 드러났습니다. 주된 불만은 사용량 제한 자체가 아니라, 예측 불가능성으로 인해 신뢰가 무너지고 전문적인 사용이 어렵다는 점입니다.</p>
                 <div class="chart-container h-[300px] md:h-[350px] max-h-[450px]">
                     <canvas id="complaintChart"></canvas>
                 </div>
             </section>
 
             <section class="md:col-span-2 lg:col-span-3 card">
-                <h2 class="text-2xl font-bold text-center mb-6 text-[#003F5C]">명확한 미래를 위한 제안</h2>
-                <p class="text-base text-center text-[#365B7D] mb-6">신뢰를 회복하기 위해 사용자들과 규제 기관들은 새로운 투명성 기준을 요구하고 있습니다. 핵심 요구사항은 다음과 같습니다:</p>
+                <h2 class="text-2xl font-bold text-center mb-6 text-[#073B4C]">명확한 미래를 위한 제안</h2>
+                <p class="text-base text-center text-[#118AB2] mb-6">신뢰를 회복하기 위해 사용자들과 규제 기관들은 새로운 투명성 기준을 요구하고 있습니다. 핵심 요구사항은 다음과 같습니다:</p>
                 <ul class="space-y-4">
                     <li class="flex items-start">
-                        <span class="text-2xl font-bold text-[#9E9ABD] mr-4">&#10004;</span>
+                        <span class="text-2xl font-bold text-[#06D6A0] mr-4">&#10004;</span>
                         <div>
                             <h3 class="font-bold">사용량 한도 명문화</h3>
-                            <p class="text-[#365B7D]">서비스 약관에 "3시간당 500개 메시지"와 같이 명확하고 정량화된 한도를 게시해야 합니다.</p>
+                            <p class="text-[#118AB2]">서비스 약관에 "3시간당 500개 메시지"와 같이 명확하고 정량화된 한도를 게시해야 합니다.</p>
                         </div>
                     </li>
                     <li class="flex items-start">
-                        <span class="text-2xl font-bold text-[#9E9ABD] mr-4">&#10004;</span>
+                        <span class="text-2xl font-bold text-[#06D6A0] mr-4">&#10004;</span>
                         <div>
                             <h3 class="font-bold">변경 사항 사전 고지 정책</h3>
-                            <p class="text-[#365B7D]">모든 유료 구독자에게 한도 또는 접근 권한 변경 시 최소 30일의 사전 고지 기간을 의무화해야 합니다.</p>
+                            <p class="text-[#118AB2]">모든 유료 구독자에게 한도 또는 접근 권한 변경 시 최소 30일의 사전 고지 기간을 의무화해야 합니다.</p>
                         </div>
                     </li>
                     <li class="flex items-start">
-                        <span class="text-2xl font-bold text-[#9E9ABD] mr-4">&#10004;</span>
+                        <span class="text-2xl font-bold text-[#06D6A0] mr-4">&#10004;</span>
                         <div>
                             <h3 class="font-bold">투명한 모델 등급제</h3>
-                            <p class="text-[#365B7D]">각 구독 요금제에 포함된 모델과 새 모델에 대한 예상 접근 일정을 명확히 정의해야 합니다.</p>
+                            <p class="text-[#118AB2]">각 구독 요금제에 포함된 모델과 새 모델에 대한 예상 접근 일정을 명확히 정의해야 합니다.</p>
                         </div>
                     </li>
                      <li class="flex items-start">
-                        <span class="text-2xl font-bold text-[#9E9ABD] mr-4">&#10004;</span>
+                        <span class="text-2xl font-bold text-[#06D6A0] mr-4">&#10004;</span>
                         <div>
                             <h3 class="font-bold">표준화된 벤치마킹</h3>
-                            <p class="text-[#365B7D]">성능 주장을 검증하고 소비자에게 신뢰할 수 있는 비교 정보를 제공하기 위해 독립적인 벤치마크를 지원해야 합니다.</p>
+                            <p class="text-[#118AB2]">성능 주장을 검증하고 소비자에게 신뢰할 수 있는 비교 정보를 제공하기 위해 독립적인 벤치마크를 지원해야 합니다.</p>
                         </div>
                     </li>
                 </ul>
             </section>
         </main>
 
-        <footer class="text-center mt-8 p-4 border-t-2 border-[#D4B9DE]">
-            <p class="text-[#365B7D]">본 인포그래픽은 생성형 AI 시장의 새로운 규제 및 소비자 동향에 대한 조사를 요약한 것입니다. 참고 자료에는 EU AI 법, 미국 FTC 성명, 유럽소비자연맹(BEUC) 보고서 등이 포함됩니다.</p>
+        <footer class="text-center mt-8 p-4 border-t-2 border-[#06D6A0]">
+            <p class="text-[#118AB2]">본 인포그래픽은 생성형 AI 시장의 새로운 규제 및 소비자 동향에 대한 조사를 요약한 것입니다. 참고 자료에는 EU AI 법, 미국 FTC 성명, 유럽소비자연맹(BEUC) 보고서 등이 포함됩니다.</p>
         </footer>
     </div>
 
@@ -255,7 +256,7 @@
                 legend: {
                     position: 'bottom',
                     labels: {
-                        color: '#003F5C',
+                        color: '#073B4C',
                         font: {
                             family: "'Noto Sans KR', sans-serif"
                         }
@@ -276,14 +277,14 @@
             scales: {
                 y: {
                     ticks: { 
-                        color: '#365B7D',
+                        color: '#118AB2',
                         font: { family: "'Noto Sans KR', sans-serif" }
                     },
-                    grid: { color: '#E0E7FF' }
+                    grid: { color: '#e2e8f0' }
                 },
                 x: {
                     ticks: { 
-                        color: '#365B7D',
+                        color: '#118AB2',
                         font: { family: "'Noto Sans KR', sans-serif" }
                     },
                     grid: { display: false }
@@ -299,9 +300,10 @@
                 datasets: [{
                     label: '높은 우려를 표한 비율 (%)',
                     data: [82, 78],
-                    backgroundColor: ['#6A7A9B', '#9E9ABD'],
-                    borderColor: ['#365B7D', '#6A7A9B'],
-                    borderWidth: 2
+                    backgroundColor: ['#118AB2', '#06D6A0'],
+                    borderColor: ['#073B4C', '#073B4C'],
+                    borderWidth: 1,
+                    borderRadius: 4
                 }]
             },
             options: {
@@ -309,12 +311,12 @@
                 indexAxis: 'y',
                  scales: {
                     y: {
-                        ticks: { color: '#365B7D', font: { family: "'Noto Sans KR', sans-serif", size: 14 }},
+                        ticks: { color: '#073B4C', font: { family: "'Noto Sans KR', sans-serif", size: 14, weight: 'bold' }},
                         grid: { display: false }
                     },
                     x: {
-                        ticks: { color: '#365B7D', font: { family: "'Noto Sans KR', sans-serif" }},
-                        grid: { color: '#E0E7FF' },
+                        ticks: { color: '#118AB2', font: { family: "'Noto Sans KR', sans-serif" }},
+                        grid: { color: '#e2e8f0' },
                         max: 100
                     }
                 }
@@ -337,14 +339,14 @@
                     label: '사용자 불만 유형',
                     data: [45, 25, 20, 10],
                     backgroundColor: [
-                        '#365B7D',
-                        '#6A7A9B',
-                        '#9E9ABD',
-                        '#D4B9DE'
+                        '#FF6B6B',
+                        '#FFD166',
+                        '#06D6A0',
+                        '#118AB2'
                     ],
                     borderColor: '#FFFFFF',
-                    borderWidth: 3,
-                    hoverOffset: 4
+                    borderWidth: 4,
+                    hoverOffset: 8
                 }]
             },
             options: {
