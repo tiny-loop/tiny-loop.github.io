@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 IMO: AI 금메달 성과 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #0A9396, #EE9B00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .flow-line::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -2rem;
+            width: 2rem;
+            height: 2px;
+            background-color: #94D2BD;
+        }
+        .flow-line-vertical::after {
+            content: '';
+            position: absolute;
+            bottom: -2rem;
+            left: 50%;
+            width: 2px;
+            height: 2rem;
+            background-color: #94D2BD;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12 md:mb-20">
+            <h1 class="text-4xl md:text-6xl font-black mb-4">두 개의 <span class="gradient-text">금메달</span></h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">2025년 국제수학올림피아드(IMO)에서 OpenAI와 Google의 AI가 어떻게 수학적 추론의 새로운 역사를 썼는지 분석합니다.</p>
+        </header>
+
+        <section id="intro" class="mb-16 md:mb-24">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <div class="md:col-span-1 text-center bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+                    <p class="text-2xl font-bold text-[#005F73]">최종 점수</p>
+                    <p class="text-8xl md:text-9xl font-black text-[#0A9396] my-4">35<span class="text-5xl text-gray-400">/42</span></p>
+                    <p class="text-2xl font-bold text-[#EE9B00]">금메달 획득</p>
+                </div>
+                <div class="md:col-span-2">
+                    <h2 class="text-3xl font-bold mb-4 text-[#005F73]">수학의 에베레스트, AI가 정복하다</h2>
+                    <p class="text-base text-gray-700 leading-relaxed">
+                        국제수학올림피아드(IMO)는 세계 최고 권위의 수학 경시 대회로, 인간의 창의적 사고와 논리력의 정점을 상징합니다. 2025년 7월, OpenAI와 Google DeepMind의 AI 시스템은 이 어려운 시험에서 42점 만점에 35점을 획득하여 나란히 금메달 수준의 성과를 달성했습니다. 이는 기계가 복잡하고 창의적인 추론 능력을 갖추었음을 증명하는 역사적인 사건입니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="scoreboard" class="mb-16 md:mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-[#005F73]">스코어보드: AI 성과 비교 분석</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                    <h3 class="text-xl font-bold text-center mb-4 text-[#005F73]">점수 및 메달 비교</h3>
+                    <p class="text-center text-gray-600 mb-6 text-sm">두 AI 모두 금메달 커트라인인 35점을 기록했습니다. 이는 최고 수준의 인간 참가자들과 어깨를 나란히 하는 성과입니다.</p>
+                    <div class="chart-container">
+                        <canvas id="scoreComparisonChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                    <h3 class="text-xl font-bold text-center mb-4 text-[#005F73]">문제 해결 능력</h3>
+                    <p class="text-center text-gray-600 mb-6 text-sm">총 6개의 문제 중 5개를 해결했으나, 가장 높은 창의성을 요구하는 6번 문제는 해결하지 못했습니다.</p>
+                    <div class="chart-container">
+                        <canvas id="problemsSolvedChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="human-comparison" class="mb-16 md:mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-[#005F73]">AI 대 인간: 경쟁의 맥락</h2>
+             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-lg border border-gray-100 flex flex-col justify-center">
+                    <h3 class="text-xl font-bold text-center mb-4 text-[#005F73]">2025 IMO 금메달리스트 분포</h3>
+                    <p class="text-center text-gray-600 mb-6 text-sm">AI는 630명의 참가자 중 금메달을 획득한 67명의 엘리트 그룹에 속하게 되었습니다.</p>
+                    <div class="chart-container h-64 md:h-auto">
+                        <canvas id="humanMedalChart"></canvas>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
+                     <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 text-center flex flex-col justify-center">
+                        <p class="text-xl font-bold text-[#005F73]">상위 성적</p>
+                        <p class="text-7xl font-black text-[#0A9396] my-2">10.6%</p>
+                        <p class="text-gray-600 leading-snug">AI의 성과는 전체 참가자 중 상위 약 10.6%에 해당하며, 이는 인간 최고수들과의 동등성을 의미합니다.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 text-center flex flex-col justify-center">
+                        <p class="text-xl font-bold text-[#CA6702]">최후의 개척지</p>
+                        <p class="text-7xl font-black text-[#AE2012] my-2">P6</p>
+                        <p class="text-gray-600 leading-snug">두 AI 모두 6번 문제 해결에 실패했습니다. 이는 인간 천재의 '통찰의 번뜩임'이 아직 AI에게 과제로 남아있음을 보여줍니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech-approach" class="mb-16 md:mb-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-[#005F73]">두 개의 금메달, 두 개의 전략</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">점수는 같았지만, 목표에 도달하는 과정과 철학은 달랐습니다. OpenAI는 순수 LLM의 힘을, Google은 공식 인증을 통한 신뢰성을 강조했습니다.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+                    <h3 class="text-2xl font-bold text-center mb-8 text-[#0A9396]">OpenAI: 순수 LLM의 힘</h3>
+                    <div class="space-y-8 relative">
+                        <div class="relative flex items-center p-4 bg-teal-50 rounded-lg flow-line-vertical">
+                            <div class="text-3xl mr-4">❶</div>
+                            <div>
+                                <h4 class="font-bold">범용 추론 LLM</h4>
+                                <p class="text-sm text-gray-600">외부 도구 없이 순수한 대규모 언어 모델의 추론 능력만으로 문제에 접근.</p>
+                            </div>
+                        </div>
+                        <div class="relative flex items-center p-4 bg-teal-50 rounded-lg flow-line-vertical">
+                             <div class="text-3xl mr-4">❷</div>
+                            <div>
+                                <h4 class="font-bold">독립적 평가</h4>
+                                <p class="text-sm text-gray-600">전 IMO 메달리스트 3명이 채점하는 내부 테스트를 통해 비공식적으로 성과 검증.</p>
+                            </div>
+                        </div>
+                        <div class="relative flex items-center p-4 bg-teal-50 rounded-lg">
+                             <div class="text-3xl mr-4">❸</div>
+                            <div>
+                                <h4 class="font-bold">연구자 주도 발표</h4>
+                                <p class="text-sm text-gray-600">7월 19일, 연구원의 X(트위터)를 통해 신속하게 결과를 공개하며 화제를 선점.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+                    <h3 class="text-2xl font-bold text-center mb-8 text-[#EE9B00]">Google: 공식 인증의 권위</h3>
+                    <div class="space-y-8 relative">
+                        <div class="relative flex items-center p-4 bg-orange-50 rounded-lg flow-line-vertical">
+                            <div class="text-3xl mr-4">❶</div>
+                            <div>
+                                <h4 class="font-bold">"Deep Think" Gemini</h4>
+                                <p class="text-sm text-gray-600">구조화된 추론 능력을 통합한 Gemini 모델이 자연어 문제를 직접 해결.</p>
+                            </div>
+                        </div>
+                        <div class="relative flex items-center p-4 bg-orange-50 rounded-lg flow-line-vertical">
+                             <div class="text-3xl mr-4">❷</div>
+                            <div>
+                                <h4 class="font-bold">공식 인증</h4>
+                                <p class="text-sm text-gray-600">IMO 주관 기관으로부터 직접 채점 및 인증을 받아 결과의 정당성을 확보.</p>
+                            </div>
+                        </div>
+                        <div class="relative flex items-center p-4 bg-orange-50 rounded-lg">
+                             <div class="text-3xl mr-4">❸</div>
+                            <div>
+                                <h4 class="font-bold">기업 공식 발표</h4>
+                                <p class="text-sm text-gray-600">7월 21일, 공식 블로그를 통해 신중하고 권위 있는 방식으로 성과를 발표.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center pt-12 border-t border-gray-200">
+            <h2 class="text-3xl font-bold text-[#005F73] mb-4">올림피아드를 넘어서</h2>
+            <p class="text-gray-600 max-w-3xl mx-auto">
+                이번 성과는 AI가 '암기'를 넘어 진정한 추론 능력을 갖추었음을 보여줍니다. 이는 단순한 경쟁의 승리가 아니라, 미래 과학 연구와 인간 지성 확장의 새로운 가능성을 여는 시작점입니다. AI와 인간이 함께 풀어나갈 다음 과제는 무엇일까요?
+            </p>
+        </footer>
+
+    </div>
+
+    <script>
+        const brilliantBlues = {
+            main: '#0A9396',
+            accent1: '#EE9B00',
+            accent2: '#94D2BD',
+            dark: '#005F73',
+            danger: '#AE2012',
+            lightGray: '#e5e7eb',
+            darkGray: '#4b5563'
+        };
+
+        function wrapLabels(label, maxLength) {
+            if (typeof label !== 'string' || label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            if (currentLine.length > 0) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: brilliantBlues.darkGray,
+                        font: {
+                            family: "'Noto Sans KR', sans-serif"
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    bodyFont: {
+                        family: "'Noto Sans KR', sans-serif"
+                    },
+                    titleFont: {
+                        family: "'Noto Sans KR', sans-serif"
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: brilliantBlues.darkGray },
+                    grid: { display: false }
+                },
+                y: {
+                    ticks: { color: brilliantBlues.darkGray },
+                    grid: { color: brilliantBlues.lightGray }
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const scoreCtx = document.getElementById('scoreComparisonChart').getContext('2d');
+            new Chart(scoreCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['OpenAI', 'Google', '금메달 커트라인', '은메달 커트라인', '동메달 커트라인'],
+                    datasets: [{
+                        label: '2025 IMO 점수',
+                        data: [35, 35, 35, 28, 20],
+                        backgroundColor: [
+                            brilliantBlues.main,
+                            brilliantBlues.accent1,
+                            brilliantBlues.accent2,
+                            '#c0c0c0',
+                            '#cd7f32'
+                        ],
+                        borderColor: [
+                            brilliantBlues.dark,
+                            '#CA6702',
+                            '#005F73',
+                            '#a9a9a9',
+                            '#b8732e'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    ...defaultChartOptions,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 42,
+                            title: {
+                                display: true,
+                                text: '점수'
+                            }
+                        }
+                    }
+                }
+            });
+
+            const problemsCtx = document.getElementById('problemsSolvedChart').getContext('2d');
+            new Chart(problemsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['해결한 문제', '미해결 문제 (P6)'],
+                    datasets: [{
+                        data: [5, 1],
+                        backgroundColor: [brilliantBlues.main, brilliantBlues.danger],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    ...defaultChartOptions,
+                    cutout: '60%'
+                }
+            });
+
+            const humanMedalCtx = document.getElementById('humanMedalChart').getContext('2d');
+            new Chart(humanMedalCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['금메달 (AI 포함)', '그 외 참가자'],
+                    datasets: [{
+                        data: [67, 563],
+                        backgroundColor: [brilliantBlues.accent1, brilliantBlues.lightGray],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    ...defaultChartOptions
+                }
+            });
+        });
+    </script>
+</body>
+</html>
