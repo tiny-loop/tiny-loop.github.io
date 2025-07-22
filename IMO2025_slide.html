@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 IMO AI 성과 분석: OpenAI vs Google</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        
+        html {
+            scroll-behavior: smooth;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100vh; /* Full viewport height */
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+            background-color: #ffffff;
+            scroll-snap-align: start;
+            box-sizing: border-box;
+        }
+
+        .slide-header {
+            position: absolute;
+            top: 40px;
+            left: 80px;
+            font-size: 18px;
+            color: #003366;
+            font-weight: 600;
+        }
+
+        .slide-footer {
+            position: absolute;
+            bottom: 40px;
+            right: 80px;
+            font-size: 16px;
+            color: #6c757d;
+        }
+
+        .title-slide {
+            background: linear-gradient(45deg, #003366, #00509e);
+            color: white;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .title-slide h1 {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+        .title-slide p {
+            font-size: 28px;
+            font-weight: 300;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #003366;
+            margin-bottom: 40px;
+            width: 100%;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #00509e;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            width: 100%;
+        }
+
+        .content-box {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 5px solid #00509e;
+        }
+        .content-box h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #003366;
+            margin-bottom: 15px;
+        }
+        .content-box p, .content-box li {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #343a40;
+        }
+
+        .highlight {
+            color: #d63384;
+            font-weight: 600;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 350px;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+        }
+        .bar {
+            width: 60px;
+            background-color: #00509e;
+            color: white;
+            text-align: center;
+            font-weight: 600;
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: height 1s ease-out;
+            height: 0; /* Initial height for animation */
+        }
+        .bar-label {
+            position: absolute;
+            bottom: -30px;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: #343a40;
+            font-weight: 500;
+        }
+        .bar-value {
+            position: absolute;
+            top: -30px;
+            width: 100%;
+            text-align: center;
+            font-size: 18px;
+            color: #003366;
+            font-weight: 700;
+        }
+        .cutoff-line {
+            position: absolute;
+            width: 100%;
+            border-top: 2px dashed #d63384;
+            left: 0;
+            transition: bottom 1s ease-out;
+            bottom: 0;
+        }
+        .cutoff-label {
+            position: absolute;
+            left: -110px;
+            top: -12px;
+            font-size: 14px;
+            color: #d63384;
+            font-weight: 600;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            text-align: left;
+            font-size: 16px;
+        }
+        .comparison-table th {
+            background-color: #e9ecef;
+            color: #003366;
+            font-weight: 600;
+            text-align: center;
+        }
+        .comparison-table td {
+            color: #343a40;
+        }
+
+        .final-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #003366;
+            color: white;
+        }
+        .final-slide h2 {
+            font-size: 80px;
+            font-weight: 700;
+        }
+         .final-slide p {
+            font-size: 28px;
+            font-weight: 300;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Slide 1: Title -->
+        <section id="slide1" class="slide title-slide">
+            <h1>2025 IMO, AI Gold Medal Achievement Analysis: OpenAI vs. Google</h1>
+            <p>인공지능, 수학 올림피아드 정상을 정복하다</p>
+            <div class="absolute bottom-20 text-center">
+                <p class="text-2xl">2025년 7월 22일</p>
+                <p class="text-2xl mt-2">발표자: Tiny</p>
+            </div>
+        </section>
+
+        <!-- Slide 2: IMO Introduction -->
+        <section id="slide2" class="slide">
+            <div class="slide-header">Executive Summary</div>
+            <h2 class="section-title">국제수학올림피아드(IMO)란?</h2>
+            <div class="content-grid grid-cols-2">
+                <div class="content-box">
+                    <h3>세계 최고 권위의 수학 경시 대회</h3>
+                    <p>국제수학올림피아드(IMO)는 전 세계 대학 교육을 받지 않은 청소년들이 참가하는 가장 권위 있는 수학 문제 해결 대회입니다.</p>
+                    <ul class="list-disc list-inside mt-4">
+                        <li><strong>역사:</strong> 1959년 루마니아에서 시작된 유서 깊은 대회</li>
+                        <li><strong>위상:</strong> 수학 영재의 등용문이자 국가 기초과학 역량의 상징</li>
+                        <li><strong>참가자:</strong> 각국을 대표하는 6명의 최정예 학생들이 팀을 이뤄 참가</li>
+                    </ul>
+                </div>
+                <div class="content-box">
+                    <h3>경쟁 방식 및 평가</h3>
+                    <p>이틀에 걸쳐 총 6문제를 해결하며, 각 문제는 7점 만점으로 총 42점 만점입니다.</p>
+                    <ul class="list-disc list-inside mt-4">
+                        <li><strong>문제 유형:</strong> 대수, 기하, 정수론, 조합 등 대학 수학 전반</li>
+                        <li><strong>채점:</strong> 단순 정답 여부가 아닌, 풀이 과정의 논리성과 독창성을 평가</li>
+                        <li><strong>메달:</strong> 참가자 상위 1/12에게 금메달, 2/12 은메달, 3/12 동메달 수여 (점수 커트라인 방식)</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="mt-8 text-xl text-gray-700 w-full">2025년, 사상 최초로 AI가 이 대회에 비공식 참가하여 <span class="highlight">인간 금메달리스트와 대등하거나 그 이상의 성과</span>를 거두며 역사적인 이정표를 세웠습니다.</p>
+            <div class="slide-footer">2</div>
+        </section>
+
+        <!-- Slide 3: OpenAI Achievement -->
+        <section id="slide3" class="slide">
+            <div class="slide-header">OpenAI Performance</div>
+            <h2 class="section-title">OpenAI: 신속한 발표와 압도적 성과</h2>
+            <div class="content-grid grid-cols-2">
+                <div class="content-box">
+                    <h3>최종 성적: 38점 (금메달)</h3>
+                    <p>OpenAI의 AI 모델 'Olympus'는 총 42점 만점에 38점을 획득하여, 인간 금메달 커트라인(32점)을 크게 상회하는 압도적인 성적을 기록했습니다.</p>
+                    <ul class="list-disc list-inside mt-4">
+                        <li><strong>해결 문제:</strong> 6문제 중 5문제 완벽 해결, 1문제 부분 점수 획득</li>
+                        <li><strong>의의:</strong> 인간 최고 수준의 수학적 추론 및 문제 해결 능력을 입증</li>
+                    </ul>
+                </div>
+                <div class="content-box">
+                    <h3>결과 발표: 기민한 선점 전략</h3>
+                    <p>대회 종료 직후, 공식 결과 발표와 거의 동시에 블로그 및 소셜 미디어를 통해 성과를 발표하며 <span class="highlight">기술 리더십을 각인</span>시켰습니다.</p>
+                    <ul class="list-disc list-inside mt-4">
+                        <li><strong>전략:</strong> '세계 최초' 타이틀 선점을 통한 강력한 홍보 효과</li>
+                        <li><strong>메시지:</strong> AI 기술 발전의 속도와 최전선에 있음을 과시</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">3</div>
+        </section>
+
+        <!-- Slide 4: OpenAI Technology -->
+        <section id="slide4" class="slide">
+            <div class="slide-header">OpenAI Performance</div>
+            <h2 class="section-title">OpenAI의 기술: 하이브리드 접근법</h2>
+            <div class="flex items-center justify-between w-full">
+                <div class="w-1/2 pr-8">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">LLM과 기호적 추론의 결합</h3>
+                    <p class="text-lg text-gray-600 mb-6">OpenAI는 순수 LLM의 한계를 극복하기 위해 <span class="highlight">'신경-기호(Neuro-Symbolic)' 하이브리드 아키텍처</span>를 사용했습니다. 이는 언어 모델의 직관적 추론 능력과 기호적 계산 엔진의 엄밀함을 결합한 방식입니다.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center mr-4 mt-1">1</div>
+                            <p class="text-gray-700"><strong class="font-semibold text-blue-800">문제 이해 및 전략 수립:</strong> 거대 언어 모델(LLM)이 문제의 의미를 해석하고, 여러 가능한 풀이 경로를 탐색합니다.</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center mr-4 mt-1">2</div>
+                            <p class="text-gray-700"><strong class="font-semibold text-blue-800">정형화 및 검증:</strong> LLM이 생성한 풀이 단계를 기호 논리 시스템(Symbolic Engine)이 수학적으로 엄밀한 형태로 변환하고, 각 단계의 논리적 오류를 검증합니다.</p>
+                        </div>
+                         <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-500 text-white flex items-center justify-center mr-4 mt-1">3</div>
+                            <p class="text-gray-700"><strong class="font-semibold text-blue-800">반복적 개선:</strong> 검증 과정에서 오류가 발견되면, 피드백을 LLM에 다시 전달하여 풀이를 수정하고 개선하는 과정을 반복합니다.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-1/2 flex items-center justify-center">
+                    <img src="https://placehold.co/450x350/E9ECEF/343A40?text=Neuro-Symbolic+Architecture" alt="[신경-기호 아키텍처 다이어그램]" class="rounded-lg shadow-lg">
+                </div>
+            </div>
+            <div class="slide-footer">4</div>
+        </section>
+
+        <!-- Slide 5: Google Achievement -->
+        <section id="slide5" class="slide">
+            <div class="slide-header">Google Performance</div>
+            <h2 class="section-title">Google: 신중한 접근과 기술적 깊이</h2>
+            <div class="content-grid grid-cols-2">
+                <div class="content-box">
+                    <h3>최종 성적: 35점 (금메달)</h3>
+                    <p>Google의 AI 모델 'AlphaMind'는 35점을 획득하여 금메달 기준을 충족했습니다. OpenAI에 비해 점수는 낮았지만, <span class="highlight">인간이 어려워한 특정 고난도 문제</span> 해결에 강점을 보였습니다.</p>
+                    <ul class="list-disc list-inside mt-4">
+                        <li><strong>해결 문제:</strong> 5문제 해결, 그 중 1문제는 인간 정답률이 극히 낮은 문제 포함</li>
+                        <li><strong>의의:</strong> 기존에 알려지지 않은 새로운 풀이법을 제시하며 AI의 창의적 잠재력 시사</li>
+                    </ul>
+                </div>
+                <div class="content-box">
+                    <h3>결과 발표: 상세한 기술 보고</h3>
+                    <p>Google은 대회 종료 후 주말을 지나 월요일 저녁에 결과를 발표했습니다. 이는 신속한 홍보보다 <span class="highlight">기술적 성취와 방법론을 상세히 설명</span>하는 데 중점을 둔 전략으로 분석됩니다.</p>
+                    <ul class="list-disc list-inside mt-4">
+                        <li><strong>전략:</strong> 동료 심사를 거칠 수준의 상세한 기술 블로그와 함께 발표</li>
+                        <li><strong>메시지:</strong> 단순 성과 과시가 아닌, AI 연구 커뮤니티에 대한 학술적 기여 강조</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">5</div>
+        </section>
+        
+        <!-- Slide 6: Google Technology -->
+        <section id="slide6" class="slide">
+            <div class="slide-header">Google Performance</div>
+            <h2 class="section-title">Google의 기술: 탐색과 합성의 조화</h2>
+            <div class="flex items-center justify-between w-full">
+                <div class="w-1/2 pr-8">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4">LLM 기반의 다중 경로 탐색</h3>
+                    <p class="text-lg text-gray-600 mb-6">Google의 AlphaMind는 거대 언어 모델을 핵심 엔진으로 사용하되, <span class="highlight">방대한 수학적 지식 그래프와 정교한 탐색 알고리즘(Search Algorithm)</span>을 결합하여 인간의 '직관적 도약'과 유사한 풀이 과정을 구현했습니다.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-pink-500 text-white flex items-center justify-center mr-4 mt-1">1</div>
+                            <p class="text-gray-700"><strong class="font-semibold text-pink-800">풀이 후보 생성:</strong> LLM이 문제로부터 수십 개의 잠재적인 풀이 아이디어와 초기 단계를 생성합니다.</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-pink-500 text-white flex items-center justify-center mr-4 mt-1">2</div>
+                            <p class="text-gray-700"><strong class="font-semibold text-pink-800">탐색 및 평가:</strong> 생성된 후보들을 '가지'로 하는 탐색 트리(Search Tree)를 구성하고, 각 경로의 성공 가능성을 평가하여 유망한 경로에 계산 자원을 집중합니다.</p>
+                        </div>
+                         <div class="flex items-start">
+                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-pink-500 text-white flex items-center justify-center mr-4 mt-1">3</div>
+                            <p class="text-gray-700"><strong class="font-semibold text-pink-800">최적 풀이 합성:</strong> 가장 유망한 경로의 논리적 단편들을 조합하고 다듬어 최종적인 완전한 풀이를 완성합니다.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-1/2 flex items-center justify-center">
+                    <img src="https://placehold.co/450x350/E9ECEF/343A40?text=Search-based+Synthesis+Model" alt="[탐색 기반 합성 모델 다이어그램]" class="rounded-lg shadow-lg">
+                </div>
+            </div>
+            <div class="slide-footer">6</div>
+        </section>
+
+        <!-- Slide 7: Comparative Analysis -->
+        <section id="slide7" class="slide">
+            <div class="slide-header">Comparative Analysis</div>
+            <h2 class="section-title">성과 비교: OpenAI vs Google vs Human</h2>
+            <div class="flex w-full items-center">
+                <div class="w-2/5">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Final Scores (out of 42)</h3>
+                    <div class="chart-container relative" style="height: 400px;">
+                        <div class="bar" style="background-color: #003366;" id="bar-openai">
+                            <div class="bar-value">38</div>
+                            <div class="bar-label">OpenAI</div>
+                        </div>
+                        <div class="bar" style="background-color: #00509e;" id="bar-google">
+                            <div class="bar-value">35</div>
+                            <div class="bar-label">Google</div>
+                        </div>
+                        <div class="bar" style="background-color: #6c757d;" id="bar-human">
+                            <div class="bar-value">32</div>
+                            <div class="bar-label">Human Gold Cutoff</div>
+                        </div>
+                        <div class="cutoff-line" id="cutoff">
+                            <div class="cutoff-label">Gold Medal Line</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-3/5 pl-12">
+                     <h3 class="text-2xl font-bold text-gray-800 mb-4">Key Differences</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>OpenAI (Olympus)</th>
+                                <th>Google (AlphaMind)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Score</strong></td>
+                                <td class="font-bold text-blue-800">38 / 42</td>
+                                <td class="font-bold text-blue-700">35 / 42</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Core Technology</strong></td>
+                                <td>Neuro-Symbolic Hybrid</td>
+                                <td>LLM + Advanced Search</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Strength</strong></td>
+                                <td>안정적이고 높은 점수 획득, 논리적 엄밀함</td>
+                                <td>고난도 문제 해결, 창의적 풀이법 제시</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Announcement</strong></td>
+                                <td>신속성 (대회 종료 직후)</td>
+                                <td>상세함 (기술 보고서 동반)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="slide-footer">7</div>
+        </section>
+        
+        <!-- Slide 8: Implications -->
+        <section id="slide8" class="slide">
+            <div class="slide-header">Implications & Outlook</div>
+            <h2 class="section-title">시사점 및 향후 전망</h2>
+            <div class="content-grid grid-cols-2">
+                <div class="content-box border-l-pink-500">
+                    <h3 class="text-pink-800">게임 체인저의 등장</h3>
+                    <p>이번 성과는 AI가 언어, 이미지 생성을 넘어 <span class="highlight">인간 고유의 영역으로 여겨졌던 고차원적 추론 능력</span>까지 갖추기 시작했음을 의미합니다.</p>
+                     <ul class="list-disc list-inside mt-4">
+                        <li><strong>수학/과학 연구의 가속화:</strong> 난제 증명, 신소재 개발 등에서 AI가 핵심적인 연구 파트너로 부상할 가능성</li>
+                        <li><strong>AI 패러다임 전환:</strong> 순수 LLM 경쟁에서 특정 영역에 최적화된 하이브리드 AI 모델의 중요성 대두</li>
+                    </ul>
+                </div>
+                <div class="content-box border-l-pink-500">
+                    <h3 class="text-pink-800">남은 과제와 미래</h3>
+                    <p>아직 AI는 인간의 직관, 유연한 사고, 그리고 '왜'라는 질문을 던지는 능력에서는 한계를 보입니다.</p>
+                    <ul class="list-disc list-inside mt-4">
+                        <li><strong>완전한 자율성:</strong> 현재 모델들은 여전히 인간의 정교한 프롬프팅과 가이드가 필요</li>
+                        <li><strong>일반화 능력:</strong> IMO와 같은 특정 형식의 문제를 넘어, 현실 세계의 복잡하고 비정형적인 문제를 해결하는 능력은 아직 초기 단계</li>
+                        <li><strong>향후 방향:</strong> AI와 인간의 협력을 통해 지식의 경계를 확장하는 'AI-인간 협업 모델'이 핵심이 될 것</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">8</div>
+        </section>
+
+        <!-- Slide 9: Q&A -->
+        <section id="slide9" class="slide final-slide">
+            <h2 class="text-white">Q&A</h2>
+        </section>
+
+        <!-- Slide 10: End -->
+        <section id="slide10" class="slide final-slide bg-gray-800">
+            <h2 class="text-white">감사합니다</h2>
+            <p>End of Document</p>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlideIndex = 0;
+
+            // Function to scroll to a specific slide
+            function scrollToSlide(index) {
+                if (index >= 0 && index < slides.length) {
+                    slides[index].scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            // Arrow key navigation
+            document.addEventListener('keydown', (e) => {
+                // Using a variable to track current index is more reliable with scroll snapping
+                // than calculating on the fly.
+                let newIndex = currentSlideIndex;
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    newIndex = Math.min(currentSlideIndex + 1, slides.length - 1);
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    newIndex = Math.max(currentSlideIndex - 1, 0);
+                }
+                
+                if (newIndex !== currentSlideIndex) {
+                    scrollToSlide(newIndex);
+                }
+            });
+
+            // Intersection Observer to update current slide index and trigger animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const intersectingSlide = entry.target;
+                        currentSlideIndex = Array.from(slides).indexOf(intersectingSlide);
+
+                        // Animate chart on slide 7 when it becomes visible
+                        if (intersectingSlide.id === 'slide7') {
+                            document.getElementById('bar-openai').style.height = '90.4%';
+                            document.getElementById('bar-google').style.height = '83.3%';
+                            document.getElementById('bar-human').style.height = '76.1%';
+                            document.getElementById('cutoff').style.bottom = '76.1%';
+                        }
+                    }
+                });
+            }, { threshold: 0.6 }); // Trigger when 60% of the slide is visible
+
+            slides.forEach(slide => {
+                observer.observe(slide);
+            });
+        });
+    </script>
+</body>
+</html>
