@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인포그래픽: 태국-캄보디아 국경 분쟁과 푸껫 여행 안전성 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            background-color: #F2F9FF;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #74B9FF;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+        .timeline-container.left {
+            left: 0;
+        }
+        .timeline-container.right {
+            left: 50%;
+        }
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -13px;
+            background-color: white;
+            border: 4px solid #0A85FF;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-container.right::after {
+            left: -12px;
+        }
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        @media screen and (max-width: 600px) {
+            .timeline::after {
+                left: 31px;
+            }
+            .timeline-container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .timeline-container.right {
+                left: 0%;
+            }
+            .timeline-container.left::after, .timeline-container.right::after {
+                left: 18px;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <main class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#004AAD] mb-4">태국-캄보디아 국경 분쟁 리포트</h1>
+            <p class="text-lg text-gray-600">푸껫 여행, 과연 안전할까? 데이터를 통해 핵심만 분석해 드립니다.</p>
+        </header>
+
+        <section class="mb-12">
+            <div class="bg-white rounded-lg shadow-xl p-8 max-w-4xl mx-auto text-center border-l-8 border-[#0A85FF]">
+                <h2 class="text-2xl font-bold text-[#004AAD] mb-3">최종 안전 평가: 푸껫 여행은 안전합니다</h2>
+                <p class="text-gray-700 text-lg">
+                    현재 군사 충돌은 태국 동북부 국경에 한정되어 있습니다. 여행 예정지인 푸껫은 분쟁 지역에서 <strong>1,200km 이상</strong> 떨어져 있어 직접적인 영향이 없습니다. 안심하고 여행을 준비하시되, 일반적인 여행 안전 수칙은 반드시 준수해야 합니다.
+                </p>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#004AAD]">한눈에 보는 지리적 안전성</h2>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <p class="text-center text-gray-600 mb-4">분쟁 지역과 푸껫은 대한민국 서울-부산 거리의 3배 이상 떨어져 있습니다. 물리적 거리가 안전을 보장합니다.</p>
+                <div class="relative w-full h-[500px] bg-[#CDE5FF] rounded-lg overflow-hidden">
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-[#004AAD] opacity-20">
+                        <p class="font-bold text-9xl">THAILAND</p>
+                    </div>
+                    
+                    <div class="absolute top-10 right-10 text-right">
+                        <div class="bg-red-500 text-white rounded-lg p-3 shadow-lg">
+                            <p class="font-bold text-lg">교전 지역</p>
+                            <p class="text-sm">수린, 시사껫 등</p>
+                            <p class="text-sm">동북부 국경</p>
+                        </div>
+                        <div class="w-4 h-4 bg-red-700 rounded-full mx-auto mt-2 ring-4 ring-white"></div>
+                    </div>
+
+                    <div class="absolute bottom-10 left-10 text-left">
+                         <div class="bg-green-500 text-white rounded-lg p-3 shadow-lg">
+                            <p class="font-bold text-lg">여행 예정지</p>
+                            <p class="text-sm">푸껫</p>
+                            <p class="text-sm">남부 안다만 해</p>
+                        </div>
+                        <div class="w-4 h-4 bg-green-700 rounded-full mx-auto mt-2 ring-4 ring-white"></div>
+                    </div>
+
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4">
+                        <div class="flex justify-between items-center">
+                            <div class="w-3 h-3 bg-red-700 rounded-full"></div>
+                            <div class="w-full border-t-4 border-dashed border-gray-600"></div>
+                            <div class="w-3 h-3 bg-green-700 rounded-full"></div>
+                        </div>
+                         <div class="bg-white/80 backdrop-blur-sm p-2 rounded-md text-center mt-2 shadow-lg">
+                            <p class="text-xl font-bold text-[#004AAD]">약 1,260 km</p>
+                            <p class="text-sm text-gray-600">(차량 18시간 이상 소요)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#004AAD]">분쟁 현황: 주요 데이터</h2>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <p class="text-6xl font-bold text-[#0A85FF]">30+</p>
+                    <p class="text-xl font-semibold text-gray-700 mt-2">총 사망자</p>
+                    <p class="text-sm text-gray-500">(군인 및 민간인 포함)</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <p class="text-6xl font-bold text-[#0A85FF]">175,000+</p>
+                    <p class="text-xl font-semibold text-gray-700 mt-2">총 피난민</p>
+                    <p class="text-sm text-gray-500">(양국 합산)</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <p class="text-6xl font-bold text-[#0A85FF]">7개+</p>
+                    <p class="text-xl font-semibold text-gray-700 mt-2">태국 교전 관련 주</p>
+                    <p class="text-sm text-gray-500">(동부 및 동북부)</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#004AAD]">분쟁 격화 과정 타임라인</h2>
+            <div class="timeline">
+                <div class="timeline-container left">
+                    <div class="timeline-content">
+                        <h3 class="font-bold text-lg text-[#004AAD]">2025년 2월</h3>
+                        <p class="text-sm">사원서 관광객 국가 제창을 막으며 긴장 고조</p>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="timeline-content">
+                        <h3 class="font-bold text-lg text-[#004AAD]">5월 28일</h3>
+                        <p class="text-sm">국경서 총격전 발생, 캄보디아 군인 1명 사망</p>
+                    </div>
+                </div>
+                <div class="timeline-container left">
+                    <div class="timeline-content">
+                        <h3 class="font-bold text-lg text-[#004AAD]">7월 23일</h3>
+                        <p class="text-sm">지뢰 폭발로 태국 군인 5명 중상, 갈등 격화의 직접적 도화선</p>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="timeline-content">
+                        <h3 class="font-bold text-lg text-[#004AAD]">7월 24일</h3>
+                        <p class="text-sm">양국 대규모 교전 시작, 외교 관계 단절</p>
+                    </div>
+                </div>
+                 <div class="timeline-container left">
+                    <div class="timeline-content">
+                        <h3 class="font-bold text-lg text-[#004AAD]">7월 25일 이후</h3>
+                        <p class="text-sm">F-16, 다연장로켓포 등 중화기 동원 전면전으로 확산</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#004AAD]">언론 분석: 3개의 시선</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">양국은 서로를 '침략자'로 규정하며 극명한 시각차를 보입니다. 국제 언론은 중립을 지키며 인도주의적 위기에 주목하고 있습니다.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-red-500">
+                    <h3 class="text-xl font-bold mb-3 text-red-600">태국 언론 시각</h3>
+                    <p class="font-semibold text-lg mb-2">"캄보디아의 계획적 침략"</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>캄보디아가 먼저 발포했다고 주장</li>
+                        <li>캄보디아가 병원, 학교 등 민간 지역을 의도적으로 공격했다고 비난</li>
+                        <li>자국의 F-16 공습 등은 정당방위라고 강조</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-blue-800">
+                    <h3 class="text-xl font-bold mb-3 text-blue-900">캄보디아 언론 시각</h3>
+                    <p class="font-semibold text-lg mb-2">"태국의 노골적인 침략"</p>
+                     <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>태국이 먼저 선제공격했다고 주장</li>
+                        <li>태국이 금지된 집속탄까지 사용해 사찰을 공격했다고 비난</li>
+                        <li>자국의 군사 대응은 UN 헌장에 따른 자위권 행사라고 강조</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-gray-500">
+                    <h3 class="text-xl font-bold mb-3 text-gray-600">국제/한국 언론 시각</h3>
+                    <p class="font-semibold text-lg mb-2">"책임 공방 속 인도주의적 위기"</p>
+                     <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>어느 한쪽을 가해자로 지목하지 않고 양측 주장 병기</li>
+                        <li>수십만 명의 피난민 발생 등 인도주의적 피해 집중 보도</li>
+                        <li>UN, 아세안 등 국제 사회의 휴전 중재 노력 조명</li>
+                        <li>한국 정부의 교민 안전 조치 및 여행경보 발령 보도</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#004AAD]">인도주의적 피해 및 군사력 비교</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold text-center mb-4">양국 피난민 현황 비교</h3>
+                    <div class="chart-container">
+                        <canvas id="refugeeChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-600 mt-4">국경 지역의 전투로 인해 태국 측에서 훨씬 더 많은 피난민이 발생했습니다.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold text-center mb-4">주요 동원 무기</h3>
+                    <div class="chart-container">
+                        <canvas id="militaryChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-600 mt-4">양측 모두 탱크, 야포 등 중화기를 사용했으며, 태국은 제공권을 활용한 F-16 전투기 공습을 감행했습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#004AAD]">각국 정부 공식 여행 권고</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">대한민국을 포함한 모든 국가는 위험 지역을 명확히 구분하고 있습니다. 푸껫은 안전 지역으로 분류됩니다.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <p class="text-4xl mb-2">🇰🇷</p>
+                    <h3 class="text-xl font-bold mb-3">대한민국 외교부</h3>
+                    <p class="bg-red-100 text-red-800 font-bold py-1 px-3 rounded-full inline-block mb-2">특별여행주의보/여행자제</p>
+                    <p class="text-sm text-gray-600 mb-3">캄보디아 국경 지역</p>
+                    <p class="bg-yellow-100 text-yellow-800 font-bold py-1 px-3 rounded-full inline-block mb-2">여행유의</p>
+                    <p class="text-sm text-gray-600">푸껫 등 그 외 전역</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <p class="text-4xl mb-2">🇺🇸</p>
+                    <h3 class="text-xl font-bold mb-3">미국 국무부</h3>
+                    <p class="bg-red-100 text-red-800 font-bold py-1 px-3 rounded-full inline-block mb-2">여행 금지 (Do Not Travel)</p>
+                    <p class="text-sm text-gray-600 mb-3">캄보디아 국경 지역</p>
+                    <p class="bg-yellow-100 text-yellow-800 font-bold py-1 px-3 rounded-full inline-block mb-2">강화된 주의 (Exercise Increased Caution)</p>
+                    <p class="text-sm text-gray-600">푸껫 등 그 외 전역</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <p class="text-4xl mb-2">🇬🇧</p>
+                    <h3 class="text-xl font-bold mb-3">영국 외무부</h3>
+                    <p class="bg-red-100 text-red-800 font-bold py-1 px-3 rounded-full inline-block mb-2">모든 여행 자제</p>
+                    <p class="text-sm text-gray-600 mb-3">캄보디아 국경 지역</p>
+                    <p class="bg-yellow-100 text-yellow-800 font-bold py-1 px-3 rounded-full inline-block mb-2">필수 여행 외 자제</p>
+                    <p class="text-sm text-gray-600">푸껫 등 그 외 전역</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#004AAD]">푸껫 여행자를 위한 최종 권고</h2>
+            <div class="bg-white rounded-lg shadow-xl p-8 max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-[#004AAD] mb-4">안전한 여행을 위한 체크리스트</h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <span class="text-green-500 text-2xl mr-3">✓</span>
+                        <div>
+                            <p class="font-semibold">국경 지역 접근 절대 금지</p>
+                            <p class="text-gray-600 text-sm">외교부 권고에 따라 분쟁 지역 근처에는 절대 가지 마세요.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 text-2xl mr-3">✓</span>
+                        <div>
+                            <p class="font-semibold">푸껫 내 일반 안전수칙 준수</p>
+                            <p class="text-gray-600 text-sm">소매치기, 교통사고, 해양 안전사고 등 일반적인 위험에 더 주의하세요.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 text-2xl mr-3">✓</span>
+                        <div>
+                            <p class="font-semibold">공식 정보 채널 확인</p>
+                            <p class="text-gray-600 text-sm">여행 중 '주태국 대한민국 대사관' 웹사이트의 안전 공지를 확인하세요.</p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="mt-8 border-t pt-6">
+                     <h3 class="text-xl font-bold text-[#004AAD] mb-4">비상 연락처 (반드시 저장)</h3>
+                     <div class="text-gray-700 space-y-2">
+                        <p><strong>주태국 대한민국 대사관:</strong> +66-2-481-6000</p>
+                        <p><strong>대사관 긴급연락처 (사건사고):</strong> +66-81-914-5803</p>
+                        <p><strong>영사콜센터 (24시간):</strong> +82-2-3210-0404</p>
+                     </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="text-center mt-12 text-sm text-gray-500">
+            <p>본 인포그래픽은 제공된 가상 시나리오 데이터를 기반으로 제작되었습니다.</p>
+            <p>Neither Mermaid JS nor SVG were used in this output.</p>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const brilliantBlues = {
+                dark: '#004AAD',
+                primary: '#0A85FF',
+                light: '#74B9FF',
+                lighter: '#CDE5FF',
+                background: '#F2F9FF'
+            };
+
+            function wrapLabel(str, maxWidth) {
+                if (str.length <= maxWidth) {
+                    return str;
+                }
+                const words = str.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            }
+            
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            };
+
+            const commonOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                family: "'Noto Sans KR', 'Inter', sans-serif",
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                             font: {
+                                family: "'Noto Sans KR', 'Inter', sans-serif",
+                            }
+                        }
+                    },
+                    y: {
+                        ticks: {
+                             font: {
+                                family: "'Noto Sans KR', 'Inter', sans-serif",
+                            }
+                        }
+                    }
+                }
+            };
+
+            const refugeeCtx = document.getElementById('refugeeChart').getContext('2d');
+            new Chart(refugeeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['태국 측 피난민', '캄보디아 측 피난민'],
+                    datasets: [{
+                        label: '피난민 수',
+                        data: [138000, 37000],
+                        backgroundColor: [brilliantBlues.primary, brilliantBlues.light],
+                        borderColor: [brilliantBlues.dark, brilliantBlues.primary],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value / 1000 + 'k';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const militaryCtx = document.getElementById('militaryChart').getContext('2d');
+            new Chart(militaryCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['F-16 전투기', '다연장로켓포 (BM-21)', '탱크 및 야포'],
+                    datasets: [{
+                        label: '태국',
+                        data: [1, 0, 1],
+                        backgroundColor: brilliantBlues.primary,
+                        borderColor: brilliantBlues.dark,
+                        borderWidth: 1
+                    }, {
+                        label: '캄보디아',
+                        data: [0, 1, 1],
+                        backgroundColor: brilliantBlues.light,
+                        borderColor: brilliantBlues.primary,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    indexAxis: 'y',
+                     scales: {
+                        x: {
+                           ticks: {
+                                callback: function(value) {
+                                    if (value === 1) return '사용';
+                                    if (value === 0) return '미사용';
+                                    return value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
