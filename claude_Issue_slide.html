@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>앤트로픽 12월 위기설</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent body scrollbars */
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        .slider-container {
+            width: 100vw;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 5vh 5vw;
+            position: relative;
+            background-color: #111827; /* bg-gray-900 */
+            color: #d1d5db; /* text-gray-300 */
+            box-sizing: border-box;
+        }
+        .slide-content {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px; /* Max size for 16:9 aspect ratio */
+            max-height: 720px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide-header {
+            position: absolute;
+            top: 5vh;
+            left: 5vw;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #818cf8; /* indigo-400 */
+        }
+        .slide-footer {
+            position: absolute;
+            bottom: 5vh;
+            right: 5vw;
+            font-size: 1rem;
+            color: #4b5563; /* text-gray-600 */
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .keyword {
+            color: #facc15; /* text-yellow-400 */
+            font-weight: 700;
+        }
+        h1 { font-size: 4.5rem; font-weight: 900; color: #ffffff; }
+        h2 { font-size: 3rem; font-weight: 700; margin-bottom: 2rem; color: #ffffff;}
+        h3 { font-size: 2rem; font-weight: 700; color: #ffffff;}
+        p { font-size: 1.25rem; line-height: 1.7; }
+        ul { list-style-position: inside; }
+    </style>
+</head>
+<body>
+
+    <div id="slider" class="slider-container">
+
+        <!-- Slide 1: Title -->
+        <section class="slide">
+            <div class="slide-content text-center">
+                <p class="text-xl text-[#818cf8] font-bold">생성형 AI 저작권 소송 심층 분석</p>
+                <h1 class="gradient-text !text-7xl mt-4">앤트로픽 12월 위기설</h1>
+                <div class="mt-20 text-xl text-gray-400">
+                    <p>작성자: Tiny</p>
+                    <p class="mt-2">작성일: 2025년 7월 29일</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: Table of Contents -->
+        <section class="slide">
+            <div class="slide-header">목차</div>
+            <div class="slide-content w-full max-w-3xl text-left">
+                <h2 class="text-center">Table of Contents</h2>
+                <ol class="text-2xl space-y-5 list-decimal list-inside text-gray-300">
+                    <li class="font-bold text-[#818cf8]">핵심: <span class="keyword">12월의 심판</span></li>
+                    <li>사건 개요: 혁신과 권리의 충돌</li>
+                    <li>주요 타임라인</li>
+                    <li>판결의 핵심: 훈련 vs 수집</li>
+                    <li>잠재적 재정 리스크</li>
+                    <li>유사 소송 비교 분석</li>
+                    <li>AI 산업에 미치는 영향</li>
+                </ol>
+            </div>
+            <div class="slide-footer">2</div>
+        </section>
+
+        <!-- Slide 3: The December Crisis -->
+        <section class="slide">
+            <div class="slide-header">핵심: 12월의 심판</div>
+            <div class="slide-content text-center">
+                <h2 class="!text-5xl text-[#38bdf8]">앤트로픽, 운명을 가를 재판대에 서다</h2>
+                <p class="max-w-4xl">훈련 행위의 합법성은 인정받았지만, <span class="keyword">불법 데이터 수집</span>이라는 '원죄'에 대한 대가를 치를 위기에 처했습니다. <br>12월 손해배상 재판 결과는 회사의 미래를 결정할 것입니다.</p>
+                <div class="grid grid-cols-3 gap-8 mt-12 w-full max-w-5xl">
+                    <div class="bg-gray-800 rounded-xl p-6 text-center border border-gray-700">
+                        <span class="text-6xl">🗓️</span>
+                        <h3 class="mt-4 text-3xl font-black text-[#38bdf8]">2025. 12. 1.</h3>
+                        <p class="mt-2 text-xl">손해배상 재판 시작</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl p-6 text-center border border-gray-700">
+                        <span class="text-6xl">⚖️</span>
+                        <h3 class="mt-4 text-3xl font-black text-[#38bdf8]">핵심 쟁점</h3>
+                        <p class="mt-2 text-xl">'<span class="keyword">고의적 침해</span>' 여부</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl p-6 text-center border border-gray-700">
+                        <span class="text-6xl">💣</span>
+                        <h3 class="mt-4 text-3xl font-black text-[#38bdf8]">최대 리스크</h3>
+                        <p class="mt-2 text-xl"><span class="keyword">수십억 달러</span> 배상</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">3</div>
+        </section>
+
+        <!-- Slide 4: Case Overview -->
+        <section class="slide">
+            <div class="slide-header">사건 개요</div>
+            <div class="slide-content text-center">
+                <h2>혁신과 권리의 충돌</h2>
+                <div class="grid grid-cols-3 gap-8 w-full max-w-5xl text-left">
+                    <div class="bg-gray-800 shadow-lg rounded-lg p-6">
+                        <h3 class="text-[#c084fc] text-2xl">원고</h3>
+                        <p class="mt-4 text-xl">안드레아 바츠 등 작가 집단</p>
+                    </div>
+                    <div class="text-center self-center">
+                        <p class="text-6xl font-bold gradient-text">VS</p>
+                    </div>
+                    <div class="bg-gray-800 shadow-lg rounded-lg p-6">
+                        <h3 class="text-[#38bdf8] text-2xl">피고</h3>
+                        <p class="mt-4 text-xl">앤트로픽 PBC (Claude 개발사)</p>
+                    </div>
+                </div>
+                <div class="mt-10 bg-gray-800 shadow-lg rounded-lg p-6 w-full max-w-5xl">
+                    <h3 class="text-center text-2xl">핵심 주장</h3>
+                    <p class="mt-4 text-center text-xl">앤트로픽이 AI '클로드' 훈련에 저작권 도서를 무단 사용, 특히 '<span class="keyword">그림자 도서관</span>'의 불법 복제 데이터를 활용하여 대규모 저작권 침해를 저질렀다고 주장</p>
+                </div>
+            </div>
+            <div class="slide-footer">4</div>
+        </section>
+
+        <!-- Slide 5: Timeline -->
+        <section class="slide">
+            <div class="slide-header">주요 타임라인</div>
+            <div class="slide-content w-full max-w-4xl">
+                <h2 class="text-center">소송 주요 진행 과정</h2>
+                <div class="relative w-full mt-4">
+                    <div class="absolute left-1/2 top-0 h-full w-1 bg-gray-700 -translate-x-1/2"></div>
+                    <div class="space-y-12">
+                        <div class="relative flex items-center">
+                            <div class="w-1/2 pr-8 text-right"><p class="text-xl font-bold">최초 소송 제기</p><p class="text-base text-gray-400">작가들이 저작권 침해 소송 시작</p></div>
+                            <div class="absolute left-1/2 w-6 h-6 bg-[#38bdf8] rounded-full -translate-x-1/2 border-4 border-gray-900"></div>
+                            <div class="w-1/2 pl-8"><p class="text-xl font-bold">2024년 8월</p></div>
+                        </div>
+                        <div class="relative flex items-center">
+                            <div class="w-1/2 pr-8 text-right"><p class="text-xl font-bold">2025년 6월</p></div>
+                            <div class="absolute left-1/2 w-6 h-6 bg-[#818cf8] rounded-full -translate-x-1/2 border-4 border-gray-900"></div>
+                            <div class="w-1/2 pl-8"><p class="text-xl font-bold">약식 판결</p><p class="text-base text-gray-400">'훈련'은 합법, '<span class="keyword">수집</span>'은 불법 판결</p></div>
+                        </div>
+                        <div class="relative flex items-center">
+                            <div class="w-1/2 pr-8 text-right"><p class="text-xl font-bold">집단 소송 승인</p><p class="text-base text-gray-400">앤트로픽의 잠재적 책임 규모 급증</p></div>
+                            <div class="absolute left-1/2 w-6 h-6 bg-[#c084fc] rounded-full -translate-x-1/2 border-4 border-gray-900"></div>
+                            <div class="w-1/2 pl-8"><p class="text-xl font-bold">2025년 7월</p></div>
+                        </div>
+                        <div class="relative flex items-center">
+                            <div class="w-1/2 pr-8 text-right"><p class="text-xl font-bold text-red-400">2025년 12월</p></div>
+                            <div class="absolute left-1/2 w-6 h-6 bg-red-500 rounded-full -translate-x-1/2 border-4 border-gray-900"></div>
+                            <div class="w-1/2 pl-8"><p class="text-xl font-bold text-red-400">손해배상 재판 (예정)</p><p class="text-base text-gray-400">불법 수집 행위에 대한 배상 규모 결정</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">5</div>
+        </section>
+
+        <!-- Slide 6: Ruling -->
+        <section class="slide">
+            <div class="slide-header">판결의 핵심</div>
+            <div class="slide-content text-center">
+                <h2>훈련 vs 수집: 앨섭 판사의 이분법적 판결</h2>
+                <p class="max-w-4xl">법원은 AI 개발 과정을 두 단계로 나누어, 각각 다른 법적 잣대를 적용했습니다.</p>
+                <div class="grid grid-cols-2 gap-10 mt-10 w-full max-w-6xl">
+                    <div class="bg-gray-800 border-l-8 border-green-400 p-8 text-left shadow-lg rounded-lg">
+                        <h3 class="text-green-400 text-2xl">✅ 훈련 행위: 합법 (공정 이용)</h3>
+                        <p class="mt-4 text-xl">AI가 데이터를 학습해 새로운 것을 창조하는 과정은 원본을 대체하지 않는 <span class="keyword">'변형적 사용'</span>에 해당한다고 판단.</p>
+                        <p class="mt-2 text-lg text-gray-400">"눈부시게 변형적이다"</p>
+                    </div>
+                    <div class="bg-gray-800 border-l-8 border-red-400 p-8 text-left shadow-lg rounded-lg">
+                        <h3 class="text-red-400 text-2xl">☠️ 데이터 수집: 불법 (저작권 침해)</h3>
+                        <p class="mt-4 text-xl">훈련 목적이 정당하더라도, 불법 복제된 데이터를 '수집'하는 행위 자체는 명백한 <span class="keyword">저작권 침해</span>라고 판결.</p>
+                        <p class="mt-2 text-lg text-gray-400">"회복 불가능하게 침해적이다"</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">6</div>
+        </section>
+
+        <!-- Slide 7: Financial Risk -->
+        <section class="slide">
+            <div class="slide-header">잠재적 재정 리스크</div>
+            <div class="slide-content text-center">
+                <h2>회사의 존립을 위협하는 천문학적 위험</h2>
+                <p class="max-w-4xl">집단 소송 승인으로 앤트로픽의 잠재적 배상 책임은 기하급수적으로 커졌습니다.</p>
+                <div class="grid grid-cols-3 gap-8 mt-12 w-full max-w-5xl items-center">
+                    <div class="bg-gray-800 p-6 shadow-xl rounded-lg text-center">
+                        <p class="text-6xl font-black gradient-text">700만+</p>
+                        <p class="mt-4 text-xl font-bold">불법 복제 의심 저작물</p>
+                    </div>
+                    <div class="self-center text-5xl font-thin text-gray-600">×</div>
+                    <div class="bg-gray-800 p-6 shadow-xl rounded-lg text-center">
+                        <p class="text-6xl font-black gradient-text">$150,000</p>
+                        <p class="mt-4 text-xl font-bold">저작물당 최대 배상액</p>
+                    </div>
+                </div>
+                <div class="mt-12 text-center">
+                     <p class="text-6xl font-thin text-gray-600">||</p>
+                     <p class="text-6xl font-black gradient-text">수십억 달러+</p>
+                     <p class="mt-4 text-2xl font-bold">잠재적 총 손해배상액</p>
+                </div>
+            </div>
+            <div class="slide-footer">7</div>
+        </section>
+
+        <!-- Slide 8: Lawsuit Comparison -->
+        <section class="slide">
+            <div class="slide-header">유사 소송 비교 분석</div>
+            <div class="slide-content w-full max-w-5xl">
+                <h2 class="text-center">입력 vs 출력: 소송의 다른 초점</h2>
+                <div class="w-full h-[450px] mt-8">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+                <p class="text-center mt-8 text-xl">앤트로픽 사건은 데이터 <span class="keyword">'입력'</span> 과정의 불법성에, NYT 사건은 모델의 <span class="keyword">'출력'</span>물이 시장을 대체하는지에 초점을 맞춥니다.</p>
+            </div>
+            <div class="slide-footer">8</div>
+        </section>
+
+        <!-- Slide 9: Industry Impact -->
+        <section class="slide">
+            <div class="slide-header">산업에 미치는 영향</div>
+            <div class="slide-content text-center">
+                <h2>AI 산업의 새로운 패러다임: '<span class="keyword">깨끗한 데이터</span>'</h2>
+                <p class="max-w-4xl">이번 판결은 AI 기업들에게 데이터의 출처 관리가 생존의 필수 조건임을 명확히 했습니다.</p>
+                <div class="grid grid-cols-3 gap-10 mt-12 w-full max-w-6xl">
+                    <div class="text-center">
+                        <div class="bg-gray-800 shadow-lg rounded-full w-40 h-40 flex items-center justify-center mx-auto">
+                            <span class="text-6xl">🏛️</span>
+                        </div>
+                        <h3 class="mt-6 text-2xl">데이터 거버넌스 강화</h3>
+                        <p class="mt-2 text-lg">데이터 출처/라이선스 추적 및 감사</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-gray-800 shadow-lg rounded-full w-40 h-40 flex items-center justify-center mx-auto">
+                            <span class="text-6xl">📈</span>
+                        </div>
+                        <h3 class="mt-6 text-2xl">라이선스 데이터 시장 성장</h3>
+                        <p class="mt-2 text-lg">정식 계약 통한 데이터 확보 가속화</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-gray-800 shadow-lg rounded-full w-40 h-40 flex items-center justify-center mx-auto">
+                            <span class="text-6xl">🔍</span>
+                        </div>
+                        <h3 class="mt-6 text-2xl">투자 및 M&A 실사 강화</h3>
+                        <p class="mt-2 text-lg">데이터 '깨끗함'이 핵심 가치로 부상</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">9</div>
+        </section>
+
+        <!-- Slide 10: Q&A -->
+        <section class="slide">
+            <div class="slide-content text-center">
+                <h1 class="!text-8xl gradient-text">Q&A</h1>
+                <h2 class="mt-8">질의응답</h2>
+            </div>
+            <div class="slide-footer">10</div>
+        </section>
+
+        <!-- Slide 11: Thank You & EOD -->
+        <section class="slide">
+            <div class="slide-content text-center">
+                 <h1 class="!text-8xl gradient-text">Thank You</h1>
+                 <h2 class="mt-8">EOD</h2>
+            </div>
+             <div class="slide-footer">11</div>
+        </section>
+
+    </div>
+
+    <script>
+        const slider = document.getElementById('slider');
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function goToSlide(slideIndex) {
+            if (slideIndex >= 0 && slideIndex < slides.length) {
+                slides[slideIndex].scrollIntoView({ behavior: 'smooth' });
+                currentSlide = slideIndex;
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                goToSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                goToSlide(currentSlide - 1);
+            }
+        });
+
+        let isScrolling;
+        slider.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            window.clearTimeout(isScrolling);
+            isScrolling = setTimeout(() => {
+                if (e.deltaY > 0) {
+                    goToSlide(currentSlide + 1);
+                } else {
+                    goToSlide(currentSlide - 1);
+                }
+            }, 50);
+        }, { passive: false });
+
+        const ctx = document.getElementById('comparisonChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['핵심 주장', '주요 쟁점', '소송의 초점'],
+                    datasets: [
+                        {
+                            label: '바츠 외 대 앤트로픽',
+                            data: [8, 9, 10],
+                            backgroundColor: 'rgba(129, 140, 248, 0.7)', // indigo-400
+                            borderColor: 'rgba(129, 140, 248, 1)',
+                            borderWidth: 1,
+                        },
+                        {
+                            label: '뉴욕타임스 대 OpenAI',
+                            data: [6, 7, 5],
+                            backgroundColor: 'rgba(192, 132, 252, 0.7)', // purple-400
+                            borderColor: 'rgba(192, 132, 252, 1)',
+                            borderWidth: 1,
+                        }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            display: false,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                           ticks: {
+                               color: '#d1d5db',
+                               font: { size: 16, weight: 'bold' }
+                           },
+                           grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                             labels: {
+                                color: '#d1d5db',
+                                font: { size: 14 }
+                            }
+                        },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
