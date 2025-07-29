@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심판대에 선 AI: 앤트로픽 저작권 소송 인포그래픽</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #58508D, #BC5090, #FF6361);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center py-12 md:py-20">
+            <h1 class="text-4xl md:text-6xl font-black mb-4 text-gray-900">심판대에 선 AI</h1>
+            <p class="text-lg md:text-2xl font-bold text-[#BC5090]">앤트로픽 저작권 소송과 생성형 AI의 미래</p>
+            <p class="max-w-3xl mx-auto mt-4 text-gray-600">
+                혁신과 권리의 충돌: 생성형 AI 모델 '클로드(Claude)'의 학습 데이터에서 시작된 이 소송은 AI 산업의 관행과 저작권의 미래에 대한 근본적인 질문을 던집니다.
+            </p>
+        </header>
+
+        <main class="space-y-16">
+
+            <section id="key-ruling">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">판결의 핵심: 훈련과 수집의 분리</h2>
+                    <p class="max-w-2xl mx-auto text-gray-600">앨섭 판사는 AI 개발 과정을 두 단계로 나누어 각각 다른 법적 잣대를 적용했습니다. 이는 AI 저작권 소송의 지형을 바꾼 중대한 판결입니다.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border-l-4 border-green-500">
+                        <div class="flex items-center mb-4">
+                            <span class="text-4xl mr-4">✅</span>
+                            <h3 class="text-2xl font-bold text-green-600">훈련 행위: 합법 (공정 이용)</h3>
+                        </div>
+                        <p class="font-bold text-lg mb-2 text-gray-900">"눈부시게 변형적인 사용"</p>
+                        <p class="text-gray-700">법원은 AI가 저작물을 학습하여 새로운 것을 창조하는 과정 자체는 인간의 학습과 유사하며, 원본을 대체하지 않는 '변형적 사용'에 해당한다고 판단했습니다. 이는 AI 모델 개발의 핵심 과정에 법적 정당성을 부여한 것입니다.</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border-l-4 border-red-500">
+                        <div class="flex items-center mb-4">
+                            <span class="text-4xl mr-4">☠️</span>
+                            <h3 class="text-2xl font-bold text-red-600">데이터 수집: 불법 (저작권 침해)</h3>
+                        </div>
+                        <p class="font-bold text-lg mb-2 text-gray-900">"회복 불가능하게 침해적인 행위"</p>
+                        <p class="text-gray-700">그러나 훈련의 목적이 정당하더라도, 불법 복제된 도서(데이터)를 '수집'하는 행위 자체는 명백한 저작권 침해라고 판결했습니다. AI 기업은 데이터의 출처에 대한 법적 책임을 피할 수 없게 되었습니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="financial-impact">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">소송의 파장: 천문학적 위험</h2>
+                    <p class="max-w-2xl mx-auto text-gray-600">집단 소송 승인으로 앤트로픽의 잠재적 책임 규모는 기하급수적으로 커졌습니다. 이는 회사의 존립과 AI 산업의 투자 환경에 직접적인 영향을 미칩니다.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                    <div class="bg-white shadow-lg rounded-xl p-8">
+                        <p class="text-6xl md:text-8xl font-black gradient-text">700만+</p>
+                        <p class="text-xl font-bold mt-2 text-gray-900">불법 복제 의심 도서</p>
+                        <p class="text-gray-500 mt-2">집단 소송으로 인정된 'LibGen' 등 불법 도서관에서 수집된 저작물의 수</p>
+                    </div>
+                    <div class="bg-white shadow-lg rounded-xl p-8">
+                        <p class="text-6xl md:text-8xl font-black gradient-text">$150,000</p>
+                        <p class="text-xl font-bold mt-2 text-gray-900">저작물당 최대 법정 손해배상액</p>
+                        <p class="text-gray-500 mt-2">고의적 침해가 인정될 경우, 총 손해배상액은 수십억 달러에 이를 수 있습니다.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="new-mandate">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">산업의 새 패러다임: 데이터 거버넌스</h2>
+                    <p class="max-w-2xl mx-auto text-gray-600">이번 판결은 AI 기업들에게 '깨끗한 데이터' 확보가 단순한 윤리 문제를 넘어 법적, 사업적 생존의 필수 조건임을 명확히 했습니다.</p>
+                </div>
+                <div class="bg-white shadow-lg rounded-xl p-8">
+                    <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4">
+                        <div class="text-center">
+                            <div class="w-24 h-24 bg-[#58508D] rounded-full flex items-center justify-center mx-auto mb-2 text-white">
+                                <span class="text-4xl">📝</span>
+                            </div>
+                            <h4 class="font-bold text-lg mt-2">1. 출처 확인</h4>
+                            <p class="text-sm text-gray-500">모든 데이터의 출처 추적</p>
+                        </div>
+                        <div class="text-5xl font-thin text-gray-300 hidden md:block">→</div>
+                        <div class="text-5xl font-thin text-gray-300 md:hidden">↓</div>
+                        <div class="text-center">
+                            <div class="w-24 h-24 bg-[#BC5090] rounded-full flex items-center justify-center mx-auto mb-2 text-white">
+                                <span class="text-4xl">⚖️</span>
+                            </div>
+                            <h4 class="font-bold text-lg mt-2">2. 법적 감사</h4>
+                            <p class="text-sm text-gray-500">저작권 및 라이선스 검토</p>
+                        </div>
+                        <div class="text-5xl font-thin text-gray-300 hidden md:block">→</div>
+                        <div class="text-5xl font-thin text-gray-300 md:hidden">↓</div>
+                        <div class="text-center">
+                            <div class="w-24 h-24 bg-[#FF6361] rounded-full flex items-center justify-center mx-auto mb-2 text-white">
+                                <span class="text-4xl">🤝</span>
+                            </div>
+                            <h4 class="font-bold text-lg mt-2">3. 라이선스 확보</h4>
+                            <p class="text-sm text-gray-500">정당한 사용 권리 계약</p>
+                        </div>
+                        <div class="text-5xl font-thin text-gray-300 hidden md:block">→</div>
+                        <div class="text-5xl font-thin text-gray-300 md:hidden">↓</div>
+                        <div class="text-center">
+                            <div class="w-24 h-24 bg-[#003F5C] rounded-full flex items-center justify-center mx-auto mb-2 text-white">
+                                <span class="text-4xl">🧠</span>
+                            </div>
+                            <h4 class="font-bold text-lg mt-2">4. 모델 훈련</h4>
+                            <p class="text-sm text-gray-500">'깨끗한 데이터'로만 학습</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="december-crisis">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">12월의 심판: 운명을 가를 재판</h2>
+                    <p class="max-w-2xl mx-auto text-gray-600">앤트로픽은 훈련 행위의 합법성은 인정받았지만, 불법 데이터 수집이라는 '원죄'에 대한 대가를 치를 위기에 처했습니다. 12월 재판 결과는 회사의 미래를 결정할 것입니다.</p>
+                </div>
+                <div class="bg-white shadow-2xl rounded-xl p-8 border-2 border-[#FF6361] max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div class="flex flex-col items-center justify-center">
+                             <span class="text-6xl mb-2">🗓️</span>
+                            <p class="text-2xl font-black text-[#BC5090]">2025년 12월 1일</p>
+                            <p class="font-bold mt-1">손해배상 재판 시작</p>
+                        </div>
+                        <div class="flex flex-col items-center justify-center">
+                            <span class="text-6xl mb-2">⚖️</span>
+                            <p class="text-2xl font-black text-[#BC5090]">핵심 쟁점</p>
+                            <p class="font-bold mt-1">고의적 침해 여부 및 배상 규모</p>
+                        </div>
+                        <div class="flex flex-col items-center justify-center">
+                           <span class="text-6xl mb-2">💣</span>
+                            <p class="text-2xl font-black text-[#BC5090]">최대 리스크</p>
+                            <p class="font-bold mt-1">수십억 달러 규모의 배상 판결</p>
+                        </div>
+                    </div>
+                     <p class="text-center text-gray-500 mt-8">이 재판은 AI 훈련이 '공정 이용'인지가 아니라, 불법 복제물을 수집한 행위 자체에 대한 것입니다. 배심원단이 앤트로픽의 행위를 '고의적'이라고 판단할 경우, 회사는 재정적으로 감당하기 어려운 위기에 직면할 수 있습니다.</p>
+                </div>
+            </section>
+
+            <section id="comparison">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">복잡한 법적 지형: 소송 비교 분석</h2>
+                    <p class="max-w-2xl mx-auto text-gray-600">AI 저작권 소송은 각기 다른 쟁점을 다룹니다. 앤트로픽 사건은 데이터 '입력'에, 뉴욕타임스 사건은 모델의 '출력'에 초점을 맞춥니다.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white shadow-lg rounded-xl p-8">
+                        <h3 class="text-xl font-bold mb-4 text-[#BC5090]">바츠 외 <span class="text-gray-800">대</span> 앤트로픽 (입력 중심)</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li><span class="font-bold text-gray-900">핵심 주장:</span> 불법 복제된 책을 훈련 데이터로 '입력'한 행위가 저작권 침해</li>
+                            <li><span class="font-bold text-gray-900">주요 쟁점:</span> 데이터 수집 과정의 합법성</li>
+                            <li><span class="font-bold text-gray-900">결과물:</span> 모델의 결과물이 원본을 모방하는지는 주요 쟁점이 아님</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white shadow-lg rounded-xl p-8">
+                        <h3 class="text-xl font-bold mb-4 text-[#BC5090]">뉴욕타임스 <span class="text-gray-800">대</span> OpenAI (출력 중심)</h3>
+                         <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li><span class="font-bold text-gray-900">핵심 주장:</span> ChatGPT가 기사 내용을 그대로 '출력'하여 원본 시장을 대체함</li>
+                            <li><span class="font-bold text-gray-900">주요 쟁점:</span> 모델 결과물의 침해성 및 시장 대체 효과</li>
+                            <li><span class="font-bold text-gray-900">결과물:</span> 훈련 데이터의 출처보다 결과물의 내용이 핵심</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="global-view">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">글로벌 규제 동향: 미국 vs 유럽연합</h2>
+                    <p class="max-w-2xl mx-auto text-gray-600">전 세계적으로 AI 규제 환경이 다르게 형성되고 있습니다. 유연한 판례 중심의 미국과 명문화된 규제를 선호하는 EU의 접근 방식은 글로벌 기업에 새로운 도전 과제를 제시합니다.</p>
+                </div>
+                <div class="bg-white shadow-lg rounded-xl p-6 md:p-8">
+                    <div class="chart-container">
+                        <canvas id="globalComparisonChart"></canvas>
+                    </div>
+                    <p class="text-center text-gray-500 mt-4">미국의 '공정 이용'은 사례별로 판단되어 유연하지만 예측이 어려운 반면, EU의 'AI 법'은 투명성 의무와 명시적인 '옵트아웃' 권리를 부여하여 더 규범적입니다.</p>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center py-12 mt-16 border-t border-gray-300">
+            <p class="text-gray-500">본 인포그래픽은 공개된 법원 문서와 언론 보도를 기반으로 제작되었습니다.</p>
+            <p class="text-sm text-gray-400 mt-2">최종 업데이트: 2025년 7월</p>
+        </footer>
+
+    </div>
+
+    <script>
+        function wrapLabels(label, maxWidth) {
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + ' ' + words[i]).length > maxWidth) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine += ' ' + words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+        
+        const globalCtx = document.getElementById('globalComparisonChart');
+        if (globalCtx) {
+            new Chart(globalCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['법적 유연성', '창작자 권리 보호 (옵트아웃)', '투명성 의무'],
+                    datasets: [{
+                        label: '미국 (공정 이용)',
+                        data: [8, 4, 3],
+                        backgroundColor: 'rgba(88, 80, 141, 0.7)',
+                        borderColor: 'rgba(88, 80, 141, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: '유럽연합 (AI 법)',
+                        data: [4, 9, 9],
+                        backgroundColor: 'rgba(255, 99, 97, 0.7)',
+                        borderColor: 'rgba(255, 99, 97, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: { 
+                                color: '#6B7280',
+                                callback: function(value, index, values) {
+                                    if (value === 0) return '낮음';
+                                    if (value === 5) return '중간';
+                                    if (value === 10) return '높음';
+                                    return null;
+                                }
+                            },
+                            grid: { color: 'rgba(0, 0, 0, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#374151' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#1F2937'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
