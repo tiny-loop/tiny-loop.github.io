@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025년 8월 초, 새로운 AI 기술 공개 및 방향성 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Calm & Supportive) -->
+    <!-- Application Structure Plan: The SPA is designed as a narrative-driven, single-page report. It starts with the "48-Hour Relay" theme to set the context. The core of the app is a series of dedicated sections for each company (OpenAI, Anthropic, Google), presented as distinct "chapters." This structure was chosen to emphasize that each company is on a different, non-comparable track, aligning with the user's revised brief. Instead of forcing a comparison, it allows users to understand each company's specific strategic calculation (e.g., OpenAI's reaction to Kimi, Anthropic's pre-emptive announcement). The app concludes with a synthesis of future directions, focusing on the divergence of strategies. -->
+    <!-- Visualization & Content Choices: 1. OpenAI: Goal:Inform/Compare -> HTML Table for specs, Bar Chart for performance vs. o4-mini -> Justification: Clearly presents technical details and the key performance claim. 2. Anthropic: Goal:Inform -> Styled "callout" card for the "more improvements coming" quote, Big Number for SWE-bench score -> Justification: Emphasizes the strategic signaling and niche leadership, which are qualitative points not suited for a chart. 3. Google: Goal:Organize -> HTML/CSS diagram showing the two-pronged strategy (DeepThink & Genie 3) -> Justification: Best way to visualize the parallel, long-term vs. short-term initiatives. 4. Overall Outlook: Goal:Organize -> A set of summary cards -> Justification: Provides a clean, digestible summary of the key takeaways from the new analysis. All methods confirm NO SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFBF8;
+            color: #434242;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #222222;
+            border-bottom: 3px solid #E0C097;
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #F0EBE3;
+            padding: 1.5rem;
+        }
+        .highlight-box {
+            background-color: #F0EBE3;
+            border-left: 4px solid #B8860B;
+            padding: 1rem;
+            border-radius: 0.25rem;
+        }
+        .nav-link {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: #F0EBE3;
+            color: #222222;
+        }
+        .nav-link.active {
+            background-color: #B8860B;
+            color: white;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
+        <nav class="container mx-auto px-4 py-3 flex justify-center items-center space-x-2 md:space-x-4 text-sm md:text-base text-gray-600">
+            <a href="#intro" class="nav-link active">소개</a>
+            <a href="#openai" class="nav-link">OpenAI</a>
+            <a href="#anthropic" class="nav-link">Anthropic</a>
+            <a href="#google" class="nav-link">Google</a>
+            <a href="#outlook" class="nav-link">향후 전망</a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="intro" class="text-center py-12 md:py-20">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#222222] mb-4">AI 신기술 릴레이: 2025년 8월 초</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                주요 기술 선도 기업들이 일제히 새로운 기술을 공개했습니다. 이는 단순한 경쟁을 넘어, 각자가 그리는 미래의 방향성을 제시하는 중요한 이정표입니다. 본 보고서는 이 기술 공개의 이면과 향후 방향성을 정리합니다.
+            </p>
+        </section>
+
+        <div class="space-y-16">
+            <section id="openai">
+                <h2 class="section-title">OpenAI: `gpt-oss` 공개, 전략적 주의 분산</h2>
+                <div class="grid md:grid-cols-5 gap-8">
+                    <div class="md:col-span-3">
+                        <p class="mb-4 text-gray-700">OpenAI의 `gpt-oss` 공개는 오랫동안 예고되었던 오픈소스 모델의 등장이자, 여러 전략적 계산이 깔린 움직임입니다. 특히 경쟁사 문샷 AI의 `Kimi K2` 등장으로 다소 당황했던 전열을 가다듬고, 곧 출시될 **GPT-5에 대한 시장의 관심을 잠시 돌리려는 의도**가 엿보입니다.</p>
+                        <div class="highlight-box">
+                            <h3 class="font-bold text-lg mb-2">핵심 분석: Kimi 대항마 & GPT-5의 그림자</h3>
+                            <p class="text-sm text-gray-800">`gpt-oss`는 Kimi K2와 같은 중국발 고성능 오픈소스 모델에 대한 직접적인 대응입니다. OpenAI는 `o4-mini`에 필적하는 성능의 모델을 공개함으로써 오픈소스 시장의 주도권을 되찾고, 동시에 GPT-5 출시에 대한 과도한 기대를 관리하는 효과를 노리고 있습니다. 이는 "우리의 비주력 모델도 이 정도"라는 자신감을 내비치며, GPT-5가 훨씬 더 큰 도약을 이룰 것임을 암시하는 고도의 전략입니다.</p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 card">
+                        <h3 class="font-bold text-center mb-4">`gpt-oss-120b` 주요 사양</h3>
+                        <ul class="text-sm space-y-2">
+                            <li><span class="font-semibold">아키텍처:</span> 전문가 혼합 (MoE)</li>
+                            <li><span class="font-semibold">총/활성 파라미터:</span> 1170억 / 51억</li>
+                            <li><span class="font-semibold">컨텍스트 창:</span> 128,000 토큰</li>
+                            <li><span class="font-semibold">요구사항:</span> 단일 80GB GPU (H100)</li>
+                            <li><span class="font-semibold">라이선스:</span> Apache 2.0</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="anthropic">
+                <h2 class="section-title">Anthropic: `Opus 4.1`, 계산된 징검다리</h2>
+                <div class="grid md:grid-cols-5 gap-8">
+                    <div class="md:col-span-3">
+                        <p class="mb-4 text-gray-700">Anthropic의 `Claude Opus 4.1` 출시는 B2B 코딩 시장에서의 리더십을 공고히 하는 동시에, 더 큰 그림을 그리고 있음을 시사하는 계산된 행보입니다. 성능은 소폭 개선되었지만, 진짜 메시지는 발표 내용 자체에 숨어있습니다.</p>
+                        <div class="highlight-box">
+                            <h3 class="font-bold text-lg mb-2">핵심 분석: 의도된 예고</h3>
+                            <p class="text-sm text-gray-800">가장 중요한 부분은 모델 보고서에 **"향후 몇 주 안에 상당히 더 큰 개선 사항을 발표할 계획"**이라고 명시한 점입니다. 이는 GPT-5 등 경쟁사의 차세대 모델 성능을 확인한 후, 그에 맞춰 자사의 진정한 차기 모델을 공개하려는 전략적 의도로 해석됩니다. Opus 4.1은 그 시간을 벌기 위한 '전략적 징검다리'인 셈입니다.</p>
+                        </div>
+                    </div>
+                     <div class="md:col-span-2 card flex flex-col justify-center items-center text-center">
+                        <p class="text-6xl font-bold text-[#B8860B]">74.5%</p>
+                        <p class="font-semibold mt-2">SWE-bench Verified 점수</p>
+                        <p class="text-sm text-gray-500 mt-1">B2B 코딩 성능 리더십 유지</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="google">
+                <h2 class="section-title">Google: 이중 전선, `DeepThink`와 `Genie 3`</h2>
+                 <div class="grid md:grid-cols-5 gap-8">
+                    <div class="md:col-span-3">
+                        <p class="mb-4 text-gray-700">Google은 두 개의 서로 다른 트랙을 동시에 공개하며 장기적인 비전을 과시했습니다. `DeepThink`는 Gemini 2.5 아키텍처의 성능을 극한까지 끌어올리는 고성능 추론 개념으로, 그 반응은 제한적이었지만 기술적 잠재력을 보여주었습니다. 동시에 `Genie 3`는 AI의 미래가 어디로 향하는지에 대한 Google의 장기적인 답을 제시합니다.</p>
+                        <div class="highlight-box">
+                            <h3 class="font-bold text-lg mb-2">핵심 분석: 극한의 추론과 미래 선점</h3>
+                            <p class="text-sm text-gray-800">`DeepThink`은 **Gemini 2.5 모델 아키텍처의 잠재력을 극한까지 탐구하는 고성능 추론 개념**입니다. 이는 LMArena 등에서 잠시 등장했던 'Kingfall'과 같은 미공개 고성능 모델의 가능성을 엿보게 합니다. 한편, `Genie 3`는 언어 모델 경쟁을 넘어, 상호작용 가능한 '월드 모델'이라는 새로운 영역을 개척하여 AI의 미래를 선점하려는 야심을 드러냅니다. 이는 현재 아키텍처의 최적화와 장기적 비전 제시를 동시에 수행하는 이중 전략입니다.</p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 card">
+                        <h3 class="font-bold text-center mb-4">Google의 이중 전략</h3>
+                        <div class="space-y-4">
+                            <div class="text-center p-4 border rounded-md">
+                                <p class="font-semibold">현재의 극한: DeepThink</p>
+                                <p class="text-2xl my-2">⬇️</p>
+                                <p class="text-sm bg-gray-100 p-2 rounded">2.5 아키텍처 추론 능력 극대화</p>
+                            </div>
+                            <div class="text-center p-4 border rounded-md">
+                                <p class="font-semibold">장기 비전: Genie 3</p>
+                                <p class="text-2xl my-2">⬇️</p>
+                                <p class="text-sm bg-gray-100 p-2 rounded">월드 모델 통한 미래 시장 선점</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="outlook">
+                <h2 class="section-title">종합 및 향후 방향성</h2>
+                <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-10">이번 신기술 릴레이는 AI 경쟁의 양상이 바뀌고 있음을 보여줍니다. 이제 기업들은 단순히 같은 트랙에서 속도 경쟁을 하는 것이 아니라, 각자 가장 잘 달릴 수 있는 새로운 트랙을 만들고 있습니다.</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="card">
+                        <h3 class="font-bold text-lg mb-2">1. 의도된 비교 회피와 기술력 과시</h3>
+                        <p class="text-gray-500 text-sm mb-3">정면 대결보다, 절묘한 타이밍으로 비교를 피해가며 각자의 기술력을 과시하는 새로운 경쟁 구도 형성.</p>
+                        <ul class="list-disc list-inside space-y-1 text-sm">
+                            <li><span class="font-semibold">OpenAI:</span> 오픈소스를 통한 기술력 과시</li>
+                            <li><span class="font-semibold">Anthropic:</span> 고수익 B2B 시장 집중</li>
+                            <li><span class="font-semibold">Google:</span> 월드 모델로 미래 비전 제시</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="font-bold text-lg mb-2">2. 차세대 모델을 향한 숨 고르기</h3>
+                        <p class="text-gray-500 text-sm mb-3">이번 발표는 진정한 차세대 모델 공개를 앞둔 전략적 '전초전' 성격.</p>
+                        <ul class="list-disc list-inside space-y-1 text-sm">
+                            <li>경쟁사의 움직임 관찰</li>
+                            <li>시장 기대치 관리 및 조율</li>
+                            <li>최적의 출시 시점 탐색</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="text-center py-8 mt-12 border-t border-gray-200">
+        <p class="text-gray-500 text-sm">Google Gemini Canvas, Instructor, Tiny</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.4
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
