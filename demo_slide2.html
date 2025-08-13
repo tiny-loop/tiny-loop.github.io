@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 활용 방식의 진화 - 프레젠테이션</title>
+    <style>
+        /* Figma 가져오기를 위한 기본 스타일링 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
+
+        body {
+            background-color: #F0F0F0; /* 슬라이드와 배경 구분 */
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Figma에서 개별 프레임으로 인식될 슬라이드 컨테이너 */
+        .slide-frame {
+            width: 1920px;
+            height: 1080px;
+            background-color: #FFFFFF;
+            border: 1px solid #DDD;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin: 100px auto; /* 정적 페이지에서 슬라이드 구분 */
+            position: relative; /* 푸터 위치 기준 */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* 슬라이드 내용이 넘치지 않도록 */
+        }
+
+        /* 슬라이드 내부 콘텐츠 영역 */
+        .content-area {
+            flex-grow: 1;
+            padding: 80px 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* 제목 슬라이드 스타일 */
+        .title-slide .content-area {
+            background: linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC);
+            color: white;
+        }
+        .title-slide h1 {
+            font-size: 120px;
+            font-weight: 900;
+            margin: 0;
+        }
+        .title-slide h2 {
+            font-size: 60px;
+            font-weight: 400;
+            margin: 20px 0 0 0;
+            opacity: 0.9;
+        }
+        .title-slide .presenter-info {
+            margin-top: 100px;
+            font-size: 32px;
+        }
+
+        /* 목차 슬라이드 스타일 */
+        .toc-slide .content-area {
+            align-items: flex-start;
+        }
+        .toc-slide h2 {
+            font-size: 80px;
+            color: #0052D4;
+            margin-bottom: 60px;
+            width: 100%;
+            text-align: left;
+        }
+        .toc-slide ol {
+            list-style: none;
+            padding-left: 0;
+            font-size: 48px;
+            counter-reset: toc-counter;
+            width: 100%;
+        }
+        .toc-slide li {
+            counter-increment: toc-counter;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+        .toc-slide li::before {
+            content: "0" counter(toc-counter);
+            font-size: 36px;
+            font-weight: 700;
+            color: #4364F7;
+            margin-right: 30px;
+        }
+
+        /* 본문 슬라이드 스타일 */
+        .body-slide .content-area {
+            justify-content: flex-start;
+            text-align: left;
+        }
+        .body-slide h3 {
+            font-size: 72px;
+            color: #0052D4;
+            width: 100%;
+            margin-bottom: 50px;
+        }
+        .body-slide .chart-placeholder {
+            width: 100%;
+            height: 500px;
+            background-color: #E9ECEF;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            color: #868E96;
+            margin-top: 40px;
+        }
+        .body-slide p {
+            font-size: 36px;
+            line-height: 1.6;
+        }
+
+        /* Q&A, 마지막 슬라이드 스타일 */
+        .qa-slide h2, .end-slide h2 {
+            font-size: 150px;
+            font-weight: 900;
+            color: #0052D4;
+        }
+        
+        /* 모든 슬라이드 하단 푸터 */
+        .slide-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 100px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 20px;
+            color: #868E96;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Figma 플러그인이 이 컨테이너를 기준으로 가져갑니다. -->
+    <main id="figma-import-body">
+
+        <!-- 슬라이드 1: 제목 -->
+        <section class="slide-frame title-slide">
+            <div class="content-area">
+                <div class="title-block">
+                    <h1>AI 활용 방식의 진화</h1>
+                    <h2>단일 대화에서 자율 에이전트 시스템까지</h2>
+                </div>
+                <div class="presenter-info">
+                    <p>발표자: 친절한 데이터 분석가</p>
+                    <p>날짜: 2025년 8월 13일</p>
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>1 / 10</span>
+                <span>AI 활용 방식의 진화</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 2: 목차 -->
+        <section class="slide-frame toc-slide">
+            <div class="content-area">
+                <h2>목차</h2>
+                <ol>
+                    <li>AI 활용 모델의 분류</li>
+                    <li>모델 1: 대화형 AI</li>
+                    <li>모델 2: 자율 에이전트 시스템</li>
+                    <li>프로그래밍 개념으로 보는 두 모델</li>
+                    <li>전략적 고려사항: 비용과 자원</li>
+                    <li>결론: AI 워크포스의 등장</li>
+                </ol>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>2 / 10</span>
+                <span>AI 활용 방식의 진화</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 3: 본문 (서론) -->
+        <section class="slide-frame body-slide">
+            <div class="content-area">
+                <h3>AI 활용 모델의 분류</h3>
+                <p>AI 기술의 발전은 우리가 AI와 상호작용하는 방식을 근본적으로 바꾸고 있습니다. <br>단순한 1:1 대화 모델을 넘어, 여러 AI가 협력하여 복잡한 작업을 자율적으로 수행하는 새로운 패러다임이 등장하고 있습니다.</p>
+                <div class="chart-placeholder">
+                    (이해를 돕는 다이어그램 또는 아이콘 영역)
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span>제작자: 분석가</span>
+                <span>3 / 10</span>
+                <span>AI 활용 방식의 진화</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 4: 본문 (모델 1) -->
+        <section class="slide-frame body-slide">
+            <div class="content-area">
+                <h3>모델 1: 대화형 AI (Conversational AI)</h3>
+                <p>사용자가 채팅창에서 순차적으로 질문하고 AI가 답변하는 단일 스레드 모델입니다. <br>모든 대화는 해당 채팅의 맥락 안에서만 이루어지며, 사용자가 대화를 주도해야 합니다.</p>
+                <div class="chart-placeholder">
+                    (사용자 ↔ AI 순차적 대화 흐름도)
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span>제작자: 분석가</span>
+                <span>4 / 10</span>
+                <span>AI 활용 방식의 진화</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 5: 본문 (모델 2) -->
+        <section class="slide-frame body-slide">
+            <div class="content-area">
+                <h3>모델 2: 자율 에이전트 시스템</h3>
+                <p>여러 전문 AI 에이전트가 팀을 이루어 공동의 목표를 자율적으로 달성하는 워크플로우 모델입니다. <br>사용자는 최초 목표 설정자 및 최종 검수자의 역할을 수행합니다.</p>
+                <div class="chart-placeholder">
+                    (연구원 → 기획자 → 작가 → 디자이너로 이어지는 협력 워크플로우 다이어그램)
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span>제작자: 분석가</span>
+                <span>5 / 10</span>
+                <span>AI 활용 방식의 진화</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 6: 본문 (프로그래밍 비유) -->
+        <section class="slide-frame body-slide">
+            <div class="content-area">
+                <h3>프로그래밍 개념으로 보는 두 모델</h3>
+                <p>대화형 AI는 동기적으로 실행되는 단일 함수(REPL)와 같고, 자율 에이전트 시스템은 여러 서비스가 API로 통신하는 마이크로서비스 아키텍처(MSA)와 유사합니다.</p>
+                <div class="chart-placeholder">
+                    (단일 함수 코드 vs 마이크로서비스 아키텍처 도식 비교)
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span>제작자: 분석가</span>
+                <span>6 / 10</span>
+                <span>AI 활용 방식의 진화</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 7: 본문 (인사이트) -->
+        <section class="slide-frame body-slide">
+            <div class="content-area">
+                <h3>전략적 고려사항: 비용과 자원</h3>
+                <p>자율 에이전트 모델로의 전환은 폭발적인 API 호출 수, 토큰 사용량 증가로 인해 상당한 비용 증가를 수반합니다. 따라서 '작게 시작하기', '최적의 모델 조합 사용', '가치에 집중'하는 전략적 접근이 필수적입니다.</p>
+                <div class="chart-placeholder">
+                    (비용 증가 요인과 전략적 접근법을 요약한 인포그래픽)
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span>제작자: 분석가</span>
+                <span>7 / 10</span>
+                <span>AI 활용 방식의 진화</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 8: 본문 (결론) -->
+        <section class="slide-frame body-slide">
+            <div class="content-area">
+                <h3>결론: AI 워크포스의 등장</h3>
+                <p>AI는 수동적 도구를 넘어, 스스로 계획하고 협력하는 능동적인 파트너, 즉 'AI 워크포스(Workforce)'로 진화하고 있습니다. 이는 생산성의 패러다임을 근본적으로 바꾸는 중요한 변화입니다.</p>
+                <div class="chart-placeholder">
+                    (미래 지향적인 아이콘 또는 이미지 영역)
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span>제작자: 분석가</span>
+                <span>8 / 10</span>
+                <span>AI 활용 방식의 진화</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 9: Q&A -->
+        <section class="slide-frame qa-slide">
+            <div class="content-area">
+                <h2>Q&A</h2>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>9 / 10</span>
+                <span>AI 활용 방식의 진화</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 10: 마지막 -->
+        <section class="slide-frame end-slide">
+            <div class="content-area">
+                <h2>감사합니다</h2>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>10 / 10</span>
+                <span>AI 활용 방식의 진화</span>
+            </footer>
+        </section>
+    </main>
+
+    <!-- 
+        선택적 상호작용 스크립트 (발표 모드)
+        Figma 플러그인은 이 스크립트를 실행하지 않습니다.
+        정적 HTML을 동적인 프레젠테이션으로 전환하고 싶을 때 사용합니다.
+    -->
+    <script>
+        // 이 스크립트는 발표 모드 버튼 클릭 시 활성화되도록 구성하는 것을 권장합니다.
+        // 예시로, 페이지 로드 시 바로 발표 모드를 활성화하는 코드를 작성합니다.
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide-frame');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.style.transition = 'opacity 0.5s ease-in-out';
+                    if (i === index) {
+                        slide.style.opacity = '1';
+                        slide.style.pointerEvents = 'auto';
+                    } else {
+                        slide.style.opacity = '0';
+                        slide.style.pointerEvents = 'none';
+                    }
+                });
+            }
+
+            function setupPresentationMode() {
+                document.body.style.backgroundColor = '#000';
+                document.body.style.margin = '0';
+                document.body.style.overflow = 'hidden';
+                
+                const mainContainer = document.getElementById('figma-import-body');
+                mainContainer.style.width = '100vw';
+                mainContainer.style.height = '100vh';
+
+                slides.forEach(slide => {
+                    slide.style.position = 'fixed';
+                    slide.style.top = '0';
+                    slide.style.left = '0';
+                    slide.style.margin = '0';
+                    slide.style.width = '100%';
+                    slide.style.height = '100%';
+                    // 뷰포트에 맞게 스케일 조정
+                    slide.style.transform = `scale(${Math.min(window.innerWidth / 1920, window.innerHeight / 1080)})`;
+                    slide.style.transformOrigin = 'top left';
+                });
+
+                showSlide(currentSlide);
+            }
+
+            // 'p' 키를 누르면 발표 모드 시작/종료 (예시)
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'p') {
+                    // 간단한 토글 기능 (실제로는 더 정교한 로직 필요)
+                    if (document.body.style.overflow === 'hidden') {
+                        window.location.reload();
+                    } else {
+                        setupPresentationMode();
+                    }
+                }
+
+                if (document.body.style.overflow !== 'hidden') return;
+
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    currentSlide = Math.min(currentSlide + 1, slides.length - 1);
+                    showSlide(currentSlide);
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    currentSlide = Math.max(currentSlide - 1, 0);
+                    showSlide(currentSlide);
+                }
+            });
+
+            window.addEventListener('resize', () => {
+                 if (document.body.style.overflow === 'hidden') {
+                    slides.forEach(slide => {
+                        slide.style.transform = `scale(${Math.min(window.innerWidth / 1920, window.innerHeight / 1080)})`;
+                    });
+                 }
+            });
+        });
+    </script>
+</body>
+</html>
