@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 경쟁 분석: OpenAI vs Anthropic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The application uses a "Timeline & Thematic Dashboard" structure. This design was chosen over a linear report format to empower users to explore information non-linearly. The core is an interactive timeline that breaks down the chronological narrative into digestible, clickable events. This is supplemented by thematic sections for direct comparison (Model vs. Model, Policy vs. Policy) using side-by-side cards and charts. This structure allows users to either follow the story chronologically or jump directly to comparative analysis, catering to different exploration styles and enhancing comprehension of the complex, multi-faceted competition. -->
+    <!-- Visualization & Content Choices: 
+        - Timeline (HTML/CSS/JS): Goal: Show sequence. Method: Vertical timeline with clickable nodes. Interaction: Click to show details in a separate pane. Justification: Breaks down a long narrative into manageable pieces.
+        - Bar Charts (Chart.js): Goal: Compare quantitative data (benchmarks, cost). Method: Horizontal bar charts. Interaction: Tooltips for exact values. Justification: Provides clear, immediate visual comparison of key metrics.
+        - Line Chart (Chart.js): Goal: Show change over time (market sentiment). Method: Line chart. Interaction: Tooltips for data points. Justification: Effectively illustrates the dramatic shift in prediction market odds.
+        - Comparison Cards (HTML/Tailwind): Goal: Compare qualitative features (policies, philosophies). Method: Side-by-side grid layout. Interaction: Static visual comparison. Justification: Clean, scannable way to present complex qualitative differences.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F8F5F2;
+            color: #3D352E;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #F59E0B;
+            border-bottom-color: #F59E0B;
+        }
+        .timeline-item {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .timeline-item:hover {
+            transform: scale(1.05);
+        }
+        .timeline-item.active .timeline-dot {
+            background-color: #F59E0B;
+            transform: scale(1.5);
+        }
+        .timeline-dot {
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            height: 320px;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F8F5F2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D1C7BD;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #B9AD9F;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-gray-800">8월의 AI 격전</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#timeline" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">타임라인</a>
+                        <a href="#model-comparison" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">모델 비교</a>
+                        <a href="#policy-showdown" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">정책 대결</a>
+                        <a href="#strategy-analysis" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">전략 분석</a>
+                        <a href="#market-impact" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">시장 영향</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <section id="hero" class="text-center py-12">
+            <h2 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">AI 패권 전쟁: 2주간의 기록</h2>
+            <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-600">2025년 8월, OpenAI와 Anthropic은 AI 시장의 미래를 건 치열한 공방을 벌였습니다. 본 대시보드는 이 2주간의 사건들을 대화형으로 탐색하며, 두 거인의 전략과 그 파장을 심층적으로 분석합니다.</p>
+        </section>
+
+        <section id="timeline" class="py-12">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold">사건 타임라인</h3>
+                <p class="mt-2 text-md text-gray-600">타임라인의 각 항목을 클릭하여 상세 내용을 확인하세요.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-1">
+                    <div id="timeline-list" class="relative border-l-2 border-gray-200 pl-6 space-y-8">
+                    </div>
+                </div>
+                <div class="md:col-span-2">
+                    <div id="timeline-details" class="card p-6 min-h-[400px] sticky top-24">
+                        <h4 id="details-title" class="text-2xl font-bold mb-2">항목을 선택하세요</h4>
+                        <p id="details-date" class="text-sm text-gray-500 mb-4"></p>
+                        <div id="details-content" class="text-gray-700 space-y-3">
+                            <p>왼쪽 타임라인에서 궁금한 사건을 클릭하면 이곳에 자세한 정보가 표시됩니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="model-comparison" class="py-12 bg-white rounded-2xl my-12 p-8">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold">모델 대 모델: GPT-5 vs Claude Opus 4.1</h3>
+                <p class="mt-2 text-md text-gray-600">이 섹션에서는 GPT-5와 Claude Opus 4.1의 성능, 비용, 개발자 경험을 직접 비교하여 각 모델의 고유한 강점과 약점을 분석합니다.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div class="space-y-6">
+                    <div class="card p-6">
+                        <h4 class="font-bold text-xl mb-2">개발자 페르소나 비교</h4>
+                        <div class="flex justify-around text-center">
+                            <div>
+                                <p class="text-4xl">⚡️</p>
+                                <p class="font-semibold mt-2">GPT-5: 실용적 제너럴리스트</p>
+                                <p class="text-sm text-gray-600">속도와 비용 중심. 신속한 프로토타이핑에 강점.</p>
+                            </div>
+                            <div>
+                                <p class="text-4xl">🎨</p>
+                                <p class="font-semibold mt-2">Claude: 정밀한 스페셜리스트</p>
+                                <p class="text-sm text-gray-600">품질과 정확도 중심. 프로덕션 코드에 강점.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h4 class="font-bold text-xl mb-2">웹 개발 충실도</h4>
+                        <p class="text-gray-700">GPT-5는 기능적으로 작동하는 결과물을 빠르게 생성하지만, Claude Opus 4.1은 Figma 디자인과의 시각적 일치도 및 미학적 완성도에서 월등한 평가를 받았습니다.</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="card p-6">
+                        <h4 class="font-bold text-xl text-center mb-4">주요 벤치마크 비교</h4>
+                        <div class="chart-container">
+                            <canvas id="sweBenchChart"></canvas>
+                        </div>
+                         <div class="chart-container mt-8">
+                            <canvas id="costChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="policy-showdown" class="py-12">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold">정책 대결: 1달러 정부 계약</h3>
+                <p class="mt-2 text-md text-gray-600">미국 정부 시장을 선점하기 위한 양사의 제안은 단순한 가격 경쟁을 넘어, 각 사의 전략적 포지셔닝을 명확히 보여줍니다.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card p-8">
+                    <h4 class="text-2xl font-bold mb-4 text-center">OpenAI의 제안</h4>
+                    <ul class="space-y-4 text-gray-700">
+                        <li class="flex items-start"><span class="text-amber-600 mr-3 mt-1">🏛️</span><div><strong class="font-semibold">대상 부처:</strong> 연방 행정부로 제한</div></li>
+                        <li class="flex items-start"><span class="text-amber-600 mr-3 mt-1">🛡️</span><div><strong class="font-semibold">보안 인증:</strong> 기업용 등급 (FedRAMP 상태 불명확)</div></li>
+                        <li class="flex items-start"><span class="text-amber-600 mr-3 mt-1">☁️</span><div><strong class="font-semibold">클라우드:</strong> Microsoft Azure 전용</div></li>
+                        <li class="flex items-start"><span class="text-amber-600 mr-3 mt-1">🎯</span><div><strong class="font-semibold">전략:</strong> 특정 생태계에 집중하여 빠른 시장 침투</div></li>
+                    </ul>
+                </div>
+                <div class="card p-8">
+                    <h4 class="text-2xl font-bold mb-4 text-center">Anthropic의 제안</h4>
+                    <ul class="space-y-4 text-gray-700">
+                        <li class="flex items-start"><span class="text-blue-600 mr-3 mt-1">🏛️</span><div><strong class="font-semibold">대상 부처:</strong> 3부처 전체 (행정, 입법, 사법)</div></li>
+                        <li class="flex items-start"><span class="text-blue-600 mr-3 mt-1">🛡️</span><div><strong class="font-semibold">보안 인증:</strong> FedRAMP High 인증 (민감 데이터 처리)</div></li>
+                        <li class="flex items-start"><span class="text-blue-600 mr-3 mt-1">☁️</span><div><strong class="font-semibold">클라우드:</strong> 멀티클라우드 지원 (AWS, GCP 등)</div></li>
+                        <li class="flex items-start"><span class="text-blue-600 mr-3 mt-1">🎯</span><div><strong class="font-semibold">전략:</strong> 유연성과 보안을 강조하여 더 넓은 시장 공략</div></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategy-analysis" class="py-12 bg-white rounded-2xl my-12 p-8">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold">전략과 철학: 두 개의 길</h3>
+                <p class="mt-2 text-md text-gray-600">두 회사는 뚜렷하게 다른 제품 철학과 시장 접근법을 보여주며, AI의 미래에 대한 상이한 비전을 제시합니다.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-2xl font-bold mb-4 text-center">🤖 OpenAI: 범용 인공지능 (AGI) 추구</h4>
+                    <div class="card p-6 space-y-4">
+                        <p><strong>비전:</strong> 모든 사람을 위한 단일하고 강력한 '지능형 에이전트' 또는 '동반자'를 구축.</p>
+                        <p><strong>접근법:</strong> 라우터, 개성 부여, 자동 메모리 기능 등을 통해 사용자 경험을 단순화하고 능동적으로 돕는 AGI와 유사한 제품을 지향.</p>
+                        <p><strong>도전 과제:</strong> 사용자 경험의 복잡성, 정렬(alignment) 문제, 인간-AI 간의 정서적 유대감 관리.</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-2xl font-bold mb-4 text-center">🛠️ Anthropic: 전문 기업용 도구</h4>
+                    <div class="card p-6 space-y-4">
+                        <p><strong>비전:</strong> 기업 및 전문가를 위한 '신뢰할 수 있는 도구'를 제공.</p>
+                        <p><strong>접근법:</strong> 코딩 정밀도, 보안(FedRAMP), 데이터 프라이버시(사용자 제어 메모리), 방대한 컨텍스트 윈도우 등 고부가가치 작업을 위한 필수적이고 안전한 도구에 집중.</p>
+                        <p><strong>강점:</strong> 예측 가능성, 사용자 통제권, 규제 산업에서의 높은 채택 가능성.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="market-impact" class="py-12">
+             <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold">시장의 반응: 신뢰도 변화</h3>
+                <p class="mt-2 text-md text-gray-600">GPT-5 출시 이후, 시장의 인식은 극적으로 변화했습니다. 예측 시장 데이터는 이러한 심리 변화를 명확하게 보여줍니다.</p>
+            </div>
+            <div class="card p-6">
+                <div class="chart-container">
+                    <canvas id="predictionMarketChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-sm">
+            <p>본 애플리케이션은 제공된 '8월의 격전: AI 패권을 향한 OpenAI와 Anthropic의 2주간의 전쟁 분석' 보고서를 기반으로 제작되었습니다.</p>
+            <p>&copy; 2025 AI Market Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const timelineData = [
+            {
+                id: 'claude41',
+                date: '8월 5일',
+                title: 'Anthropic, Claude Opus 4.1 출시',
+                company: 'Anthropic',
+                content: `OpenAI의 GPT-5 출시에 앞서 선제공격에 나섰습니다. 에이전트 작업, 코딩 성능, 추론 능력 향상에 초점을 맞췄으며, 특히 SWE-bench Verified 벤치마크에서 74.5%라는 높은 점수를 강조하며 기술적 우위를 과시했습니다. 이는 '범용 지능'이 아닌 '전문가 수준의 신뢰성'으로 경쟁의 장을 규정하려는 전략이었습니다.`
+            },
+            {
+                id: 'gptoss',
+                date: '8월 5일',
+                title: 'OpenAI, gpt-oss 모델 공개',
+                company: 'OpenAI',
+                content: `GPT-2 이후 처음으로 두 개의 오픈 웨이트 모델(gpt-oss-120b, gpt-oss-20b)을 Apache 2.0 라이선스로 공개했습니다. 이는 AI를 민주화하고 '민주적 가치에 뿌리를 둔 AI 인프라'를 구축하려는 시도이자, 미국 주도의 AI 생태계를 장려하는 소프트 파워 전략의 일환이었습니다. 커뮤니티는 이를 "오픈소스 LLM 운동의 거대한 승리"로 평가했습니다.`
+            },
+            {
+                id: 'gov1',
+                date: '8월 6일',
+                title: 'OpenAI, 1달러 정부 계약 발표',
+                company: 'OpenAI',
+                content: `미국 연방 조달청(GSA)과의 파트너십을 통해 ChatGPT Enterprise를 연방 행정부 전체에 1년간 기관당 1달러에 제공한다고 발표했습니다. 이는 오픈소스 공개와 더불어, OpenAI를 국가의 전략적 자산으로 포지셔닝하려는 정교한 이중 전략이었습니다.`
+            },
+            {
+                id: 'gpt5launch',
+                date: '8월 7일',
+                title: 'OpenAI, GPT-5 출시',
+                company: 'OpenAI',
+                content: `역대 가장 똑똑하고, 빠르고, 유용한 모델이라며 "주머니 속의 박사급 전문가 팀"에 비유했습니다. 핵심은 실시간 라우터로 질문의 복잡도에 따라 다른 모델을 자동 선택해주는 '통합 모델' 개념이었습니다. 하지만 '차트 범죄' 논란, 기술적 장애, 구형 모델(GPT-4o) 강제 폐기 등으로 인해 출시는 시작부터 삐걱거렸습니다.`
+            },
+            {
+                id: 'backlash',
+                date: '8월 8-11일',
+                title: '사용자들의 광범위한 반발',
+                company: 'OpenAI',
+                content: `출시 직후, 사용자들은 GPT-5가 기능적으로 퇴보했으며, GPT-4o의 '개성'이 사라지고 '무미건조한 로봇'처럼 느껴진다고 비판했습니다. 특히 창의적 작업에 챗봇을 사용하던 유저들은 격분했으며, 많은 유료 구독자들이 구독 취소를 위협했습니다. 이는 OpenAI가 사용자의 선택권과 모델에 대한 정서적 유대감을 과소평가했음을 보여주었습니다.`
+            },
+            {
+                id: 'apology',
+                date: '8월 11일',
+                title: 'OpenAI, 사과 및 정책 번복',
+                company: 'OpenAI',
+                content: `CEO 샘 알트만은 출시가 "삐걱거렸다"고 인정하고, 차트 오류와 기술적 문제를 사과했습니다. 사용자 압박에 굴복하여, 유료 사용자들이 GPT-4o를 계속 사용할 수 있도록 하는 방안을 검토 중이라고 발표하며 구형 모델 폐기 결정이 '실수'였음을 인정했습니다.`
+            },
+            {
+                id: 'claude_context',
+                date: '8월 12일',
+                title: 'Anthropic, 100만 토큰 컨텍스트 공개',
+                company: 'Anthropic',
+                content: `GPT-5의 혼란을 틈타, Claude Sonnet 4 모델이 100만 토큰 컨텍스트 윈도우를 지원한다고 발표했습니다. 이는 기존 20만에서 5배 증가한 것으로, 대규모 코드 분석, 방대한 문서 종합 등 고부가가치 기업용 사용 사례에 대한 직접적인 해답을 제시하며 기술적 카운터펀치를 날렸습니다.`
+            },
+            {
+                id: 'anthropic_gov',
+                date: '8월 12일',
+                title: 'Anthropic, 3부처 대상 정부 계약 제안',
+                company: 'Anthropic',
+                content: `자체적인 1달러 정부 계약을 발표하며, 행정부에 국한된 OpenAI와 달리 입법부와 사법부를 포함한 연방 정부 3부처 모두에게 제공하겠다고 제안했습니다. 또한 FedRAMP High 인증과 멀티클라우드 지원을 강조하며 보안과 유연성에서 우위를 점하려 했습니다.`
+            },
+            {
+                id: 'recall',
+                date: '8월 13일',
+                title: 'Anthropic, 사용자 제어 '리콜' 기능 도입',
+                company: 'Anthropic',
+                content: `새로운 메모리 기능 '리콜'을 발표했습니다. ChatGPT의 자동 학습 방식과 달리, 사용자가 명시적으로 요청할 때만 과거 대화를 검색하는 '사용자 트리거' 방식입니다. 이는 프라이버시 문제를 해결하고 사용자에게 완전한 통제권을 부여함으로써, OpenAI의 강제적 업데이트에 실망한 사용자들에게 철학적 대안을 제시했습니다.`
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const timelineList = document.getElementById('timeline-list');
+            const detailsTitle = document.getElementById('details-title');
+            const detailsDate = document.getElementById('details-date');
+            const detailsContent = document.getElementById('details-content');
+
+            timelineData.forEach((item, index) => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'timeline-item relative';
+                timelineItem.dataset.id = item.id;
+
+                const dot = document.createElement('div');
+                dot.className = 'timeline-dot absolute -left-[33px] top-1 h-4 w-4 rounded-full border-4 border-white';
+                dot.style.backgroundColor = item.company === 'OpenAI' ? '#60A5FA' : '#F59E0B';
+
+                const content = document.createElement('div');
+                content.innerHTML = `<h5 class="font-semibold">${item.title}</h5><p class="text-sm text-gray-500">${item.date}</p>`;
+                
+                timelineItem.appendChild(dot);
+                timelineItem.appendChild(content);
+                timelineList.appendChild(timelineItem);
+
+                timelineItem.addEventListener('click', () => {
+                    document.querySelectorAll('.timeline-item').forEach(el => el.classList.remove('active'));
+                    timelineItem.classList.add('active');
+
+                    detailsTitle.textContent = item.title;
+                    detailsDate.textContent = item.date;
+                    detailsContent.innerHTML = `<p>${item.content}</p>`;
+                });
+
+                if (index === 0) {
+                    timelineItem.click();
+                }
+            });
+            
+            new Chart(document.getElementById('sweBenchChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['SWE-bench Verified'],
+                    datasets: [
+                        {
+                            label: 'GPT-5',
+                            data: [74.9],
+                            backgroundColor: 'rgba(96, 165, 250, 0.7)',
+                            borderColor: 'rgba(96, 165, 250, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Claude Opus 4.1',
+                            data: [74.5],
+                            backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                            borderColor: 'rgba(245, 158, 11, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: '코딩 벤치마크 점수 (%)', font: { size: 16 } },
+                        tooltip: {
+                            callbacks: {
+                                footer: (tooltipItems) => {
+                                    if (tooltipItems[0].dataset.label === 'GPT-5') {
+                                        return '주의: "차트 범죄" 논란으로 신뢰도 이슈 있음';
+                                    }
+                                    return '';
+                                }
+                            }
+                        }
+                    },
+                    scales: { x: { beginAtZero: true, max: 80 } }
+                }
+            });
+
+            new Chart(document.getElementById('costChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['동일 코딩 작업 세트'],
+                    datasets: [
+                        {
+                            label: 'GPT-5',
+                            data: [3.50],
+                            backgroundColor: 'rgba(96, 165, 250, 0.7)',
+                            borderColor: 'rgba(96, 165, 250, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Claude Opus 4.1',
+                            data: [8.00],
+                            backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                            borderColor: 'rgba(245, 158, 11, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: '작업 비용 비교 ($)', font: { size: 16 } },
+                        tooltip: { callbacks: { label: (context) => `${context.dataset.label}: $${context.raw.toFixed(2)}` } }
+                    },
+                    scales: { x: { beginAtZero: true } }
+                }
+            });
+
+            new Chart(document.getElementById('predictionMarketChart'), {
+                type: 'line',
+                data: {
+                    labels: ['8월 7일 (출시 전)', '8월 7일 (출시 후)'],
+                    datasets: [
+                        {
+                            label: 'OpenAI',
+                            data: [80, 18],
+                            borderColor: 'rgba(96, 165, 250, 1)',
+                            backgroundColor: 'rgba(96, 165, 250, 0.2)',
+                            fill: true,
+                            tension: 0.1
+                        },
+                        {
+                            label: 'Google',
+                            data: [15, 77],
+                            borderColor: 'rgba(234, 88, 12, 1)',
+                            backgroundColor: 'rgba(234, 88, 12, 0.2)',
+                            fill: true,
+                            tension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: '최고 모델 보유 확률 예측 시장 변화 (%)', font: { size: 16 } },
+                    },
+                    scales: { y: { beginAtZero: true, max: 100 } }
+                }
+            });
+
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
