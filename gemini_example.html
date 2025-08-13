@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini 활용법</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- 기본 설정 및 Figma 최적화 스타일 --- */
+        :root {
+            /* 색상 팔레트: 교육, 신뢰감 (파랑 메인, 녹색/노란색 포인트) */
+            --color-main: #0D47A1; /* Deep Blue */
+            --color-accent1: #1E88E5; /* Bright Blue */
+            --color-accent2: #43A047; /* Green */
+            --color-accent3: #FDD835; /* Yellow */
+            --color-text-dark: #212121;
+            --color-text-light: #FFFFFF;
+            --color-background: #FFFFFF;
+            --color-body-bg: #F0F0F0;
+
+            /* 폰트 설정 */
+            --font-main: 'Noto Sans KR', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-body-bg);
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease;
+        }
+
+        /* --- 슬라이드 프레임 (Figma에서 Frame으로 인식) --- */
+        .slide-frame {
+            /* Figma 인식을 위한 고정 크기 */
+            width: 1920px;
+            height: 1080px;
+            
+            background-color: var(--color-background);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            
+            /* 정적 페이지에서 슬라이드 구분을 위한 여백 */
+            margin: 100px auto;
+            
+            /* 내부 콘텐츠 정렬 (Figma의 Auto Layout 변환 최적화) */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            /* 위치 및 전환 효과 */
+            position: relative;
+            overflow: hidden;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        /* --- 콘텐츠 블록 스타일 --- */
+        .content-area {
+            width: 90%;
+            max-width: 1600px;
+            height: 85%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 120px;
+            font-weight: 900;
+            color: var(--color-main);
+            margin: 0;
+        }
+
+        h2 {
+            font-size: 80px;
+            font-weight: 700;
+            color: var(--color-accent1);
+            margin-bottom: 60px;
+        }
+
+        p, li {
+            font-size: 48px;
+            line-height: 1.6;
+            color: var(--color-text-dark);
+        }
+
+        .subtitle {
+            font-size: 56px;
+            color: var(--color-accent1);
+            margin-top: 20px;
+        }
+
+        .presenter-info {
+            margin-top: 40px;
+            font-size: 40px;
+            color: #616161;
+        }
+
+        /* 목차 스타일 */
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            width: 80%;
+        }
+        .toc-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 48px;
+        }
+        .toc-list .icon {
+            width: 60px;
+            height: 60px;
+            margin-right: 30px;
+            color: var(--color-accent2);
+        }
+
+        /* 본문 슬라이드 아이콘 */
+        .slide-icon {
+            width: 150px;
+            height: 150px;
+            color: var(--color-main);
+            margin-bottom: 40px;
+        }
+
+        /* --- 하단 푸터 (Footer) --- */
+        .slide-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 60px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 24px;
+            color: #757575;
+        }
+
+        /* --- 발표 모드 스타일 (JS로 제어) --- */
+        .presentation-mode {
+            background-color: #000;
+        }
+        .presentation-mode .slide-frame {
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .presentation-mode .slide-frame.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #presentation-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-family: var(--font-main);
+            background-color: var(--color-main);
+            color: var(--color-text-light);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .presentation-mode #presentation-button {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Figma로 가져갈 슬라이드 컨테이너 -->
+    <main id="figma-import-body">
+
+        <!-- 슬라이드 1: 제목 -->
+        <section class="slide-frame">
+            <div class="content-area">
+                <h1>Gemini를 쓰는 몇 가지 이야기</h1>
+                <p class="subtitle">Gemini를 활용한 콘텐츠 제작 및 활용법</p>
+                <div class="presenter-info">
+                    <p>발표자: Tiny</p>
+                    <p>날짜: 2025. 08. 13.</p>
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>1 / 9</span>
+                <span>Gemini 활용법 - Tiny</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 2: 목차 -->
+        <section class="slide-frame">
+            <div class="content-area">
+                <h2>목차 (Contents)</h2>
+                <ul class="toc-list">
+                    <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg> 1. 딥 리서치와 자료 시각화 (웹페이지)</li>
+                    <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> 2. 자료 시각화 (슬라이드)</li>
+                    <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg> 3. 피그마(Figma) 연동 및 최종 편집</li>
+                    <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> 4. 이미지 생성</li>
+                    <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg> 5. 영상 제작</li>
+                    <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 6. Q&A</li>
+                </ul>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>2 / 9</span>
+                <span>Gemini 활용법 - Tiny</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 3: 본문 1 -->
+        <section class="slide-frame">
+            <div class="content-area">
+                <svg class="slide-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <h2>1. 딥 리서치와 자료 시각화</h2>
+                <p>심도 있는 리서치를 진행하고, 그 결과를 웹페이지로 시각화합니다.</p>
+                <div class="chart-placeholder" style="width:80%; height: 300px; background: #E3F2FD; margin-top: 50px; border-radius: 8px; display:flex; align-items:center; justify-content:center; color: #90A4AE;">Chart/Graph Placeholder</div>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>3 / 9</span>
+                <span>Gemini 활용법 - Tiny</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 4: 본문 2 -->
+        <section class="slide-frame">
+            <div class="content-area">
+                <svg class="slide-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <h2>2. 자료 시각화 (슬라이드)</h2>
+                <p>수집하고 분석한 자료를 바탕으로 발표용 슬라이드를 제작합니다.</p>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>4 / 9</span>
+                <span>Gemini 활용법 - Tiny</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 5: 본문 3 -->
+        <section class="slide-frame">
+            <div class="content-area">
+                <svg class="slide-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg>
+                <h2>3. 피그마(Figma) 연동 및 최종 편집</h2>
+                <p>피그마(Figma)에서 결과물을 가져와 최종적으로 편집하고 디자인을 완성합니다.</p>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>5 / 9</span>
+                <span>Gemini 활용법 - Tiny</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 6: 본문 4 -->
+        <section class="slide-frame">
+            <div class="content-area">
+                <svg class="slide-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <h2>4. 이미지 생성</h2>
+                <p>필요한 컨셉의 이미지를 생성하고 활용합니다.</p>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>6 / 9</span>
+                <span>Gemini 활용법 - Tiny</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 7: 본문 5 -->
+        <section class="slide-frame">
+            <div class="content-area">
+                <svg class="slide-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                <h2>5. 영상 제작</h2>
+                <p>생성된 이미지를 바탕으로 독특한 영상을 만듭니다.</p>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>7 / 9</span>
+                <span>Gemini 활용법 - Tiny</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 8: Q&A -->
+        <section class="slide-frame">
+            <div class="content-area">
+                <svg class="slide-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <h2>6. Q&A</h2>
+                <p>궁금한 점에 대해 자유롭게 질문하고 답변하는 시간을 갖습니다.</p>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>8 / 9</span>
+                <span>Gemini 활용법 - Tiny</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 9: 마지막 -->
+        <section class="slide-frame">
+            <div class="content-area">
+                <h2 style="font-size: 100px;">End of Document</h2>
+                <p style="font-size: 50px;">감사합니다</p>
+            </div>
+            <footer class="slide-footer">
+                <span></span>
+                <span>9 / 9</span>
+                <span>Gemini 활용법 - Tiny</span>
+            </footer>
+        </section>
+
+    </main>
+
+    <!-- 발표 모드 제어 버튼 -->
+    <button id="presentation-button">발표 시작</button>
+
+    <script>
+    // --- 선택적 발표 모드 스크립트 ---
+    // 이 스크립트는 Figma 플러그인에서 실행되지 않으며, 웹 브라우저에서 동적 발표 경험을 제공합니다.
+    document.addEventListener('DOMContentLoaded', () => {
+        const presentationButton = document.getElementById('presentation-button');
+        const slides = document.querySelectorAll('.slide-frame');
+        const body = document.body;
+        let currentSlide = 0;
+        let isPresentationMode = false;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                if (i === index) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+        }
+
+        function startPresentation() {
+            isPresentationMode = true;
+            body.classList.add('presentation-mode');
+            currentSlide = 0;
+            showSlide(currentSlide);
+        }
+
+        function endPresentation() {
+            isPresentationMode = false;
+            body.classList.remove('presentation-mode');
+            // 활성화된 슬라이드 클래스도 제거
+            slides.forEach(slide => slide.classList.remove('active'));
+        }
+
+        presentationButton.addEventListener('click', startPresentation);
+
+        window.addEventListener('keydown', (e) => {
+            if (!isPresentationMode) return;
+
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            } else if (e.key === 'Escape') {
+                endPresentation();
+            }
+        });
+    });
+    </script>
+
+</body>
+</html>
