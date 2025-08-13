@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 경쟁 분석 프레젠테이션</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* 기본 설정 */
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F0F0F0;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Figma 변환 최적화를 위한 메인 컨테이너 */
+        #figma-import-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 개별 슬라이드 프레임 */
+        .slide-frame {
+            width: 1920px;
+            height: 1080px;
+            background-color: #FFFFFF;
+            border: 1px solid #DDD;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin: 100px auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* 콘텐츠 영역 기본 스타일 */
+        .content-area {
+            width: 90%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px;
+            text-align: center;
+        }
+
+        /* 제목 스타일 */
+        .title-block h1 {
+            font-size: 100px;
+            font-weight: 900;
+            color: #2C5282; /* Main Blue */
+            margin: 0;
+        }
+        .title-block h2 {
+            font-size: 50px;
+            font-weight: 500;
+            color: #4A5568;
+            margin-top: 20px;
+        }
+        .title-block p {
+            font-size: 32px;
+            color: #718096;
+            margin-top: 50px;
+        }
+
+        /* 목차 스타일 */
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            width: 60%;
+        }
+        .toc-list li {
+            font-size: 48px;
+            padding: 20px;
+            border-bottom: 2px solid #E2E8F0;
+            color: #2D3748;
+        }
+        .toc-list li:last-child {
+            border-bottom: none;
+        }
+        .toc-list span {
+            color: #2C5282;
+            font-weight: 700;
+            margin-right: 20px;
+        }
+
+        /* 본문 슬라이드 스타일 */
+        .slide-title {
+            font-size: 72px;
+            font-weight: 700;
+            color: #2C5282;
+            position: absolute;
+            top: 80px;
+            left: 100px;
+        }
+        .two-column-layout {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: space-around;
+            align-items: center;
+            padding-top: 150px;
+        }
+        .column {
+            width: 45%;
+            padding: 20px;
+        }
+        .column h3 {
+            font-size: 48px;
+            color: #2C5282;
+            border-bottom: 4px solid #F59E0B; /* Accent Yellow/Orange */
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .column ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+        .column li {
+            font-size: 32px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .column li::before {
+            content: '✓';
+            color: #48BB78; /* Accent Green */
+            font-weight: 900;
+            margin-right: 15px;
+            margin-top: 5px;
+        }
+        .chart-placeholder {
+            width: 100%;
+            height: 300px;
+            background-color: #EDF2F7;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #A0AEC0;
+            margin-top: 20px;
+        }
+
+        /* Q&A, 마지막 슬라이드 스타일 */
+        .final-slide-text {
+            font-size: 150px;
+            font-weight: 900;
+            color: #2C5282;
+        }
+
+        /* 공통 하단 푸터 */
+        .slide-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #2C5282;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            font-size: 20px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <main id="figma-import-body">
+
+        <!-- 슬라이드 1: 제목 -->
+        <section class="slide-frame">
+            <div class="content-area title-block">
+                <h1>8월의 AI 격전: OpenAI vs Anthropic</h1>
+                <h2>2주간의 경쟁으로 본 AI 시장의 미래</h2>
+                <p>발표자: [발표자 이름]</p>
+                <p>날짜: 2025년 8월 13일</p>
+            </div>
+            <footer class="slide-footer">
+                <span>8월의 AI 격전</span>
+                <span>1 / 10</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 2: 목차 -->
+        <section class="slide-frame">
+            <h1 class="slide-title">목차</h1>
+            <div class="content-area">
+                <ul class="toc-list">
+                    <li><span>1.</span> 경쟁의 서막: 중대한 2주</li>
+                    <li><span>2.</span> 타임라인: 주요 사건 분석</li>
+                    <li><span>3.</span> 모델 비교: GPT-5 vs Claude 4.1</li>
+                    <li><span>4.</span> 정책 대결: 1달러 정부 계약</li>
+                    <li><span>5.</span> 전략과 철학: 두 개의 길</li>
+                    <li><span>6.</span> 시장의 반응과 미래 전망</li>
+                </ul>
+            </div>
+            <footer class="slide-footer">
+                <span>8월의 AI 격전</span>
+                <span>2 / 10</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 3: 본문 - 서론 -->
+        <section class="slide-frame">
+            <h1 class="slide-title">1. 경쟁의 서막: 중대한 2주</h1>
+            <div class="content-area two-column-layout">
+                 <div class="column">
+                    <h3>핵심 주제</h3>
+                    <ul>
+                        <li>범용 AI(AGI)와 전문 기업용 도구의 충돌</li>
+                        <li>오픈소스와 정부 계약을 통한 시장 공략</li>
+                        <li>기술을 넘어선 사용자 신뢰의 중요성 부각</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>2025년 8월, 2주간의 의미</h3>
+                    <p style="font-size: 32px; text-align: left;">
+                        OpenAI와 Anthropic의 숨 가쁜 공방은 AI 시장의 중대한 변곡점이었습니다.
+                        이 기간 동안 양사는 상이한 기술 철학과 경쟁 전략을 명확히 드러내며, AI 산업의 미래 방향을 가늠하게 했습니다.
+                    </p>
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span>8월의 AI 격전</span>
+                <span>3 / 10</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 4: 본문 - 타임라인 요약 -->
+        <section class="slide-frame">
+            <h1 class="slide-title">2. 타임라인: 주요 사건 분석</h1>
+            <div class="content-area two-column-layout">
+                <div class="column">
+                    <h3>🤖 OpenAI의 행보</h3>
+                    <ul>
+                        <li><strong style="color: #2C5282;">8/5:</strong> gpt-oss 모델 공개 (오픈소스 전략)</li>
+                        <li><strong style="color: #2C5282;">8/6:</strong> 1달러 정부 계약 발표 (행정부 대상)</li>
+                        <li><strong style="color: #2C5282;">8/7:</strong> GPT-5 출시 (통합 모델)</li>
+                        <li><strong style="color: #2C5282;">8/8~:</strong> 사용자 반발 및 기술 결함 논란</li>
+                        <li><strong style="color: #2C5282;">8/11:</strong> CEO 사과 및 정책 번복</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>🛠️ Anthropic의 반격</h3>
+                    <ul>
+                        <li><strong style="color: #F59E0B;">8/5:</strong> Claude 4.1 출시 (전문가용 성능 강조)</li>
+                        <li><strong style="color: #F59E0B;">8/12:</strong> 100만 토큰 컨텍스트 공개</li>
+                        <li><strong style="color: #F59E0B;">8/12:</strong> 3부처 대상 정부 계약 제안</li>
+                        <li><strong style="color: #F59E0B;">8/13:</strong> 사용자 제어 메모리 '리콜' 기능 도입</li>
+                    </ul>
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span>8월의 AI 격전</span>
+                <span>4 / 10</span>
+            </footer>
+        </section>
+        
+        <!-- 슬라이드 5: 본문 - 모델 비교 -->
+        <section class="slide-frame">
+            <h1 class="slide-title">3. 모델 비교: GPT-5 vs Claude 4.1</h1>
+            <div class="content-area two-column-layout">
+                <div class="column">
+                    <h3>GPT-5: 실용적 제너럴리스트</h3>
+                    <ul>
+                        <li>속도와 비용 효율성에서 압도적 우위</li>
+                        <li>신속한 프로토타이핑, 범용 작업에 강점</li>
+                        <li>웹 개발 시 시각적 완성도는 다소 부족</li>
+                    </ul>
+                    <div class="chart-placeholder">비용 비교 차트 (GPT-5: $3.50 vs Claude: $8.00)</div>
+                </div>
+                <div class="column">
+                    <h3>Claude 4.1: 정밀한 스페셜리스트</h3>
+                    <ul>
+                        <li>품질과 정확도, 시각적 충실도에서 찬사</li>
+                        <li>복잡한 리팩토링, 프로덕션 코드에 강점</li>
+                        <li>비교적 높은 비용과 느린 속도가 단점</li>
+                    </ul>
+                    <div class="chart-placeholder">SWE-Bench 점수 차트 (GPT-5: 74.9% vs Claude: 74.5%)</div>
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span>8월의 AI 격전</span>
+                <span>5 / 10</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 6: 본문 - 정책 대결 -->
+        <section class="slide-frame">
+            <h1 class="slide-title">4. 정책 대결: 1달러 정부 계약</h1>
+            <div class="content-area two-column-layout">
+                <div class="column">
+                    <h3>OpenAI의 제안</h3>
+                    <ul>
+                        <li><strong>대상:</strong> 연방 행정부로 제한</li>
+                        <li><strong>보안:</strong> 기업용 등급 (FedRAMP 불명확)</li>
+                        <li><strong>인프라:</strong> Microsoft Azure 전용</li>
+                        <li><strong>전략:</strong> 특정 생태계 집중, 빠른 시장 침투</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>Anthropic의 제안</h3>
+                    <ul>
+                        <li><strong>대상:</strong> 3부처 전체 (행정, 입법, 사법)</li>
+                        <li><strong>보안:</strong> FedRAMP High 인증 (민감 데이터 처리)</li>
+                        <li><strong>인프라:</strong> 멀티클라우드 지원 (AWS, GCP)</li>
+                        <li><strong>전략:</strong> 유연성과 보안 강조, 넓은 시장 공략</li>
+                    </ul>
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span>8월의 AI 격전</span>
+                <span>6 / 10</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 7: 본문 - 전략과 철학 -->
+        <section class="slide-frame">
+            <h1 class="slide-title">5. 전략과 철학: 두 개의 길</h1>
+            <div class="content-area two-column-layout">
+                <div class="column">
+                    <h3>🤖 OpenAI: 범용 인공지능 (AGI) 추구</h3>
+                    <ul>
+                        <li><strong>비전:</strong> 모든 사람을 위한 '지능형 동반자'</li>
+                        <li><strong>접근법:</strong> 자동화, 개성 부여, 단순화된 사용자 경험</li>
+                        <li><strong>도전:</strong> 사용자 통제권, 정서적 유대감 관리</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>🛠️ Anthropic: 전문 기업용 도구</h3>
+                    <ul>
+                        <li><strong>비전:</strong> 기업을 위한 '신뢰할 수 있는 도구'</li>
+                        <li><strong>접근법:</strong> 정밀도, 보안, 데이터 프라이버시 집중</li>
+                        <li><strong>강점:</strong> 예측 가능성, 사용자 통제권 보장</li>
+                    </ul>
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span>8월의 AI 격전</span>
+                <span>7 / 10</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 8: 본문 - 시장 반응 및 결론 -->
+        <section class="slide-frame">
+            <h1 class="slide-title">6. 시장의 반응과 미래 전망</h1>
+            <div class="content-area two-column-layout">
+                <div class="column">
+                    <h3>시장의 인식 변화</h3>
+                    <ul>
+                        <li>GPT-5 출시 후 OpenAI 신뢰도 급락</li>
+                        <li>예측 시장 확률: 80% → 18%로 추락</li>
+                        <li>"과대광고" 전략의 위험성 증명</li>
+                    </ul>
+                    <div class="chart-placeholder">예측 시장 확률 변화 그래프</div>
+                </div>
+                <div class="column">
+                    <h3>결론 및 시사점</h3>
+                    <ul>
+                        <li>AI 경쟁은 더 이상 단독 질주가 아님</li>
+                        <li>'최고의 모델'은 상황에 따라 다름</li>
+                        <li>개발자, 기업은 이제 기술 철학, 보안, 유연성을 종합적으로 평가해야 함</li>
+                    </ul>
+                </div>
+            </div>
+            <footer class="slide-footer">
+                <span>8월의 AI 격전</span>
+                <span>8 / 10</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 9: Q&A -->
+        <section class="slide-frame">
+            <div class="content-area">
+                <h1 class="final-slide-text">Q&A</h1>
+                <h2 style="font-size: 80px; color: #4A5568; margin-top: 40px;">질의응답</h2>
+            </div>
+            <footer class="slide-footer">
+                <span>8월의 AI 격전</span>
+                <span>9 / 10</span>
+            </footer>
+        </section>
+
+        <!-- 슬라이드 10: 마지막 -->
+        <section class="slide-frame">
+            <div class="content-area">
+                <h1 class="final-slide-text">감사합니다</h1>
+            </div>
+            <footer class="slide-footer">
+                <span>8월의 AI 격전</span>
+                <span>10 / 10</span>
+            </footer>
+        </section>
+    </main>
+
+    <!-- 
+    /*
+    3. JavaScript 상호작용 (선택적 발표 모드)
+    역할: 이 스크립트는 정적으로 잘 보이는 슬라이드들을 동적인 발표 모드로 전환하는 역할만 합니다.
+    Figma 플러그인은 이 부분을 실행하지 않으므로, 주석 처리합니다.
+    
+    <button id="start-presentation" style="position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px 20px;">발표 시작</button>
+    <script>
+    document.getElementById('start-presentation')?.addEventListener('click', () => {
+        const slides = document.querySelectorAll('.slide-frame');
+        let currentSlide = 0;
+
+        // Reset styles for presentation mode
+        document.body.style.backgroundColor = '#000';
+        document.body.style.overflow = 'hidden';
+        document.getElementById('figma-import-body').style.margin = '0';
+        document.getElementById('figma-import-body').style.padding = '0';
+        
+        slides.forEach((slide, index) => {
+            slide.style.position = 'fixed';
+            slide.style.top = '0';
+            slide.style.left = '0';
+            slide.style.margin = '0';
+            slide.style.transition = 'opacity 0.5s ease-in-out';
+            if (index === 0) {
+                slide.style.opacity = '1';
+                slide.style.pointerEvents = 'auto';
+            } else {
+                slide.style.opacity = '0';
+                slide.style.pointerEvents = 'none';
+            }
+        });
+
+        const navigate = (direction) => {
+            slides[currentSlide].style.opacity = '0';
+            slides[currentSlide].style.pointerEvents = 'none';
+            
+            currentSlide += direction;
+
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+            if (currentSlide >= slides.length) currentSlide = 0;
+
+            slides[currentSlide].style.opacity = '1';
+            slides[currentSlide].style.pointerEvents = 'auto';
+        };
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                navigate(1);
+            } else if (e.key === 'ArrowLeft') {
+                navigate(-1);
+            }
+        });
+        
+        document.getElementById('start-presentation').style.display = 'none';
+    });
+    </script>
+    */
+    -->
+
+</body>
+</html>
