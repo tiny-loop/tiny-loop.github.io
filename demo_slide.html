@@ -17,7 +17,7 @@
             --primary-color: #0a3d62;
             --secondary-color: #3c6382;
             --accent-color: #079992;
-            --background-color: #f8f9fa;
+            --slide-background: #ffffff;
             --text-color: #343a40;
             --light-text-color: #f8f9fa;
             --footer-text-color: #6c757d;
@@ -26,218 +26,246 @@
             --main-font: "Noto Sans KR", "Pretendard", sans-serif;
         }
 
-        /* 1. HTML 구조 및 2. CSS 스타일 */
-        html, body {
+        /* 2. CSS 스타일 (Figma 프레임 변환 최적화) */
+        body {
             margin: 0;
             padding: 0;
-            overflow: hidden; /* 브라우저 스크롤바 제거 */
             font-family: var(--main-font);
-            background-color: var(--background-color);
+            background-color: #F0F0F0; /* 슬라이드와 구별되는 배경 */
             color: var(--text-color);
         }
 
-        #presentation-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: auto;
-            transition: top 0.7s ease-in-out; /* 부드러운 슬라이드 이동 애니메이션 */
+        #start-presentation-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+            font-family: var(--main-font);
+            font-weight: 700;
         }
 
-        .slide {
-            width: 100vw;
-            height: 100vh;
+        .slide-frame {
+            /* 고정 픽셀 크기 및 여백 */
+            width: 1920px;
+            height: 1080px;
+            margin: 100px auto;
+            position: relative; /* 겹치지 않고 순서대로 표시 */
+            background-color: var(--slide-background);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            
+            /* Flexbox 중심 레이아웃 */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            position: relative;
             box-sizing: border-box;
-            padding: 60px 80px;
+            padding: 80px 100px;
             text-align: center;
         }
 
-        .slide h1, .slide h2, .slide h3 {
+        .slide-frame h1, .slide-frame h2, .slide-frame h3 {
             margin: 0;
             padding: 0;
             color: var(--primary-color);
         }
+        .slide-frame h1 { font-size: 80px; font-weight: 900; margin-bottom: 20px; }
+        .slide-frame h2 { font-size: 64px; font-weight: 700; margin-bottom: 40px; }
+        .slide-frame p { font-size: 28px; line-height: 1.8; max-width: 1200px; }
 
-        .slide h1 { font-size: 3.5rem; font-weight: 900; margin-bottom: 1rem; }
-        .slide h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem; }
-        .slide p { font-size: 1.2rem; line-height: 1.8; max-width: 800px; }
+        /* Figma 변환을 위한 콘텐츠 그룹화 */
+        .title-block { margin-bottom: 40px; }
+        .content-area { width: 100%; flex-grow: 1; display: flex; justify-content: center; align-items: center; gap: 50px; }
+        .text-content { text-align: left; flex: 1; }
+        .visual-content { flex: 1; }
+        .chart-placeholder { width: 100%; height: 500px; background-color: #e9ecef; border: 2px dashed var(--secondary-color); border-radius: 10px; display:flex; justify-content:center; align-items:center; font-size: 24px; color: var(--secondary-color); }
 
         /* 슬라이드별 특별 스타일 */
         #slide-1 { background-color: var(--primary-color); color: var(--light-text-color); }
-        #slide-1 h1, #slide-1 h2, #slide-1 p { color: var(--light-text-color); }
-        #slide-1 .subtitle { font-size: 1.5rem; font-weight: 400; margin-bottom: 2rem; opacity: 0.9; }
-        #slide-1 .presenter { margin-top: 3rem; font-weight: 700; }
-        #slide-1 .date { font-size: 1rem; opacity: 0.8; }
+        #slide-1 h1, #slide-1 p { color: var(--light-text-color); }
+        #slide-1 .subtitle { font-size: 40px; font-weight: 400; opacity: 0.9; }
+        #slide-1 .presenter { margin-top: 60px; font-weight: 700; }
+        #slide-1 .date { font-size: 24px; opacity: 0.8; }
 
         #slide-2 .toc-list { list-style: none; padding: 0; text-align: left; }
-        #slide-2 .toc-list li { font-size: 1.8rem; margin-bottom: 1.5rem; font-weight: 700; color: var(--secondary-color); transition: color 0.3s; }
-        #slide-2 .toc-list li:hover { color: var(--accent-color); }
-        #slide-2 .toc-list .qa-item { margin-top: 2rem; color: var(--accent-color); }
+        #slide-2 .toc-list li { font-size: 48px; margin-bottom: 30px; font-weight: 700; color: var(--secondary-color); }
 
-        .content-slide .content-wrapper {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            width: 100%;
-            gap: 40px;
-        }
-        .content-slide .text-content { text-align: left; flex: 1; }
-        .content-slide .visual-content { flex: 1; display: flex; justify-content: center; align-items: center; }
-
-        /* 시각화 자료 스타일 */
-        .bar-chart, .pie-chart, .flow-diagram { max-width: 400px; width: 100%; }
-        .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; max-width: 700px; }
-        .swot-cell { background: #fff; border: 2px solid var(--secondary-color); padding: 20px; border-radius: 8px; }
-        .swot-cell h3 { color: var(--accent-color); margin-bottom: 10px; }
-
-        #slide-9 h1, #slide-10 h1 {
-            font-size: 8rem;
-            color: var(--secondary-color);
-        }
+        #slide-9 h1, #slide-10 h1 { font-size: 150px; color: var(--secondary-color); }
 
         /* 하단 푸터 */
-        footer {
+        .slide-footer {
             position: absolute;
-            bottom: 20px;
-            left: 0;
-            width: 100%;
-            padding: 0 40px;
-            box-sizing: border-box;
+            bottom: 40px;
+            width: calc(100% - 200px); /* padding 고려 */
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 20px;
             color: var(--footer-text-color);
         }
-        
-        .page-number {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
+        .page-number { font-weight: 700; }
+        .creator-info { font-weight: 700; }
 
-        .creator-info {
-            font-weight: 700;
+        /* 3. JavaScript 상호작용 (발표 모드) */
+        body.presentation-mode {
+            background-color: #000;
+            overflow: hidden;
+        }
+        .presentation-mode #figma-import-body {
+            margin: 0;
+        }
+        .presentation-mode .slide-frame {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(var(--scale-factor, 1));
+            margin: 0;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .presentation-mode .slide-frame.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 1;
+        }
+        .presentation-mode #start-presentation-btn {
+            display: none;
         }
     </style>
 </head>
 <body>
-
-    <div id="presentation-container">
+    <button id="start-presentation-btn">발표 시작</button>
+    <!-- 1. HTML 구조 (Figma 레이어 변환 최적화) -->
+    <main id="figma-import-body">
         <!-- 슬라이드 1: 제목 -->
-        <section class="slide" id="slide-1">
-            <h1>[프레젠테이션의 전체 주제를 여기에 입력하세요]</h1>
-            <p class="subtitle">[슬라이드 주제에 대한 간략한 부제를 여기에 입력하세요]</p>
-            <p class="presenter">[발표자 이름을 여기에 입력하세요]</p>
+        <section class="slide-frame" id="slide-1">
+            <div class="title-block">
+                <h1>[프레젠테이션의 전체 주제를 여기에 입력하세요]</h1>
+                <p class="subtitle">[슬라이드 주제에 대한 간략한 부제를 여기에 입력하세요]</p>
+            </div>
+            <div class="content-area">
+                <p class="presenter">[발표자 이름을 여기에 입력하세요]</p>
+            </div>
             <p class="date">[발표 또는 제작 날짜를 여기에 입력하세요]</p>
+            <footer class="slide-footer"></footer>
         </section>
 
         <!-- 슬라이드 2: 목차 -->
-        <section class="slide" id="slide-2">
-            <h2>목차</h2>
-            <ul class="toc-list">
-                <!-- JavaScript로 동적 생성될 예정 -->
-            </ul>
+        <section class="slide-frame" id="slide-2">
+            <div class="title-block">
+                <h2>목차</h2>
+            </div>
+            <div class="content-area">
+                <ul class="toc-list">
+                    <!-- JavaScript로 동적 생성될 예정 -->
+                </ul>
+            </div>
+            <footer class="slide-footer"></footer>
         </section>
 
         <!-- 슬라이드 3: 서론 -->
-        <section class="slide content-slide" id="slide-3">
-            <h2>[첫 번째 본문 슬라이드(서론)의 핵심 내용을 여기에 요약]</h2>
-            <p>본 프레젠테이션의 서론 부분입니다. 전체 내용의 배경, 목적, 그리고 앞으로 다룰 내용의 개요를 설명합니다. 청중의 흥미를 유발하고 발표의 전체적인 방향을 제시하는 중요한 파트입니다.</p>
+        <section class="slide-frame" id="slide-3">
+            <div class="title-block">
+                <h2>[첫 번째 본문 슬라이드(서론)의 핵심 내용을 여기에 요약]</h2>
+            </div>
+            <div class="content-area">
+                <p>본 프레젠테이션의 서론 부분입니다. 전체 내용의 배경, 목적, 그리고 앞으로 다룰 내용의 개요를 설명합니다. 청중의 흥미를 유발하고 발표의 전체적인 방향을 제시하는 중요한 파트입니다.</p>
+            </div>
+            <footer class="slide-footer"></footer>
         </section>
 
         <!-- 슬라이드 4: 핵심 내용 1 -->
-        <section class="slide content-slide" id="slide-4">
-            <h2>[두 번째 본문 슬라이드의 핵심 내용과 시각화 아이디어를 여기에 요약]</h2>
-            <div class="content-wrapper">
+        <section class="slide-frame" id="slide-4">
+            <div class="title-block">
+                <h2>[두 번째 본문 슬라이드의 핵심 내용과 시각화 아이디어를 여기에 요약]</h2>
+            </div>
+            <div class="content-area">
                 <div class="text-content">
-                    <p>첫 번째 핵심 내용을 다룹니다. 관련된 데이터나 통계를 제시하여 주장을 뒷받침합니다. 오른쪽의 막대 차트는 핵심 지표의 변화 추이를 시각적으로 보여줍니다.</p>
+                    <p>첫 번째 핵심 내용을 다룹니다. 관련된 데이터나 통계를 제시하여 주장을 뒷받침합니다. 오른쪽의 차트 영역은 핵심 지표의 변화 추이를 시각적으로 보여주기 위한 공간입니다.</p>
                 </div>
                 <div class="visual-content">
-                    <!-- Simple Bar Chart SVG -->
-                    <svg class="bar-chart" viewBox="0 0 100 60">
-                        <rect x="10" y="30" width="15" height="30" fill="#3c6382"><title>항목 A: 50%</title></rect>
-                        <rect x="35" y="15" width="15" height="45" fill="#3c6382"><title>항목 B: 75%</title></rect>
-                        <rect x="60" y="45" width="15" height="15" fill="#3c6382"><title>항목 C: 25%</title></rect>
-                        <line x1="5" y1="60" x2="95" y2="60" stroke="#343a40" stroke-width="0.5"/>
-                    </svg>
+                    <div class="chart-placeholder">Bar Chart Area</div>
                 </div>
             </div>
+            <footer class="slide-footer"></footer>
         </section>
-
+        
         <!-- 슬라이드 5: 핵심 내용 2 -->
-        <section class="slide content-slide" id="slide-5">
-            <h2>[세 번째 본문 슬라이드의 핵심 내용과 시각화 아이디어를 여기에 요약]</h2>
-            <div class="content-wrapper">
-                <div class="text-content">
-                    <p>두 번째 핵심 내용을 설명합니다. 특정 프로세스나 시스템의 작동 원리를 단계별로 설명할 수 있습니다. 오른쪽 다이어그램은 아이디어 구체화 과정을 시각화한 예시입니다.</p>
+        <section class="slide-frame" id="slide-5">
+            <div class="title-block">
+                <h2>[세 번째 본문 슬라이드의 핵심 내용과 시각화 아이디어를 여기에 요약]</h2>
+            </div>
+            <div class="content-area">
+                 <div class="text-content">
+                    <p>두 번째 핵심 내용을 설명합니다. 특정 프로세스나 시스템의 작동 원리를 단계별로 설명할 수 있습니다. 오른쪽 영역은 다이어그램을 위한 공간입니다.</p>
                 </div>
                 <div class="visual-content">
-                    <!-- Simple Flow Diagram SVG -->
-                    <svg class="flow-diagram" viewBox="0 0 150 40">
-                        <circle cx="20" cy="20" r="10" fill="#079992"/>
-                        <text x="20" y="22" text-anchor="middle" fill="white" font-size="8">A</text>
-                        <line x1="30" y1="20" x2="60" y2="20" stroke="#343a40" stroke-width="1"/>
-                        <circle cx="75" cy="20" r="10" fill="#079992"/>
-                        <text x="75" y="22" text-anchor="middle" fill="white" font-size="8">B</text>
-                        <line x1="85" y1="20" x2="115" y2="20" stroke="#343a40" stroke-width="1"/>
-                        <circle cx="130" cy="20" r="10" fill="#079992"/>
-                        <text x="130" y="22" text-anchor="middle" fill="white" font-size="8">C</text>
-                    </svg>
+                    <div class="chart-placeholder">Flow Diagram Area</div>
                 </div>
             </div>
+            <footer class="slide-footer"></footer>
         </section>
 
         <!-- 슬라이드 6: 핵심 내용 3 -->
-        <section class="slide content-slide" id="slide-6">
-            <h2>[네 번째 본문 슬라이드의 핵심 내용과 시각화 아이디어를 여기에 요약]</h2>
-            <div class="content-wrapper">
-                <div class="text-content">
-                    <p>세 번째 핵심 내용을 다룹니다. 시장 점유율이나 구성 요소의 비율 등을 설명하기에 적합합니다. 오른쪽의 파이 차트는 전체 시장에서 각 요소가 차지하는 비중을 나타냅니다.</p>
+        <section class="slide-frame" id="slide-6">
+            <div class="title-block">
+                <h2>[네 번째 본문 슬라이드의 핵심 내용과 시각화 아이디어를 여기에 요약]</h2>
+            </div>
+            <div class="content-area">
+                 <div class="text-content">
+                    <p>세 번째 핵심 내용을 다룹니다. 시장 점유율이나 구성 요소의 비율 등을 설명하기에 적합합니다. 오른쪽 영역은 파이 차트를 위한 공간입니다.</p>
                 </div>
                 <div class="visual-content">
-                    <!-- Simple Pie Chart SVG -->
-                    <svg class="pie-chart" viewBox="0 0 100 100">
-                        <circle r="25" cx="50" cy="50" fill="transparent" stroke="#3c6382" stroke-width="50" stroke-dasharray="calc(75 * 3.14159 / 2) calc(100 * 3.14159 / 2)"></circle>
-                        <circle r="25" cx="50" cy="50" fill="transparent" stroke="#079992" stroke-width="50" stroke-dasharray="calc(25 * 3.14159 / 2) calc(100 * 3.14159 / 2)" stroke-dashoffset="calc(-75 * 3.14159 / 2)"></circle>
-                    </svg>
+                    <div class="chart-placeholder">Pie Chart Area</div>
                 </div>
             </div>
+            <footer class="slide-footer"></footer>
         </section>
 
         <!-- 슬라이드 7: 인사이트/분석 -->
-        <section class="slide content-slide" id="slide-7">
-            <h2>[앞선 내용들을 종합하여 도출된 인사이트나 심층 분석 내용을 여기에 요약]</h2>
-            <div class="swot-grid">
-                <div class="swot-cell"><h3>강점(S)</h3><p>내부 역량 분석</p></div>
-                <div class="swot-cell"><h3>약점(W)</h3><p>보완이 필요한 부분</p></div>
-                <div class="swot-cell"><h3>기회(O)</h3><p>외부 환경의 긍정적 요인</p></div>
-                <div class="swot-cell"><h3>위협(T)</h3><p>외부 환경의 부정적 요인</p></div>
+        <section class="slide-frame" id="slide-7">
+            <div class="title-block">
+                <h2>[앞선 내용들을 종합하여 도출된 인사이트나 심층 분석 내용을 여기에 요약]</h2>
             </div>
+            <div class="content-area">
+                <div class="chart-placeholder">SWOT Analysis Area</div>
+            </div>
+            <footer class="slide-footer"></footer>
         </section>
 
         <!-- 슬라이드 8: 결론 -->
-        <section class="slide content-slide" id="slide-8">
-            <h2>[전체 내용을 요약하고 결론 또는 제언을 여기에 요약]</h2>
-            <p>지금까지 논의된 모든 내용을 종합하여 최종 결론을 도출합니다. 핵심 메시지를 다시 한번 강조하고, 향후 과제나 기대효과 등을 제언하며 발표를 마무리합니다.</p>
+        <section class="slide-frame" id="slide-8">
+            <div class="title-block">
+                <h2>[전체 내용을 요약하고 결론 또는 제언을 여기에 요약]</h2>
+            </div>
+            <div class="content-area">
+                <p>지금까지 논의된 모든 내용을 종합하여 최종 결론을 도출합니다. 핵심 메시지를 다시 한번 강조하고, 향후 과제나 기대효과 등을 제언하며 발표를 마무리합니다.</p>
+            </div>
+            <footer class="slide-footer"></footer>
         </section>
 
         <!-- 슬라이드 9: Q&A -->
-        <section class="slide" id="slide-9">
-            <h1>Q&A</h1>
+        <section class="slide-frame" id="slide-9">
+            <div class="content-area">
+                <h1>Q&A</h1>
+            </div>
+            <footer class="slide-footer"></footer>
         </section>
 
         <!-- 슬라이드 10: 마지막 -->
-        <section class="slide" id="slide-10">
-            <h1>End of Document</h1>
+        <section class="slide-frame" id="slide-10">
+            <div class="content-area">
+                <h1>End of Document</h1>
+            </div>
+            <footer class="slide-footer"></footer>
         </section>
-    </div>
+    </main>
 
     <script>
         // --- 사용자 지정 변수 (JavaScript에서 사용) ---
@@ -247,44 +275,23 @@
         const tocListItems = [ "[목차 항목 1]", "[목차 항목 2]", "[목차 항목 3]", "[목차 항목 4]", "[목차 항목 5]", "[목차 항목 6]", "Q&A" ];
         // -----------------------------------------
 
-        // 3. JavaScript 상호작용
-        const presentationContainer = document.getElementById('presentation-container');
-        const slides = document.querySelectorAll('.slide');
+        const startBtn = document.getElementById('start-presentation-btn');
+        const slides = document.querySelectorAll('.slide-frame');
         let currentSlide = 0;
-        let isScrolling = false; // 쓰로틀링을 위한 플래그
 
-        // 목차 동적 생성
-        const tocListElement = document.querySelector('#slide-2 .toc-list');
-        tocListItems.forEach(item => {
-            const li = document.createElement('li');
-            li.textContent = item;
-            if (item.toLowerCase() === 'q&a') {
-                li.classList.add('qa-item');
-            }
-            tocListElement.appendChild(li);
-        });
+        // 초기화 함수
+        function initializeStaticView() {
+            // 목차 동적 생성
+            const tocListElement = document.querySelector('#slide-2 .toc-list');
+            tocListItems.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                tocListElement.appendChild(li);
+            });
 
-        // 네비게이션 함수
-        function goToSlide(index) {
-            if (index < 0 || index >= totalSlides) {
-                return;
-            }
-            currentSlide = index;
-            presentationContainer.style.top = `-${currentSlide * 100}vh`;
-            updateFooter();
-        }
-
-        // 푸터 업데이트 함수
-        function updateFooter() {
+            // 푸터 동적 생성
             slides.forEach((slide, index) => {
-                // 기존 푸터 제거
-                const oldFooter = slide.querySelector('footer');
-                if (oldFooter) {
-                    oldFooter.remove();
-                }
-
-                // 새 푸터 생성 및 추가
-                const footer = document.createElement('footer');
+                const footer = slide.querySelector('.slide-footer');
                 const pageNumber = document.createElement('span');
                 pageNumber.className = 'page-number';
                 pageNumber.textContent = `${index + 1} / ${totalSlides}`;
@@ -295,40 +302,61 @@
 
                 footer.appendChild(pageNumber);
                 footer.appendChild(creatorInfo);
-                slide.appendChild(footer);
             });
         }
 
-        // 이벤트 리스너
-        // 마우스 휠 이벤트 (쓰로틀링 포함)
-        window.addEventListener('wheel', (event) => {
-            if (isScrolling) return;
-            isScrolling = true;
+        // 발표 모드 시작 함수
+        function startPresentation() {
+            document.body.classList.add('presentation-mode');
+            
+            // 화면 크기에 맞게 슬라이드 스케일 조정
+            const scaleX = window.innerWidth / 1920;
+            const scaleY = window.innerHeight / 1080;
+            const scale = Math.min(scaleX, scaleY);
+            document.documentElement.style.setProperty('--scale-factor', scale);
 
-            if (event.deltaY > 0) { // 아래로 스크롤
-                goToSlide(currentSlide + 1);
-            } else { // 위로 스크롤
-                goToSlide(currentSlide - 1);
-            }
+            showSlide(0);
 
-            setTimeout(() => {
-                isScrolling = false;
-            }, 800); // 0.8초 딜레이
-        });
+            // 이벤트 리스너 추가
+            window.addEventListener('keydown', handleKeyDown);
+            window.addEventListener('wheel', handleWheel);
+        }
 
-        // 키보드 화살표 이벤트
-        window.addEventListener('keydown', (event) => {
+        function showSlide(index) {
+            if (index < 0 || index >= slides.length) return;
+
+            slides[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // 이벤트 핸들러
+        const handleKeyDown = (event) => {
             if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
-                goToSlide(currentSlide + 1);
+                showSlide(currentSlide + 1);
             } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
-                goToSlide(currentSlide - 1);
+                showSlide(currentSlide - 1);
+            } else if (event.key === 'Escape') {
+                // 발표 모드 종료 (새로고침)
+                location.reload();
             }
-        });
+        };
+        
+        let isWheeling = false;
+        const handleWheel = (event) => {
+            if (isWheeling) return;
+            isWheeling = true;
+            if (event.deltaY > 0) {
+                showSlide(currentSlide + 1);
+            } else {
+                showSlide(currentSlide - 1);
+            }
+            setTimeout(() => { isWheeling = false; }, 500);
+        };
 
-        // 초기화
-        document.addEventListener('DOMContentLoaded', () => {
-            goToSlide(0);
-        });
+        // 이벤트 리스너 연결
+        startBtn.addEventListener('click', startPresentation);
+        document.addEventListener('DOMContentLoaded', initializeStaticView);
     </script>
 
 </body>
