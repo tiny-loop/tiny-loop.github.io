@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>AI 메모리 시장의 현재와 미래 (2025년 9월 기준)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <!-- 
+    Palette Selection: Energetic & Playful (#FF4E50, #FC913A, #F9D423, #EDE574, #E1F5C4)
+
+    Narrative Plan (Revised for September 2025):
+    1.  Introduction: Set the scene in the current reality of Sept 2025. HBM3e is the AI training standard, GDDR7 powers the latest gaming GPUs (RTX 50 series) and is making serious inroads into the AI inference market.
+    2.  Section 1: HBM - Focus on HBM3e as the CURRENT high-end standard powering the Blackwell architecture. Shift the future outlook to HBM4, for which samples are now being actively tested by clients for 2026 products.
+    3.  Section 2: GDDR - Focus on GDDR7 as the CURRENT mainstream high-performance memory, highlighting its real-world application in newly released consumer hardware like the NVIDIA RTX 5090.
+    4.  Section 3: GDDR's AI Market Penetration - Frame this not as a "possibility" but as an "established, growing trend" in the 2025 market for AI inference.
+    5.  Section 4: Core Comparison - Update use-cases with concrete 2025 examples (Blackwell, RTX 50 series).
+    6.  Section 5: Manufacturer Competition - Change from a timeline to a "Current Status" overview of the intense three-way race between SK Hynix, Samsung, and now Micron for the HBM market.
+    7.  Section 6: Future Outlook - The future is now HBM4's mass production in 2026 and the development of GDDR8 concepts. Update the forecast chart to reflect 2025 as the present baseline.
+
+    SVG/Mermaid Confirmation: No SVG graphics or Mermaid JS were used in this file. All visualizations are either Chart.js on Canvas or structured HTML/CSS.
+    -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #1a202c;
+            color: #E1F5C4;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .card {
+            background-color: #2d3748;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: linear-gradient(145deg, #FF4E50, #FC913A);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        h1, h2, h3 {
+            font-weight: 700;
+        }
+        .comparison-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #4a5568;
+        }
+        .status-card {
+            background-color: #4a5568;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black text-white mb-2">AI 메모리 시장의 현재와 미래</h1>
+            <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto"><span class="font-bold text-[#F9D423]">2025년 9월 기준:</span> HBM3e가 이끄는 AI 훈련과 GDDR7이 주도하는 AI 추론 시장의 경쟁 구도를 심층 분석합니다.</p>
+        </header>
+
+        <main>
+            <section id="hbm-section" class="card">
+                <h2 class="text-3xl font-bold mb-4 text-[#FC913A]">HBM3e: 현존 최강 AI 훈련의 심장</h2>
+                <p class="text-gray-300 mb-6">2025년 현재, HBM3e는 엔비디아의 블랙웰 GB200 슈퍼칩을 비롯한 모든 최상위 AI 가속기의 표준 메모리로 자리 잡았습니다. 수직으로 쌓아 올린 D램이 제공하는 8 TB/s 이상의 압도적인 대역폭은 거대 언어 모델(LLM) 훈련에 있어 필수불가결한 요소입니다. 이제 시장의 관심은 2026년 양산을 목표로 주요 고객사들이 샘플을 테스트하고 있는 차세대 HBM4로 넘어가고 있습니다.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">HBM4를 향한 기대감</h3>
+                        <p class="text-gray-300">차세대 HBM4는 2048-bit의 더욱 넓어진 인터페이스와 로직 다이 커스터마이징을 통해 단순한 메모리를 넘어선 '프로세서-인-메모리' 기술의 가능성을 열고 있습니다. 이는 AI 연산 효율을 극대화할 핵심 기술로 주목받고 있습니다.</p>
+                    </div>
+                    <div class="chart-container h-80 md:h-96">
+                        <canvas id="hbmEvolutionChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gddr-section" class="card">
+                 <h2 class="text-3xl font-bold mb-4 text-[#F9D423]">GDDR7: AI 추론과 게이밍 시장의 새로운 주역</h2>
+                 <p class="text-gray-300 mb-6">올해 출시된 엔비디아 RTX 50 시리즈에 탑재된 GDDR7 메모리는 게이밍 성능을 한 차원 끌어올렸을 뿐만 아니라, AI 추론 시장의 판도를 바꾸고 있습니다. HBM 대비 뛰어난 가격 경쟁력과 1.5 TB/s에 육박하는 충분한 대역폭을 바탕으로, GDDR7은 이제 비용 효율적인 AI 가속기를 위한 가장 현실적인 대안으로 확고히 자리매김했습니다.</p>
+                 <div class="xl:col-span-2">
+                    <h3 class="text-2xl font-bold mb-2 text-center">GDDR 세대별 핵심 성능 비교</h3>
+                    <p class="text-gray-300 mb-4 text-center">GDDR7은 이전 세대 대비 모든 면에서 괄목할 만한 성능 향상을 이루었으며, 이는 AI 추론 시장 진출의 기술적 기반이 되었습니다.</p>
+                    <div class="chart-container h-96 w-full max-w-4xl">
+                        <canvas id="gddrBarComparisonChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="performance-gap-section" class="card">
+                <h2 class="text-3xl font-bold mb-4 text-center">목적에 따른 선택: AI 훈련 vs AI 추론</h2>
+                <p class="text-gray-300 mb-8 text-center max-w-2xl mx-auto">2025년의 AI 시장은 목적에 따라 메모리 선택이 명확히 구분됩니다. 이는 두 메모리의 구조적 차이와 그에 따른 비용-성능 트레이드오프 때문입니다.</p>
+                <div class="mt-8 overflow-x-auto">
+                    <table class="w-full text-left comparison-table">
+                        <thead>
+                            <tr class="bg-gray-700">
+                                <th class="p-3">항목</th>
+                                <th class="p-3">HBM (High Bandwidth Memory)</th>
+                                <th class="p-3">GDDR (Graphics DDR)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">주요 시장</td>
+                                <td class="text-green-300">대규모 AI 훈련, HPC 서버</td>
+                                <td class="text-yellow-300">AI 추론, 게이밍, 워크스테이션</td>
+                            </tr>
+                             <tr>
+                                <td class="font-bold">2025년 대표 제품</td>
+                                <td>NVIDIA GB200 NVL72</td>
+                                <td>NVIDIA GeForce RTX 5090</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">핵심 가치</td>
+                                <td>최고의 성능 (Performance)</td>
+                                <td>성능 대비 비용 (Value)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">생산 비용</td>
+                                <td class="text-red-400">매우 높음</td>
+                                <td class="text-green-400">합리적</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <section id="competition-section" class="card">
+                <h2 class="text-3xl font-bold mb-4 text-center text-[#EDE574]">HBM 시장 삼국지: SK하이닉스 vs 삼성 vs 마이크론</h2>
+                <p class="text-gray-300 mb-8 text-center">HBM3e 시장은 SK하이닉스, 삼성전자, 그리고 마이크론의 치열한 3파전으로 재편되었습니다. 이들의 경쟁은 기술 발전과 공급 안정화를 이끌고 있습니다.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="status-card">
+                        <h3 class="text-xl font-bold mb-3 text-[#FC913A]">SK하이닉스</h3>
+                        <p>HBM3e 초기 시장을 선점했으며, 현재 안정적인 양산 능력과 높은 수율을 바탕으로 시장 리더십을 유지하고 있습니다. 차세대 HBM4 개발에서도 가장 앞서 있다는 평가를 받습니다.</p>
+                    </div>
+                    <div class="status-card">
+                        <h3 class="text-xl font-bold mb-3 text-[#FF4E50]">삼성전자</h3>
+                        <p>공격적인 투자로 HBM3e 생산량을 빠르게 늘려 주요 공급사로 부상했습니다. 업계 최고 속도의 GDDR7을 시장에 성공적으로 안착시키며 '투트랙' 전략으로 메모리 시장 전체에 영향력을 확대하고 있습니다.</p>
+                    </div>
+                    <div class="status-card">
+                         <h3 class="text-xl font-bold mb-3 text-[#E1F5C4]">마이크론</h3>
+                        <p>HBM3e 시장에 성공적으로 진입하여 경쟁 구도를 3강 체제로 만들었습니다. 공격적인 가격 정책과 안정적인 공급 능력을 무기로 빠르게 점유율을 높여가고 있습니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="future-section" class="card">
+                <h2 class="text-3xl font-bold mb-4">미래 전망: HBM4와 GDDR8의 시대</h2>
+                <p class="text-gray-300 mb-6">AI 메모리 시장의 양분화는 더욱 가속화될 것입니다. HBM4는 2026년 양산을 시작으로 AI 훈련 시장의 성능 한계를 다시 한번 끌어올릴 것이며, GDDR 기술은 40Gbps 이상의 속도를 목표로 하는 GDDR8을 향해 나아가며 AI 추론과 게이밍 시장의 성장을 견인할 것입니다. 두 메모리는 각자의 영역에서 AI 생태계의 발전을 이끄는 핵심 동력으로 남을 것입니다.</p>
+                <div class="grid grid-cols-1 items-center">
+                    <h3 class="text-2xl font-bold mb-2 text-center">미래 GPU 대역폭 예상</h3>
+                     <div class="chart-container h-80 md:h-96 w-full max-w-4xl">
+                        <canvas id="futureBandwidthChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="text-center mt-12 text-gray-400 text-sm">
+            <p>본 인포그래픽은 2025년 9월 현재 시장 상황과 공개된 기술 정보를 기반으로 제작되었습니다.</p>
+        </footer>
+    </div>
+
+<script>
+    const tooltipTitleCallback = function(tooltipItems) {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+            return label.join(' ');
+        } else {
+            return label;
+        }
+    };
+    
+    Chart.defaults.color = '#E1F5C4';
+    Chart.defaults.borderColor = 'rgba(225, 245, 196, 0.2)';
+    Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+
+    const hbmEvolutionData = {
+        labels: ['HBM3', 'HBM3e (현재)', ['HBM4', '(2026년 목표)']],
+        datasets: [{
+            label: '스택당 대역폭 (GB/s)',
+            data: [819, 1200, 2048],
+            backgroundColor: ['#F9D423', '#FC913A', '#FF4E50'],
+            borderColor: '#1a202c',
+            borderWidth: 2,
+        }]
+    };
+    new Chart(document.getElementById('hbmEvolutionChart'), {
+        type: 'bar',
+        data: hbmEvolutionData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { title: tooltipTitleCallback } },
+                title: { display: true, text: 'HBM 스택당 대역폭 발전', font: { size: 16 } }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: '대역폭 (GB/s)' }
+                }
+            }
+        }
+    });
+
+    const gddrBarData = {
+        labels: ['칩당 대역폭 (GB/s)', '핀 속도 (Gbps)'],
+        datasets: [
+            {
+                label: 'GDDR6',
+                data: [72, 18],
+                backgroundColor: '#F9D423',
+            },
+            {
+                label: 'GDDR6X',
+                data: [92, 23],
+                backgroundColor: '#FC913A',
+            },
+            {
+                label: 'GDDR7 (현재)',
+                data: [128, 32],
+                backgroundColor: '#FF4E50',
+            }
+        ]
+    };
+    new Chart(document.getElementById('gddrBarComparisonChart'), {
+        type: 'bar',
+        data: gddrBarData,
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: { callbacks: { title: tooltipTitleCallback } },
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: '성능 수치' }
+                }
+            }
+        }
+    });
+
+    const futureBandwidthData = {
+        labels: ['2024', '2025 (현재)', '2026', '2027', '2028 (전망)'],
+        datasets: [
+            {
+                label: '플래그십 AI (HBM 기반)',
+                data: [8, 8.2, 12, 14, 16],
+                borderColor: '#FF4E50',
+                backgroundColor: 'rgba(255, 78, 80, 0.3)',
+                fill: true,
+                tension: 0.3,
+            },
+            {
+                label: '하이엔드 GPU (GDDR 기반)',
+                data: [1.1, 1.5, 1.7, 2.0, 2.4],
+                borderColor: '#FC913A',
+                backgroundColor: 'rgba(252, 145, 58, 0.3)',
+                fill: true,
+                tension: 0.3,
+            }
+        ]
+    };
+    new Chart(document.getElementById('futureBandwidthChart'), {
+        type: 'line',
+        data: futureBandwidthData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: { callbacks: { title: tooltipTitleCallback }, mode: 'index', intersect: false },
+                title: { display: true, text: 'GPU 총 대역폭 발전 전망', font: { size: 16 } }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: '대역폭 (TB/s)' }
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+            },
+        }
+    });
+</script>
+</body>
+</html>
