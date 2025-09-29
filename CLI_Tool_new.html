@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>터미널 기반 AI 개발 도구 비교 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-cyan-400 mb-2">터미널 기반 AI 개발 도구 심층 비교</h1>
+            <p class="text-lg text-gray-300">Claude Code, GPT Codex, Gemini CLI, OpenCode, Cursor CLI</p>
+        </header>
+
+        <section class="mb-16">
+            <div class="bg-gray-800 rounded-lg shadow-2xl p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-center text-green-400 mb-6">AI 코딩 도구, 터미널에서 만나다</h2>
+                <p class="text-gray-300 leading-relaxed text-center max-w-4xl mx-auto">최근 개발자들은 IDE를 벗어나 터미널 환경에서도 AI의 도움을 받아 생산성을 극대화하고 있습니다. 코드 생성, 디버깅, 리팩토링 등 다양한 작업을 명령어 기반으로 수행할 수 있는 CLI 도구들이 주목받고 있습니다. 본 인포그래픽에서는 5가지 주요 터미널 기반 AI 개발 도구의 특징을 비교 분석하고, 특히 강력한 로컬 컨텍스트 활용 능력을 보이는 OpenCode와 Cursor CLI를 집중 조명합니다.</p>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            <div class="bg-gray-800 rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform duration-300">
+                <h3 class="text-2xl font-bold text-cyan-400 mb-3">🎯 핵심 기능 비교</h3>
+                <p class="text-gray-400">각 도구는 코드 생성, 완성, 채팅 등 유사한 기능을 제공하지만, 컨텍스트 이해 방식과 통합 환경에서 차이를 보입니다.</p>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform duration-300">
+                <h3 class="text-2xl font-bold text-cyan-400 mb-3">🤖 기반 AI 모델</h3>
+                <p class="text-gray-400">성능은 기반이 되는 AI 모델에 크게 좌우됩니다. 각 도구는 자체 개발 모델 또는 GPT, Claude 등 최신 LLM을 활용합니다.</p>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform duration-300">
+                <h3 class="text-2xl font-bold text-cyan-400 mb-3">🔍 중점 분석: OpenCode & Cursor</h3>
+                <p class="text-gray-400">OpenCode의 개방성과 로컬 우선 접근 방식, Cursor CLI의 'AI 우선' 에디터와의 강력한 연동성을 집중적으로 살펴봅니다.</p>
+            </div>
+        </section>
+
+        <section class="bg-gray-800 rounded-lg shadow-2xl p-6 md:p-8 mb-16">
+            <h2 class="text-3xl font-bold text-center text-green-400 mb-8">주요 도구별 특징 비교</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <div class="chart-container mx-auto">
+                        <canvas id="featureComparisonChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-cyan-400 mb-4">기능별 성능 분석</h3>
+                    <p class="text-gray-300 mb-6">아래 차트는 각 도구가 특정 기능 영역에서 보이는 상대적인 강점을 나타냅니다. OpenCode와 Cursor CLI는 '로컬 컨텍스트 이해'와 '프로젝트 전체 분석'에서 높은 점수를 받으며, 단순 코드 생성을 넘어선 깊이 있는 개발 지원 능력을 보여줍니다. 반면 GPT Codex와 Gemini CLI는 범용적인 코드 생성 및 지식 답변에 강점을 가집니다.</p>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-center"><span class="w-3 h-3 rounded-full bg-cyan-400 mr-3"></span><strong class="text-cyan-400 mr-2">OpenCode:</strong> 로컬 파일 시스템을 색인화하여 프로젝트 전반의 컨텍스트를 깊이 있게 이해합니다.</li>
+                        <li class="flex items-center"><span class="w-3 h-3 rounded-full bg-green-400 mr-3"></span><strong class="text-green-400 mr-2">Cursor CLI:</strong> Cursor 에디터와 동일한 AI 엔진을 공유하며, 에디터의 컨텍스트를 터미널로 확장합니다.</li>
+                         <li class="flex items-center"><span class="w-3 h-3 rounded-full bg-purple-400 mr-3"></span><strong class="text-purple-400 mr-2">GPT Codex:</strong> 강력한 코드 생성 능력을 기반으로 하지만, CLI 환경에서는 컨텍스트가 제한적입니다.</li>
+                        <li class="flex items-center"><span class="w-3 h-3 rounded-full bg-pink-400 mr-3"></span><strong class="text-pink-400 mr-2">Gemini CLI:</strong> Google 생태계와의 연동 및 멀티모달 기능에 잠재력을 가지고 있습니다.</li>
+                        <li class="flex items-center"><span class="w-3 h-3 rounded-full bg-yellow-400 mr-3"></span><strong class="text-yellow-400 mr-2">Claude Code:</strong> 긴 컨텍스트 처리 능력과 섬세한 코드 수정 제안에 강점을 보입니다.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+             <h2 class="text-3xl font-bold text-center text-green-400 mb-8">집중 분석: OpenCode vs Cursor CLI</h2>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 rounded-lg shadow-xl p-6">
+                    <h3 class="text-2xl font-bold text-cyan-400 mb-4">OpenCode: 개방형 로컬 AI의 선두주자</h3>
+                    <p class="text-gray-300 mb-4">OpenCode는 로컬 개발 환경에 대한 깊은 이해를 최우선으로 설계되었습니다. 전체 프로젝트 파일을 스캔하고 인덱싱하여, 다른 파일의 함수나 클래스를 참조하는 질문에도 정확한 답변을 제공하는 것이 가장 큰 특징입니다. 이는 단순한 파일 편집을 넘어 프로젝트의 아키텍처를 이해하는 수준의 상호작용을 가능하게 합니다.</p>
+                    <div class="mt-6">
+                        <h4 class="text-xl font-semibold text-green-400 mb-3">핵심 특징</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300">
+                            <li><strong class="text-white">로컬 우선 인덱싱:</strong> 프로젝트 전체의 코드를 로컬에서 분석하여 컨텍스트 생성</li>
+                            <li><strong class="text-white">다양한 모델 지원:</strong> 특정 모델에 종속되지 않고, 로컬 LLM이나 외부 API를 선택적으로 사용 가능</li>
+                            <li><strong class="text-white">명령어 기반 워크플로우:</strong> `ocode add`, `ocode chat`, `ocode fix` 등 직관적인 명령어로 개발 흐름 제어</li>
+                            <li><strong class="text-white">오픈소스:</strong> 커뮤니티 기여를 통해 지속적으로 발전하며 투명성이 높음</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="bg-gray-800 rounded-lg shadow-xl p-6">
+                    <h3 class="text-2xl font-bold text-green-400 mb-4">Cursor CLI: AI 우선 에디터의 확장</h3>
+                    <p class="text-gray-300 mb-4">Cursor CLI는 그 자체로 독립적인 도구라기보다는, 'AI-native'를 표방하는 Cursor 에디터의 강력한 기능을 터미널로 확장한 개념입니다. 에디터에서 이미 파악된 프로젝트의 컨텍스트와 심볼 정보를 그대로 활용하여, 터미널에서도 일관된 고품질의 AI 지원을 받을 수 있습니다. 에디터와 터미널 간의 유기적인 전환이 최대 강점입니다.</p>
+                     <div class="mt-6">
+                        <h4 class="text-xl font-semibold text-cyan-400 mb-3">핵심 특징</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300">
+                            <li><strong class="text-white">에디터-터미널 연동:</strong> Cursor 에디터와 컨텍스트를 완벽하게 공유하여 끊김 없는 경험 제공</li>
+                            <li><strong class="text-white">고수준 명령어:</strong> '이 함수에 대한 테스트 코드 작성', '이 파일 리팩토링' 등 추상적인 명령 수행 능력 우수</li>
+                            <li><strong class="text-white">자동 파일 수정:</strong> AI가 제안한 변경 사항을 터미널 명령어 한 줄로 즉시 파일에 적용 가능</li>
+                            <li><strong class="text-white">GPT-4/Claude 등 최신 모델 활용:</strong> Cursor가 제공하는 최신, 최고 성능의 모델을 CLI에서 동일하게 사용</li>
+                        </ul>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        <section class="bg-gray-800 rounded-lg shadow-2xl p-6 md:p-8 mb-16">
+            <h2 class="text-3xl font-bold text-center text-green-400 mb-8">전체 비교 및 선택 가이드</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="border-b-2 border-green-400 p-4 text-lg">도구명</th>
+                            <th class="border-b-2 border-green-400 p-4 text-lg">장점</th>
+                            <th class="border-b-2 border-green-400 p-4 text-lg">단점</th>
+                            <th class="border-b-2 border-green-400 p-4 text-lg">추천 사용자</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="hover:bg-gray-700">
+                            <td class="border-b border-gray-700 p-4 font-bold text-cyan-400">OpenCode</td>
+                            <td class="border-b border-gray-700 p-4">강력한 로컬 컨텍스트, 모델 선택 자유, 오픈소스</td>
+                            <td class="border-b border-gray-700 p-4">초기 설정 및 인덱싱 시간 필요, UI 부재</td>
+                            <td class="border-b border-gray-700 p-4">로컬 환경 제어와 커스터마이징을 중시하는 개발자</td>
+                        </tr>
+                        <tr class="hover:bg-gray-700">
+                            <td class="border-b border-gray-700 p-4 font-bold text-green-400">Cursor CLI</td>
+                            <td class="border-b border-gray-700 p-4">Cursor 에디터와 완벽 연동, 강력한 코드 수정 능력</td>
+                            <td class="border-b border-gray-700 p-4">Cursor 에디터에 종속적, 폐쇄적 생태계</td>
+                            <td class="border-b border-gray-700 p-4">Cursor 에디터를 주력으로 사용하며 터미널 확장을 원하는 개발자</td>
+                        </tr>
+                        <tr class="hover:bg-gray-700">
+                             <td class="border-b border-gray-700 p-4 font-bold text-purple-400">GPT Codex</td>
+                             <td class="border-b border-gray-700 p-4">뛰어난 범용 코드 생성, 다양한 언어 지원</td>
+                             <td class="border-b border-gray-700 p-4">프로젝트 전체 컨텍스트 이해 부족, API 비용</td>
+                             <td class="border-b border-gray-700 p-4">빠른 코드 조각 생성이나 아이디어 구체화가 필요한 개발자</td>
+                        </tr>
+                        <tr class="hover:bg-gray-700">
+                            <td class="border-b border-gray-700 p-4 font-bold text-pink-400">Gemini CLI</td>
+                            <td class="border-b border-gray-700 p-4">Google 서비스 연동 가능성, 멀티모달 입력 잠재력</td>
+                            <td class="border-b border-gray-700 p-4">개발자용 기능은 아직 초기 단계, 컨텍스트 제한</td>
+                            <td class="border-b border-gray-700 p-4">Google Cloud 등 관련 생태계 사용자, 새로운 기술 실험가</td>
+                        </tr>
+                        <tr class="hover:bg-gray-700">
+                            <td class="border-b-0 border-gray-700 p-4 font-bold text-yellow-400">Claude Code</td>
+                            <td class="border-b-0 border-gray-700 p-4">긴 코드 블록 처리 우수, 안정적인 코드 품질</td>
+                            <td class="border-b-0 border-gray-700 p-4">CLI 공식 지원 미비, 서드파티 도구 필요</td>
+                            <td class="border-b-0 border-gray-700 p-4">복잡한 레거시 코드 분석이나 리팩토링이 필요한 개발자</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="text-center mt-12">
+            <p class="text-gray-500">이 인포그래픽은 2025년 9월 29일 기준으로 수집된 정보를 바탕으로 제작되었습니다.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const wrapLabel = (label) => {
+            const maxLineLength = 16;
+            if (label.length <= maxLineLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLineLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        };
+    
+        const ctx = document.getElementById('featureComparisonChart').getContext('2d');
+        const featureComparisonChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: [
+                    '범용 코드 생성', 
+                    '로컬 컨텍스트 이해', 
+                    '프로젝트 전체 분석', 
+                    ['코드 리팩토링', '& 디버깅'], 
+                    '외부 서비스 연동', 
+                    '사용자화 및 확장성'
+                ],
+                datasets: [{
+                    label: 'OpenCode',
+                    data: [7, 9, 8, 7, 6, 9],
+                    backgroundColor: 'rgba(34, 211, 238, 0.2)',
+                    borderColor: 'rgba(34, 211, 238, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(34, 211, 238, 1)'
+                }, {
+                    label: 'Cursor CLI',
+                    data: [8, 8, 9, 9, 7, 6],
+                    backgroundColor: 'rgba(52, 211, 153, 0.2)',
+                    borderColor: 'rgba(52, 211, 153, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(52, 211, 153, 1)'
+                }, {
+                    label: 'GPT Codex',
+                    data: [9, 5, 4, 7, 7, 7],
+                    backgroundColor: 'rgba(192, 132, 252, 0.2)',
+                    borderColor: 'rgba(192, 132, 252, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(192, 132, 252, 1)'
+                 }, {
+                    label: 'Gemini CLI',
+                    data: [8, 6, 5, 6, 9, 6],
+                    backgroundColor: 'rgba(236, 72, 153, 0.2)',
+                    borderColor: 'rgba(236, 72, 153, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(236, 72, 153, 1)'
+                },
+                {
+                    label: 'Claude Code',
+                    data: [8, 7, 6, 8, 6, 5],
+                    backgroundColor: 'rgba(250, 204, 21, 0.2)',
+                    borderColor: 'rgba(250, 204, 21, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(250, 204, 21, 1)'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.2)' },
+                        pointLabels: {
+                            color: '#e5e7eb',
+                            font: {
+                                size: 12
+                            }
+                        },
+                        ticks: {
+                            color: '#9ca3af',
+                            backdropColor: 'rgba(0, 0, 0, 0)',
+                            stepSize: 2
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#d1d5db'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
