@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대화형 AI 에이전트 개발 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Subtle Accents -->
+    <!-- Application Structure Plan: 이 SPA는 초보 프로그래머를 위한 3단계 학습 여정으로 설계되었습니다. 1) 개념 이해 (AI 에이전트 패턴): 사용자가 다양한 패턴을 클릭하며 비교할 수 있는 대화형 섹션. 2) 도구 학습 (Genkit & Gemini CLI): 두 가지 핵심 도구의 역할을 명확히 구분하여 보여주는 시각적 비교. 3) 실제 적용 (통합 워크플로우): '이전'과 '이후'를 극명하게 대조하고, 사용자가 직접 명령어를 실행해보는 시뮬레이션을 통해 새로운 통합 기능의 이점을 체험하게 합니다. 이 구조는 선형적인 보고서 구조를 탈피하여, '개념 -> 도구 -> 적용'이라는 직관적인 학습 흐름을 따르기 때문에 사용자의 이해도를 높이는 데 최적화되었습니다. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: AI 에이전트 디자인 패턴 (전문가, 코파일럿, 팀 관리자). Goal: Compare & Organize. Viz/Method: 탭 버튼과 동적 텍스트/다이어그램 영역, 그리고 패턴별 능력/복잡도를 비교하는 막대 그래프. Interaction: 탭 클릭 시 해당 패턴의 상세 정보와 시각 자료가 JS를 통해 동적으로 업데이트됨. Justification: 사용자가 한 번에 하나의 개념에 집중하면서도 전체적인 비교를 놓치지 않도록 하여 학습 효율을 높임. Library/Method: Vanilla JS, Chart.js.
+        - Report Info: Genkit과 Gemini CLI의 역할. Goal: Inform & Organize. Viz/Method: Tailwind CSS Grid를 이용한 2단 비교 레이아웃. Genkit은 순서도 형태의 HTML/CSS 다이어그램으로, CLI는 가상 터미널 UI로 표현. Interaction: 없음 (정적 비교). Justification: 두 도구의 본질적인 차이와 역할을 가장 명확하게 시각적으로 전달함. Library/Method: HTML/CSS.
+        - Report Info: Genkit + Gemini CLI 통합의 이점. Goal: Change & Engage. Viz/Method: 가상 터미널 시뮬레이션 및 이점을 요약한 도넛 차트. Interaction: 사용자가 '실행' 버튼을 클릭하면, JS가 가상 터미널에 명령어 처리 과정을 순차적으로 애니메이션(CSS 클래스 변경)하고 결과를 출력함. Justification: 새로운 워크플로우의 편리함을 사용자가 직접 '체험'하게 하여 수동적인 정보 습득보다 훨씬 높은 이해와 기억 효과를 유도함. Library/Method: Vanilla JS, Chart.js.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #FDFBF6; color: #403F3D; }
+        .tab-btn { transition: all 0.3s ease; }
+        .tab-btn.active { color: #FFFFFF; background-color: #3B82F6; }
+        .tab-btn:not(.active) { color: #403F3D; background-color: #F3F4F6; }
+        .content-panel { display: none; }
+        .content-panel.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .terminal { background-color: #2D3748; color: #F7FAFC; font-family: monospace; }
+        .terminal-output .line { opacity: 0; transform: translateY(10px); animation: fadeIn 0.5s forwards; }
+        .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 320px; } }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center py-12">
+            <h1 class="text-4xl md:text-5xl font-black text-gray-800">대화형 AI 에이전트 개발 가이드</h1>
+            <p class="mt-4 text-lg text-gray-600">AI 에이전트의 개념부터 최신 개발 도구까지, 직접 체험하며 배워보세요.</p>
+        </header>
+
+        <main class="space-y-16">
+
+            <!-- Section 1: AI 에이전트 패턴 -->
+            <section id="patterns">
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-gray-800">1단계: AI 에이전트란 무엇일까요?</h2>
+                        <p class="mt-2 text-gray-600">AI 에이전트는 목표를 달성하기 위해 스스로 계획하고 행동하는 '똑똑한 AI 비서'입니다. 어떤 방식으로 일하게 할지 '설계도(패턴)'를 선택할 수 있습니다.</p>
+                    </div>
+                    
+                    <div class="flex justify-center space-x-2 md:space-x-4 mb-8">
+                        <button class="tab-btn active font-bold py-2 px-4 rounded-full" data-tab="specialist">전문가</button>
+                        <button class="tab-btn font-bold py-2 px-4 rounded-full" data-tab="copilot">코파일럿</button>
+                        <button class="tab-btn font-bold py-2 px-4 rounded-full" data-tab="manager">팀 관리자</button>
+                    </div>
+
+                    <div id="pattern-content" class="md:grid md:grid-cols-2 md:gap-8 items-center">
+                        <div>
+                            <div id="specialist-content" class="content-panel active">
+                                <h3 class="text-2xl font-bold text-blue-600 mb-3">전문가 패턴</h3>
+                                <p class="text-gray-700 mb-4">하나의 특정 분야에 대한 전문가입니다. '날씨 정보 조회' 같은 명확한 도구 하나를 주고, 관련된 질문을 처리하게 하는 가장 기본적인 방식입니다.</p>
+                                <div class="bg-gray-100 p-4 rounded-lg border border-gray-200 text-center">
+                                    <span class="font-mono">요청 → <strong>AI 에이전트</strong> (도구 사용) → 결과</span>
+                                </div>
+                            </div>
+                            <div id="copilot-content" class="content-panel">
+                                <h3 class="text-2xl font-bold text-blue-600 mb-3">코파일럿 패턴</h3>
+                                <p class="text-gray-700 mb-4">사용자가 사용하는 앱 안에서 함께 작동하는 '보조 조종사'입니다. 사용자의 행동을 지켜보고 코드 자동 완성처럼 맥락에 맞는 도움을 제안합니다.</p>
+                                <div class="bg-gray-100 p-4 rounded-lg border border-gray-200 text-center">
+                                    <span class="font-mono">사용자 행동 → <strong>AI 에이전트</strong> (맥락 파악) → 도움 제안</span>
+                                </div>
+                            </div>
+                            <div id="manager-content" class="content-panel">
+                                <h3 class="text-2xl font-bold text-blue-600 mb-3">팀 관리자 패턴</h3>
+                                <p class="text-gray-700 mb-4">복잡한 문제를 해결하기 위해 여러 전문가 에이전트들로 팀을 구성하고 작업을 지시하는 '총괄 매니저'입니다. 가장 강력하고 유연한 방식입니다.</p>
+                                <div class="bg-gray-100 p-4 rounded-lg border border-gray-200 text-center">
+                                    <span class="font-mono">복잡한 요청 → <strong>매니저 AI</strong> → (전문가 AI 1, 2, 3...) → 종합 결과</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8 md:mt-0">
+                            <div class="chart-container">
+                                <canvas id="patternsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 2: 개발 도구 -->
+            <section id="tools">
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-gray-800">2단계: 어떻게 만드나요? - 개발 도구</h2>
+                        <p class="mt-2 text-gray-600">AI 에이전트를 실제로 만들기 위해 Google은 두 가지 핵심 도구를 제공합니다.</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-gray-50 p-6 rounded-lg border">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3">Genkit: AI의 '뇌' 설계도</h3>
+                            <p class="mb-4 text-gray-600">AI의 행동 방식과 순서('플로우')를 정의하는 개발 키트입니다. 코드를 통해 AI가 어떻게 생각하고 행동할지 설계할 수 있습니다.</p>
+                            <div class="space-y-2 text-center font-mono text-sm">
+                                <div class="p-3 bg-white border rounded-md shadow-sm">입력 받기</div>
+                                <div class="text-xl text-gray-400">↓</div>
+                                <div class="p-3 bg-white border rounded-md shadow-sm">1. 프롬프트 만들기</div>
+                                <div class="text-xl text-gray-400">↓</div>
+                                <div class="p-3 bg-white border rounded-md shadow-sm">2. AI 모델 호출하기</div>
+                                <div class="text-xl text-gray-400">↓</div>
+                                <div class="p-3 bg-green-100 border-green-300 rounded-md shadow-sm">결과 출력</div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg border">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3">Gemini CLI: AI '조종' 리모컨</h3>
+                            <p class="mb-4 text-gray-600">개발자가 사용하는 명령어 창(CLI)에서 텍스트 명령으로 AI 모델과 직접 대화하고 제어할 수 있는 도구입니다.</p>
+                            <div class="terminal p-4 rounded-lg">
+                                <div><span class="text-green-400">$</span> gemini prompt "하늘은 왜 파란색이야?"</div>
+                                <div class="mt-2 text-gray-400">> 레일리 산란 현상 때문에...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: 통합 워크플로우 -->
+            <section id="workflow">
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-gray-800">3단계: 새로운 연결고리 - 직접 체험하기</h2>
+                        <p class="mt-2 text-gray-600">최근 Genkit과 Gemini CLI를 연결하는 확장 기능이 등장했습니다. 복잡했던 개발 과정이 얼마나 간편해졌는지 직접 시뮬레이션 해보세요.</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 mb-10">
+                        <div class="text-center">
+                             <h4 class="text-lg font-bold mb-2 text-red-600">BEFORE: 번거로웠던 과거</h4>
+                             <p class="text-sm text-gray-500">도구를 따로 만들고, 따로 테스트해야 했습니다.</p>
+                        </div>
+                         <div class="text-center">
+                             <h4 class="text-lg font-bold mb-2 text-green-600">AFTER: 간편해진 현재</h4>
+                             <p class="text-sm text-gray-500">Genkit으로 만든 플로우가 즉시 맞춤 명령어가 됩니다!</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-bold text-center mb-4">가상 터미널 시뮬레이션</h4>
+                        <div class="terminal p-4 rounded-lg max-w-2xl mx-auto">
+                            <div class="flex items-center">
+                                <span class="text-green-400 mr-2">$</span>
+                                <input id="cli-input" class="bg-transparent w-full focus:outline-none" value="story --topic '꿈을 꾸는 로봇'" readonly>
+                                <button id="run-btn" class="ml-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-md transition-colors">실행</button>
+                            </div>
+                            <div id="terminal-output" class="mt-4 space-y-1 text-sm"></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-12">
+                        <h4 class="text-xl font-bold text-center mb-4">통합 워크플로우의 핵심 이점</h4>
+                        <div class="chart-container h-64 md:h-72">
+                            <canvas id="benefitsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center py-12 text-gray-500">
+            <p>이 대화형 가이드를 통해 AI 에이전트 개발의 기본 개념과 최신 도구의 편리함을 이해하셨기를 바랍니다.</p>
+        </footer>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const patternsChartData = {
+            labels: ['전문가', '코파일럿', '팀 관리자'],
+            datasets: [
+                {
+                    label: '능력',
+                    data: [4, 6, 9],
+                    backgroundColor: '#3B82F6',
+                    borderColor: '#3B82F6',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                },
+                {
+                    label: '복잡도',
+                    data: [2, 5, 8],
+                    backgroundColor: '#A3B4C6',
+                    borderColor: '#A3B4C6',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                }
+            ]
+        };
+
+        const benefitsChartData = {
+            labels: ['빠른 테스트 및 디버깅', '손쉬운 기능 공유', '매끄러운 개발 경험'],
+            datasets: [{
+                data: [45, 30, 25],
+                backgroundColor: ['#3B82F6', '#60A5FA', '#A3B4C6'],
+                borderColor: '#FFFFFF',
+                borderWidth: 4,
+            }]
+        };
+
+        const tooltipTitleCallback = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            return Array.isArray(label) ? label.join(' ') : label;
+                        }
+                    }
+                }
+            }
+        };
+
+        const patternsChart = new Chart(document.getElementById('patternsChart').getContext('2d'), {
+            type: 'bar',
+            data: patternsChartData,
+            options: {
+                ...tooltipTitleCallback,
+                responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+                scales: { 
+                    x: { beginAtZero: true, grid: { display: false }, ticks: { color: '#6B7280' } }, 
+                    y: { grid: { color: '#E5E7EB' }, ticks: { color: '#374151' } } 
+                },
+                plugins: { ...tooltipTitleCallback.plugins, legend: { display: true, position: 'bottom', labels: { color: '#4B5563' } } }
+            }
+        });
+
+        const benefitsChart = new Chart(document.getElementById('benefitsChart').getContext('2d'), {
+            type: 'doughnut',
+            data: benefitsChartData,
+            options: {
+                ...tooltipTitleCallback,
+                responsive: true, maintainAspectRatio: false, cutout: '65%',
+                plugins: { ...tooltipTitleCallback.plugins, legend: { display: true, position: 'bottom', labels: { color: '#4B5563', padding: 15 } } }
+            }
+        });
+
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const contentPanels = document.querySelectorAll('.content-panel');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                const targetTab = button.dataset.tab;
+                contentPanels.forEach(panel => {
+                    panel.classList.remove('active');
+                    if (panel.id === `${targetTab}-content`) {
+                        panel.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        const runBtn = document.getElementById('run-btn');
+        const outputEl = document.getElementById('terminal-output');
+        runBtn.addEventListener('click', () => {
+            runBtn.disabled = true;
+            runBtn.textContent = '실행 중...';
+            outputEl.innerHTML = '';
+
+            const steps = [
+                { text: "> 명령어 'story'를 실행합니다...", delay: 500 },
+                { text: "> Genkit 플로우 'storyGenerator'를 찾았습니다.", delay: 800 },
+                { text: "> 입력된 주제 '꿈을 꾸는 로봇'을 처리 중입니다...", delay: 1000 },
+                { text: "> Gemini AI 모델에 이야기 생성을 요청합니다...", delay: 1200 },
+                { text: "> 응답 수신 완료.", delay: 800 },
+                { text: "<span class='text-yellow-300'>'734호기는 조용한 콧노래를 흥얼거렸습니다. 그의 회로는 전기 양을 꿈꾸고 있었습니다...'</span>", delay: 500 }
+            ];
+
+            let cumulativeDelay = 0;
+            steps.forEach((step, index) => {
+                cumulativeDelay += step.delay;
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'line';
+                    line.innerHTML = step.text;
+                    line.style.animationDelay = `${index * 0.1}s`;
+                    outputEl.appendChild(line);
+                    outputEl.scrollTop = outputEl.scrollHeight;
+
+                    if (index === steps.length - 1) {
+                        runBtn.disabled = false;
+                        runBtn.textContent = '실행';
+                    }
+                }, cumulativeDelay);
+            });
+        });
+    });
+    </script>
+</body>
+</html>
