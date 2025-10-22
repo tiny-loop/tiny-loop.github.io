@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 커맨드라인 인터페이스 경쟁 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate & Sky -->
+    <!-- Application Structure Plan: 이 애플리케이션은 사용자가 복잡한 보고서 내용을 쉽게 소화할 수 있도록 설계된 대시보드 구조를 채택했습니다. 1) 요약 및 핵심 발견: 보고서의 네 가지 주요 흐름을 카드로 제시하여 즉각적인 통찰을 제공합니다. 2) 상호작용 타임라인: 정적인 업데이트 로그 테이블들을 하나의 동적 타임라인 차트로 통합하여, 사용자가 도구별 업데이트 속도와 집중 분야를 직관적으로 비교할 수 있도록 합니다. 3) 도구별 심층 분석: 탭 인터페이스를 사용하여 각 도구의 상세 전략과 주요 기능을 체계적으로 제공합니다. 4) 전략 비교: 레이더 차트를 통해 네 가지 도구의 다차원적인 전략적 위치를 한눈에 비교할 수 있게 합니다. 이 구조는 선형적인 보고서 읽기 방식에서 벗어나, 사용자가 자신의 관심사에 따라 정보를 탐색하고 비교 분석할 수 있는 비선형적이고 상호작용적인 경험을 제공하는 것을 목표로 합니다. -->
+    <!-- Visualization & Content Choices: 1) 핵심 동향: 아이콘과 텍스트를 결합한 카드 형태(HTML/Tailwind)로 정보를 간결하게 전달합니다. 2) 업데이트 타임라인: Chart.js(Canvas)를 사용한 시계열 분산형 차트를 선택했습니다. 이는 여러 도구의 업데이트 이력을 동일한 시간 축에서 비교하는 데 가장 효과적이며, 필터 기능을 통해 사용자가 원하는 정보에 집중할 수 있도록 합니다. 3) 전략 비교: Chart.js(Canvas)의 레이더 차트를 사용하여 각 도구의 강점과 약점을 다각적으로 시각화했습니다. 이는 복잡한 전략적 분석을 직관적으로 이해시키는 데 최적입니다. 4) 도구별 상세 내용: 탭(HTML/JS) 구조를 사용하여 많은 양의 텍스트 정보를 깔끔하게 정리하고 사용자가 필요에 따라 접근할 수 있도록 설계했습니다. 이 모든 선택은 사용자의 정보 습득 효율성을 극대화하기 위한 것입니다. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 450px;
+            max-height: 60vh;
+        }
+        .radar-chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .nav-link {
+            transition: all 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #0284c7;
+            border-bottom-color: #0284c7;
+        }
+        .tab-btn {
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            border-color: #0ea5e9;
+            background-color: #e0f2fe;
+            color: #0c4a6e;
+        }
+        .timeline-filter-btn {
+            transition: all 0.3s;
+        }
+        .timeline-filter-btn.active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl md:text-2xl font-bold text-slate-800">AI CLI 경쟁 분석</h1>
+                </div>
+                <nav class="hidden md:flex md:space-x-8">
+                    <a href="#summary" class="nav-link text-gray-500 hover:text-sky-600 font-medium border-b-2 border-transparent pb-1">요약</a>
+                    <a href="#timeline" class="nav-link text-gray-500 hover:text-sky-600 font-medium border-b-2 border-transparent pb-1">타임라인</a>
+                    <a href="#deep-dive" class="nav-link text-gray-500 hover:text-sky-600 font-medium border-b-2 border-transparent pb-1">심층 분석</a>
+                    <a href="#comparison" class="nav-link text-gray-500 hover:text-sky-600 font-medium border-b-2 border-transparent pb-1">전략 비교</a>
+                    <a href="#outlook" class="nav-link text-gray-500 hover:text-sky-600 font-medium border-b-2 border-transparent pb-1">전망</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <section id="intro" class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">터미널의 재창조</h2>
+            <p class="max-w-3xl mx-auto text-slate-600 text-lg">
+                AI 기반 개발의 새로운 중심으로 부상한 커맨드라인 인터페이스(CLI) 경쟁을 분석합니다. 본 보고서는 2025년 9월 18일부터 10월 22일까지의 주요 개발 동향을 추적하며, 개발자의 도구가 능동적 협업 파트너로 진화하는 과정을 조명합니다.
+            </p>
+        </section>
+
+        <section id="summary" class="mb-20">
+            <h3 class="text-2xl font-bold text-center text-slate-800 mb-10">핵심 발견: 4대 기술 및 전략 동향</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200/80">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-full bg-sky-100 text-sky-600 mx-auto mb-4">
+                        <span class="text-2xl">🔗</span>
+                    </div>
+                    <h4 class="text-lg font-semibold text-center text-slate-900 mb-2">MCP 표준화</h4>
+                    <p class="text-sm text-center text-slate-500">모델 컨텍스트 프로토콜(MCP)이 외부 도구 연동의 업계 표준으로 부상하며, 모든 주요 플랫폼에서 지원이 강화되었습니다.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200/80">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-full bg-sky-100 text-sky-600 mx-auto mb-4">
+                        <span class="text-2xl">🧭</span>
+                    </div>
+                    <h4 class="text-lg font-semibold text-center text-slate-900 mb-2">생태계 전략 분화</h4>
+                    <p class="text-sm text-center text-slate-500">GitHub의 폐쇄형, Google의 개방형, Anthropic의 SDK 중심, OpenAI의 독립형 클라이언트 등 각기 다른 생태계 전략이 뚜렷해졌습니다.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200/80">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-full bg-sky-100 text-sky-600 mx-auto mb-4">
+                        <span class="text-2xl">🤖</span>
+                    </div>
+                    <h4 class="text-lg font-semibold text-center text-slate-900 mb-2">에이전트 워크플로우</h4>
+                    <p class="text-sm text-center text-slate-500">단순 명령어 생성을 넘어, 다단계 작업을 자율적으로 계획하고 실행하는 진정한 '에이전트' 기능이 핵심으로 부상했습니다.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200/80">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-full bg-sky-100 text-sky-600 mx-auto mb-4">
+                        <span class="text-2xl">💻</span>
+                    </div>
+                    <h4 class="text-lg font-semibold text-center text-slate-900 mb-2">TUI 경험 성숙</h4>
+                    <p class="text-sm text-center text-slate-500">제한된 터미널 환경 내에서 강력한 AI 기능을 안전하고 직관적으로 사용하기 위한 엔지니어링 노력이 집중되고 있습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="timeline" class="mb-20">
+            <h3 class="text-2xl font-bold text-center text-slate-800 mb-4">주요 업데이트 타임라인 (2025.09.18 - 10.22)</h3>
+            <p class="text-center text-slate-500 mb-8">아래 필터를 사용하여 도구별 업데이트 내역을 비교해보세요. 각 점에 마우스를 올리면 상세 정보를 확인할 수 있습니다.</p>
+            <div id="timeline-filters" class="flex flex-wrap justify-center gap-3 mb-8">
+            </div>
+            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200/80">
+                <div class="chart-container">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="deep-dive" class="mb-20">
+            <h3 class="text-2xl font-bold text-center text-slate-800 mb-10">도구별 심층 분석</h3>
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-6 flex flex-wrap justify-center border-b border-slate-200">
+                    <button data-tab="copilot" class="tab-btn px-4 py-3 font-semibold text-slate-600 border-b-2 border-transparent -mb-px">GitHub Copilot CLI</button>
+                    <button data-tab="gemini" class="tab-btn px-4 py-3 font-semibold text-slate-600 border-b-2 border-transparent -mb-px">Gemini CLI</button>
+                    <button data-tab="claude" class="tab-btn px-4 py-3 font-semibold text-slate-600 border-b-2 border-transparent -mb-px">Claude Code</button>
+                    <button data-tab="codex" class="tab-btn px-4 py-3 font-semibold text-slate-600 border-b-2 border-transparent -mb-px">Codex CLI</button>
+                </div>
+                <div id="tab-content" class="bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-slate-200/80">
+                </div>
+            </div>
+        </section>
+
+        <section id="comparison" class="mb-20">
+            <h3 class="text-2xl font-bold text-center text-slate-800 mb-4">플랫폼별 전략 궤적 비교</h3>
+            <p class="text-center text-slate-500 mb-8 max-w-2xl mx-auto">각 CLI 도구의 전략적 방향성을 5가지 핵심 차원에서 비교합니다. 점수가 높을수록 해당 분야에 대한 집중도가 높음을 의미합니다.</p>
+            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200/80">
+                <div class="radar-chart-container">
+                    <canvas id="strategyRadarChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="outlook" class="max-w-4xl mx-auto">
+            <h3 class="text-2xl font-bold text-center text-slate-800 mb-10">전망: AI 지원 개발의 새로운 트렌드</h3>
+             <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200/80 space-y-6 text-slate-600">
+                <div>
+                    <h4 class="font-semibold text-slate-800 text-lg mb-2">MCP의 표준화</h4>
+                    <p>MCP는 더 이상 실험적 기술이 아닌, AI 에이전트와 외부 세계를 연결하는 표준 프로토콜로 자리 잡았습니다. 향후 경쟁은 MCP 서버 통합의 질과 폭에서 판가름 날 것입니다.</p>
+                </div>
+                 <div>
+                    <h4 class="font-semibold text-slate-800 text-lg mb-2">'지원'에서 '자율'로</h4>
+                    <p>도구의 역할이 개발자를 돕는 것에서 작업을 위임받는 것으로 전환되고 있습니다. Claude Code의 체크포인트 기능은 이러한 자율성을 향한 변화의 초기 신호입니다.</p>
+                </div>
+                 <div>
+                    <h4 class="font-semibold text-slate-800 text-lg mb-2">컨텍스트 확보 경쟁</h4>
+                    <p>다음 경쟁의 장은 더 나은 모델을 넘어, 모델에게 더 정확하고 풍부한 컨텍스트를 제공하는 능력에 달려 있습니다. 이는 프로젝트 관리 도구 통합, 실시간 웹 접근, 영구적 기억 장치를 통해 이루어질 것입니다.</p>
+                </div>
+                 <div>
+                    <h4 class="font-semibold text-slate-800 text-lg mb-2">사용자 경험의 차별화</h4>
+                    <p>핵심 기능이 점차 상향 평준화됨에 따라, 터미널 UI의 품질, 대화형 경험의 안정성, 안전 기능의 견고함이 사용자의 선택과 충성도를 결정하는 핵심 요소가 될 것입니다.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-20 py-8 bg-slate-100 border-t border-slate-200">
+        <div class="container mx-auto px-4 text-center text-sm text-slate-500">
+            <p>본 보고서는 제공된 자료를 바탕으로 2025년 10월 22일 기준으로 재구성되었습니다.</p>
+            <p>&copy; 2025 AI CLI Competitive Analysis. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toolData = {
+                copilot: {
+                    name: "GitHub Copilot CLI",
+                    color: "rgba(23, 23, 23, 0.8)",
+                    bgColor: "rgba(23, 23, 23, 0.1)",
+                    content: {
+                        title: "GitHub Copilot CLI - 공개 프리뷰와 생태계의 완성",
+                        strategy: "GitHub 유니버스의 완벽한 확장",
+                        strategyDesc: "개발자를 GitHub 생태계 안에 완벽하게 묶어두기 위한 '생태계 잠금(Lock-in)' 전략을 추구합니다. 리포지토리 호스팅, CI/CD, IDE를 넘어 터미널까지 모든 개발 과정을 GitHub 내에서 완결시키는 것을 목표로 합니다.",
+                        features: [
+                            "<strong>터미널 네이티브 개발:</strong> AI 에이전트를 커맨드라인에 직접 통합.",
+                            "<strong>즉시 사용 가능한 GitHub 통합:</strong> 리포지토리, 이슈, PR에 자연어 접근 제공.",
+                            "<strong>멀티 모델 전략:</strong> Claude Sonnet/Haiku 4.5 모델을 통합하여 성능, 속도, 비용 선택권 제공.",
+                            "<strong>사용자 제어 중심:</strong> '실행 전 모든 작업 미리보기' 안전 메커니즘으로 신뢰 확보."
+                        ]
+                    }
+                },
+                gemini: {
+                    name: "Gemini CLI",
+                    color: "rgba(67, 133, 245, 0.8)",
+                    bgColor: "rgba(67, 133, 245, 0.1)",
+                    content: {
+                        title: "Gemini CLI - 개방적이고 상호작용적인 생태계 구축",
+                        strategy: "AI CLI의 '안드로이드'를 향하여",
+                        strategyDesc: "모바일 OS 시장의 안드로이드처럼, 개방적이고 확장 가능한 '오픈 플랫폼' 구축에 초점을 맞춥니다. 강력한 핵심 에이전트를 제공하고, 서드파티 개발자들이 그 위에서 혁신을 이끌도록 장려합니다.",
+                        features: [
+                            "<strong>대화형 셸:</strong> 유사 터미널(PTY) 지원으로 vim, git rebase 등 대화형 명령어 처리 가능.",
+                            "<strong>Gemini Extensions 프레임워크:</strong> Postman, Snyk, Stripe 등 강력한 파트너와 함께 생태계 즉시 조성.",
+                            "<strong>체계적인 릴리스 프로세스:</strong> Nightly → Preview → Stable 채널로 이어지는 예측 가능한 릴리스 주기.",
+                            "<strong>지속적인 TUI/UX 개선:</strong> /settings 대화상자, 메시지 큐, 요청 취소 등 사용자 편의 기능 강화."
+                        ]
+                    }
+                },
+                claude: {
+                    name: "Claude Code",
+                    color: "rgba(212, 163, 117, 0.8)",
+                    bgColor: "rgba(212, 163, 117, 0.1)",
+                    content: {
+                        title: "Claude Code - 에이전트 개발 패러다임으로의 전환",
+                        strategy: "CLI 도구에서 통합 개발 플랫폼으로",
+                        strategyDesc: "단순 CLI를 넘어 개발자들이 자신만의 맞춤형 에이전트를 만들 수 있도록 지원하는 '에이전트 SDK' 전략에 중점을 둡니다. 개발자를 단순한 사용자가 아닌 공동 창작자로 대우하며 강력한 커스터마이징 능력을 부여합니다.",
+                        features: [
+                            "<strong>네이티브 VS Code 확장 프로그램:</strong> 터미널을 넘어 풍부한 그래픽 경험 제공.",
+                            "<strong>체크포인트와 /rewind 기능:</strong> AI 코드 변경 전 자동 상태 저장 및 즉각적인 롤백으로 신뢰 구축.",
+                            "<strong>Claude Agent SDK:</strong> 핵심 인프라를 SDK 형태로 공개하여 에이전트 생성의 민주화.",
+                            "<strong>Claude Code for web:</strong> 장시간 실행되는 복잡한 작업을 위임하는 비동기 에이전트 서비스 출시."
+                        ]
+                    }
+                },
+                codex: {
+                    name: "Codex CLI",
+                    color: "rgba(26, 140, 100, 0.8)",
+                    bgColor: "rgba(26, 140, 100, 0.1)",
+                    content: {
+                        title: "Codex CLI - 전문가용 도구의 성숙과 정제",
+                        strategy: "실험적 Rust 포팅에서 프로덕션 도구로",
+                        strategyDesc: "투명하고 엔지니어링 중심적인 개발을 통해 가장 기능이 풍부하고 성능이 뛰어나며 안전한 '파워 유저 도구'를 구축하는 데 집중합니다. 순수한 기술적 역량과 개발자 중심 설계가 핵심 경쟁력입니다.",
+                        features: [
+                            "<strong>성숙한 MCP 통합:</strong> 스트리밍 HTTP 서버, OAuth 로그인 등 복잡하고 안전한 통합 지원.",
+                            "<strong>대대적인 TUI 개편:</strong> 새로운 채팅 컴포저와 모델 선택기 등 UI 지속적 개선.",
+                            "<strong>강화된 안전 기능:</strong> macOS 바이너리 코드 서명, '전체 접근' 모드 경고 등 신뢰 구축 장치 도입.",
+                            "<strong>투명한 개발 프로세스:</strong> 모든 Pull Request를 공개하여 엔지니어링 우선순위 명확히 파악 가능."
+                        ]
+                    }
+                }
+            };
+            
+            const timelineEvents = [
+                { date: '2025-09-20', tool: 'gemini', type: 'Fix', summary: 'v0.9.0-preview.0: IDE 연결 로그인 실패 수정' },
+                { date: '2025-09-25', tool: 'copilot', type: 'Release', summary: 'GitHub Copilot CLI 공개 프리뷰 시작' },
+                { date: '2025-09-29', tool: 'claude', type: 'Release', summary: 'v2.0.0: 네이티브 VS Code 확장, /rewind 기능 출시' },
+                { date: '2025-10-03', tool: 'copilot', type: 'Improvement', summary: 'UI/UX 개선, 모델 선택 기능 향상' },
+                { date: '2025-10-03', tool: 'codex', type: 'Release', summary: 'v0.44.0: 대대적인 UI 개편, 새로운 채팅 컴포저' },
+                { date: '2025-10-06', tool: 'codex', type: 'Security', summary: 'v0.45.0: API 키 처리 방식 변경 (보안 강화)' },
+                { date: '2025-10-08', tool: 'gemini', type: 'Release', summary: 'v0.8.2 Stable 릴리스 / Extensions 프레임워크 발표' },
+                { date: '2025-10-09', tool: 'codex', type: 'Release', summary: 'v0.46.0: MCP 지원 대폭 개선' },
+                { date: '2025-10-10', tool: 'copilot', type: 'Improvement', summary: '응답 속도, 간결성, 가독성 개선' },
+                { date: '2025-10-13', tool: 'copilot', type: 'Integration', summary: 'Claude Sonnet 4.5 모델 정식 출시 및 통합' },
+                { date: '2025-10-14', tool: 'copilot', type: 'Integration', summary: 'MCP 서버, GitHub Projects 지원' },
+                { date: '2025-10-15', tool: 'copilot', type: 'Integration', summary: 'Claude Haiku 4.5 모델 공개 프리뷰 통합' },
+                { date: '2025-10-15', tool: 'gemini', type: 'Release', summary: '대화형 셸 기능 발표' },
+                { date: '2025-10-17', tool: 'copilot', type: 'Improvement', summary: '다중 라인 입력, Claude Haiku 4.5 지원 추가' },
+                { date: '2025-10-17', tool: 'codex', type: 'Release', summary: 'v0.47.0: macOS 바이너리 코드 서명, 안전 기능 추가' },
+                { date: '2025-10-17', tool: 'gemini', type: 'Release', summary: 'v0.10.0-preview.0: 대화형 셸 기본 활성화' },
+                { date: '2025-10-20', tool: 'copilot', type: 'Integration', summary: 'Claude Haiku 4.5 모델 정식 출시' },
+                { date: '2025-10-20', tool: 'claude', type: 'Release', summary: 'Claude Code for web 출시 (비동기 에이전트)' },
+                { date: '2025-10-21', tool: 'codex', type: 'Pre-release', summary: 'v0.48.0-alpha.3 릴리스' },
+            ];
+            
+            const createPoint = (event) => ({
+                x: new Date(event.date).getTime(),
+                y: event.tool,
+                summary: event.summary,
+                type: event.type,
+            });
+
+            let timelineChart;
+            function setupTimelineChart() {
+                const ctx = document.getElementById('timelineChart').getContext('2d');
+                const datasets = Object.keys(toolData).map(key => {
+                    return {
+                        label: toolData[key].name,
+                        data: timelineEvents.filter(e => e.tool === key).map(createPoint),
+                        backgroundColor: toolData[key].color,
+                        borderColor: toolData[key].color,
+                        pointRadius: 6,
+                        pointHoverRadius: 9,
+                    };
+                });
+                
+                const typeStyles = {
+                    'Release': { radius: 8, hoverRadius: 11 },
+                    'Improvement': { radius: 6, hoverRadius: 9 },
+                    'Integration': { radius: 7, hoverRadius: 10 },
+                    'Security': { radius: 6, hoverRadius: 9 },
+                    'Fix': { radius: 5, hoverRadius: 8 },
+                    'Pre-release': { radius: 4, hoverRadius: 7 },
+                };
+
+                datasets.forEach(dataset => {
+                    dataset.pointRadius = dataset.data.map(d => typeStyles[d.type]?.radius || 6);
+                    dataset.pointHoverRadius = dataset.data.map(d => typeStyles[d.type]?.hoverRadius || 9);
+                });
+
+                timelineChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const event = context.raw;
+                                        const date = new Date(event.x).toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' });
+                                        return `${date}: ${event.summary}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'day',
+                                    tooltipFormat: 'yyyy-MM-dd',
+                                    displayFormats: {
+                                        day: 'M월 d일'
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: '날짜'
+                                },
+                                min: new Date('2025-09-18').getTime(),
+                                max: new Date('2025-10-22').getTime()
+                            },
+                            y: {
+                                type: 'category',
+                                labels: Object.keys(toolData).map(k => toolData[k].name),
+                                offset: true,
+                            }
+                        }
+                    }
+                });
+
+                const filtersContainer = document.getElementById('timeline-filters');
+                Object.keys(toolData).forEach((key, index) => {
+                    const button = document.createElement('button');
+                    button.textContent = toolData[key].name;
+                    button.dataset.tool = key;
+                    button.className = 'timeline-filter-btn active px-4 py-2 rounded-full font-semibold text-sm shadow-sm';
+                    button.style.backgroundColor = toolData[key].bgColor.replace('0.1', '1');
+                    button.style.color = toolData[key].color.replace('0.8', '1');
+                    button.style.border = `1px solid ${toolData[key].color}`;
+                    
+                    button.onclick = () => {
+                        const meta = timelineChart.getDatasetMeta(index);
+                        meta.hidden = !meta.hidden;
+                        button.classList.toggle('active');
+                        button.style.opacity = meta.hidden ? '0.5' : '1';
+                        timelineChart.update();
+                    };
+                    filtersContainer.appendChild(button);
+                });
+            }
+
+            function setupRadarChart() {
+                const ctx = document.getElementById('strategyRadarChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['생태계 개방성', '플랫폼 통합', '에이전트 자율성', 'TUI/UX 성숙도', '개발자 중심'],
+                        datasets: [{
+                            label: 'GitHub Copilot CLI',
+                            data: [2, 9, 6, 7, 7],
+                            fill: true,
+                            backgroundColor: 'rgba(23, 23, 23, 0.2)',
+                            borderColor: 'rgb(23, 23, 23)',
+                            pointBackgroundColor: 'rgb(23, 23, 23)',
+                        }, {
+                            label: 'Gemini CLI',
+                            data: [9, 6, 7, 8, 9],
+                            fill: true,
+                            backgroundColor: 'rgba(67, 133, 245, 0.2)',
+                            borderColor: 'rgb(67, 133, 245)',
+                            pointBackgroundColor: 'rgb(67, 133, 245)',
+                        }, {
+                           label: 'Claude Code',
+                            data: [8, 5, 9, 6, 10],
+                            fill: true,
+                            backgroundColor: 'rgba(212, 163, 117, 0.2)',
+                            borderColor: 'rgb(212, 163, 117)',
+                            pointBackgroundColor: 'rgb(212, 163, 117)',
+                        }, {
+                            label: 'Codex CLI',
+                            data: [4, 4, 7, 9, 8],
+                            fill: true,
+                            backgroundColor: 'rgba(26, 140, 100, 0.2)',
+                            borderColor: 'rgb(26, 140, 100)',
+                            pointBackgroundColor: 'rgb(26, 140, 100)',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        elements: {
+                            line: {
+                                borderWidth: 2
+                            }
+                        },
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    display: true
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 10,
+                                pointLabels: {
+                                    font: {
+                                        size: 13
+                                    }
+                                },
+                                ticks: {
+                                    stepSize: 2
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContentContainer = document.getElementById('tab-content');
+            
+            function renderTabContent(toolKey) {
+                const data = toolData[toolKey].content;
+                const featuresHtml = data.features.map(f => `<li class="flex items-start"><span class="text-sky-500 mr-3 mt-1.5 flex-shrink-0">✔</span><span>${f}</span></li>`).join('');
+
+                tabContentContainer.innerHTML = `
+                    <div class="prose max-w-none prose-slate">
+                        <h4 class="text-2xl font-bold text-slate-900 !mb-2">${data.title}</h4>
+                        <p class="text-lg font-semibold text-sky-600 !mt-0">${data.strategy}</p>
+                        <p>${data.strategyDesc}</p>
+                        <h5 class="font-semibold text-slate-800">주요 특징:</h5>
+                        <ul class="space-y-2 !pl-0 !ml-0 list-none">
+                            ${featuresHtml}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    renderTabContent(button.dataset.tab);
+                });
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if(pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if(link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                })
+            });
+
+
+            setupTimelineChart();
+            setupRadarChart();
+            tabButtons[0].click(); 
+        });
+    </script>
+</body>
+</html>
