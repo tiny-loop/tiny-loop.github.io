@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 브라우저 전쟁: 새로운 시대의 서막</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Cool Neutrals & Tech Blue -->
+    <!-- Application Structure Plan: The SPA is structured thematically to guide the user from a high-level market overview to a detailed comparison of specific browsers. It uses a dashboard-style intro, followed by an interactive tabbed section for deep dives into each 'Contender'. This is more user-friendly than a linear report, allowing users to explore browsers in any order. The structure concludes with a technical summary and future outlook, providing a complete narrative. This design prioritizes user-driven exploration and direct comparison over a passive reading experience. -->
+    <!-- Visualization & Content Choices: 1. Browser Market Share -> Goal: Inform -> Viz: Doughnut Chart (Chart.js) -> Interaction: Hover to see details -> Justification: Provides an immediate, easily digestible snapshot of the current market dominance. 2. Browser Details -> Goal: Compare/Organize -> Viz: Interactive Tabs/Cards (HTML/CSS/JS) -> Interaction: Click to reveal detailed info (Engine, Pros, Cons) -> Justification: Prevents information overload and allows focused comparison. 3. Engine Relationships -> Goal: Organize -> Viz: HTML/CSS Diagram -> Interaction: Static -> Justification: Clearly illustrates the technical foundation of browsers without complex SVG, showing the Chromium monoculture. 4. Feature Comparison -> Goal: Compare -> Viz: HTML Table -> Interaction: Static/Hover -> Justification: Offers a dense, at-a-glance comparison across key features. All visualizations are rendered on Canvas or using styled HTML to avoid SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+        }
+        .nav-button.active {
+            background-color: #0d6efd;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .tab-button.active {
+            border-color: #0d6efd;
+            color: #0d6efd;
+            background-color: #eef5ff;
+        }
+        .browser-content {
+            display: none;
+        }
+        .browser-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen bg-[#F8F9FA]">
+        <header class="bg-white shadow-sm sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-900">AI 브라우저 전쟁: 새로운 시대</h1>
+                <nav id="main-nav" class="hidden md:flex space-x-2">
+                    <button data-target="overview" class="nav-button active text-sm font-medium py-2 px-4 rounded-lg">시장 현황</button>
+                    <button data-target="contenders" class="nav-button text-sm font-medium py-2 px-4 rounded-lg">주요 브라우저</button>
+                    <button data-target="tech" class="nav-button text-sm font-medium py-2 px-4 rounded-lg">핵심 기술</button>
+                    <button data-target="future" class="nav-button text-sm font-medium py-2 px-4 rounded-lg">미래 전망</button>
+                </nav>
+                 <div class="md:hidden">
+                    <select id="mobile-nav" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option value="overview" selected>시장 현황</option>
+                        <option value="contenders">주요 브라우저</option>
+                        <option value="tech">핵심 기술</option>
+                        <option value="future">미래 전망</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            <section id="overview" class="content-section active">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">브라우저 시장의 지각변동</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600">AI가 웹 브라우징 경험을 재정의하면서, 기존 강자와 신규 도전자 간의 경쟁이 심화되고 있습니다. 이 섹션에서는 현재 브라우저 시장의 점유율 현황을 살펴보고, AI 통합이 가져오는 변화의 중요성을 설명합니다.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-center mb-4">2025년 글로벌 데스크톱 브라우저 시장 점유율</h3>
+                        <div class="chart-container">
+                            <canvas id="marketShareChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold text-gray-800">Chrome의 아성</h3>
+                            <p class="mt-2 text-gray-600">Google Chrome은 여전히 압도적인 점유율로 시장을 지배하고 있습니다. 방대한 확장 프로그램 생태계와 구글 서비스와의 연동성이 주요 강점이지만, AI 시대에 맞춰 새로운 혁신을 요구받고 있습니다.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold text-gray-800">AI, 새로운 변수</h3>
+                            <p class="mt-2 text-gray-600">단순한 정보 검색을 넘어, AI 브라우저는 콘텐츠 요약, 언어 번역, 코드 작성, 자동화된 작업 수행 등 지능형 보조 역할을 수행합니다. 이는 사용자의 생산성을 극대화하는 새로운 패러다임입니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contenders" class="content-section">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">전장에 뛰어든 도전자들</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600">기존의 강자부터 AI 기술로 무장한 신예까지, 다양한 브라우저들이 미래 웹 경험의 주도권을 잡기 위해 경쟁하고 있습니다. 각 브라우저의 특징, 장단점을 비교하여 자신에게 맞는 브라우저를 찾아보세요.</p>
+                </div>
+                <div class="flex flex-wrap justify-center gap-2 mb-8 border-b border-gray-200">
+                    <button class="tab-button active py-2 px-4 border-b-2 font-medium text-sm rounded-t-lg" data-browser="chrome">Chrome</button>
+                    <button class="tab-button py-2 px-4 border-b-2 font-medium text-sm rounded-t-lg" data-browser="firefox">Firefox</button>
+                    <button class="tab-button py-2 px-4 border-b-2 font-medium text-sm rounded-t-lg" data-browser="comet">Comet</button>
+                    <button class="tab-button py-2 px-4 border-b-2 font-medium text-sm rounded-t-lg" data-browser="atlas">Atlas (OpenAI)</button>
+                    <button class="tab-button py-2 px-4 border-b-2 font-medium text-sm rounded-t-lg" data-browser="others">기타 AI 브라우저</button>
+                </div>
+                
+                <div id="browser-details-container" class="bg-white p-8 rounded-lg shadow-md">
+                    <div id="chrome" class="browser-content active">
+                        <h3 class="text-2xl font-bold mb-4">Google Chrome: 기존의 강자, AI를 품다</h3>
+                        <p class="mb-6 text-gray-600">크롬은 시장 지배자로서의 안정성과 생태계를 기반으로 점진적인 AI 기능 통합을 추진하고 있습니다. 'Help me write', 탭 그룹화 등 내장 AI 기능으로 사용자 편의성을 높이는 전략을 사용합니다.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><h4 class="font-semibold text-lg mb-2">장점</h4><ul class="list-disc list-inside space-y-2 text-gray-700"><li>안정성 및 높은 웹 호환성</li><li>방대한 확장 프로그램 생태계</li><li>구글 서비스와의 완벽한 연동</li></ul></div>
+                            <div><h4 class="font-semibold text-lg mb-2">단점</h4><ul class="list-disc list-inside space-y-2 text-gray-700"><li>높은 메모리 및 리소스 사용량</li><li>개인정보 수집에 대한 우려</li><li>혁신의 속도가 상대적으로 느림</li></ul></div>
+                        </div>
+                    </div>
+                    <div id="firefox" class="browser-content">
+                        <h3 class="text-2xl font-bold mb-4">Firefox: 독립성과 프라이버시의 가치</h3>
+                        <p class="mb-6 text-gray-600">Firefox는 Chromium 기반이 아닌 자체 Gecko 엔진을 사용하여 웹 다양성을 지키는 중요한 역할을 합니다. 강력한 추적 방지 기능 등 사용자 프라이버시 보호를 최우선 가치로 삼고 있습니다.</p>
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><h4 class="font-semibold text-lg mb-2">장점</h4><ul class="list-disc list-inside space-y-2 text-gray-700"><li>독자적인 Gecko 엔진 사용</li><li>강력한 개인정보 보호 기능</li><li>오픈소스 기반의 투명성</li></ul></div>
+                            <div><h4 class="font-semibold text-lg mb-2">단점</h4><ul class="list-disc list-inside space-y-2 text-gray-700"><li>상대적으로 낮은 시장 점유율</li><li>일부 사이트에서 호환성 문제 발생 가능성</li><li>AI 기능 도입이 상대적으로 더딤</li></ul></div>
+                        </div>
+                    </div>
+                    <div id="comet" class="browser-content">
+                        <h3 class="text-2xl font-bold mb-4">Comet Browser: AI 네이티브를 향한 도전</h3>
+                        <p class="mb-6 text-gray-600">Comet은 처음부터 AI 통합을 염두에 두고 설계된 브라우저로, 웹 검색 및 정보 소비 방식을 근본적으로 바꾸려는 시도를 합니다. 자동화된 작업 흐름과 지능형 콘텐츠 요약이 핵심 기능입니다.</p>
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><h4 class="font-semibold text-lg mb-2">장점</h4><ul class="list-disc list-inside space-y-2 text-gray-700"><li>혁신적인 AI 기반 기능</li><li>검색 및 정보 정리의 효율성 증대</li><li>기존 브라우저와 다른 새로운 UX</li></ul></div>
+                            <div><h4 class="font-semibold text-lg mb-2">단점</h4><ul class="list-disc list-inside space-y-2 text-gray-700"><li>신생 브라우저로서의 안정성 문제</li><li>초기 생태계 및 확장 프로그램 부족</li><li>기존 사용자 습관과의 충돌 가능성</li></ul></div>
+                        </div>
+                    </div>
+                    <div id="atlas" class="browser-content">
+                        <h3 class="text-2xl font-bold mb-4">ChatGPT Atlas: 마침내 공개된 AI 네이티브 브라우저</h3>
+                        <p class="mb-6 text-gray-600">2025년 10월 22일(한국 시간 새벽)에 전격 출시되었습니다. macOS 버전이 먼저 공개되었으며, ChatGPT를 브라우저의 핵심에 통합하여 '브라우저와 대화'하는 경험을 제공합니다. Chromium 기반으로 제작되었습니다.</p>
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><h4 class="font-semibold text-lg mb-2">핵심 기능 (장점)</h4><ul class="list-disc list-inside space-y-2 text-gray-700"><li>AI 에이전트 모드: 예약, 쇼핑 등 자율 작업 수행 (유료)</li><li>브라우저 메모리: 웹 탐색 맥락을 기억하여 개인화된 응답</li><li>인라인 AI: 웹페이지 텍스트를 바로 요약/수정/번역</li><li>강력한 프라이버시 제어 (기본적으로 학습에 미사용)</li></ul></div>
+                            <div><h4 class="font-semibold text-lg mb-2">단점 및 초기 반응</h4><ul class="list-disc list-inside space-y-2 text-gray-700"><li>시장 진입이 늦음 (macOS 우선 출시, 타 OS는 대기)</li><li>핵심 기능(AI 에이전트)은 유료 구독 필요</li><li>Perplexity Comet, Edge Copilot 등 강력한 경쟁자 존재</li><li>Chromium 기반으로 엔진 다양성에는 기여 못함</li></ul></div>
+                        </div>
+                    </div>
+                    <div id="others" class="browser-content">
+                        <h3 class="text-2xl font-bold mb-4">기타 AI 브라우저들: 각자의 방식으로 혁신하다</h3>
+                        <p class="mb-6 text-gray-600">Chrome 외에도 다양한 브라우저들이 AI를 활용해 독자적인 영역을 구축하고 있습니다. 이들은 특정 사용자 그룹을 겨냥하거나, 독특한 사용자 경험을 제공하는 데 집중합니다.</p>
+                        <div class="space-y-4">
+                            <p><strong>Microsoft Edge:</strong> Windows와의 통합 및 Copilot AI를 통해 업무 생산성에 초점을 맞춥니다.</p>
+                            <p><strong>Arc Browser:</strong> 독특한 UI/UX와 스페이스 기능을 통해 웹 서핑을 '정리'하는 새로운 경험을 제공합니다.</p>
+                             <p><strong>SigmaOS:</strong> 워크스페이스 개념을 도입하여 여러 작업을 동시에 효율적으로 관리하는 데 특화되어 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="tech" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">브라우저의 심장, 렌더링 엔진</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600">웹사이트를 화면에 표시하는 핵심 소프트웨어인 렌더링 엔진은 브라우저의 성능과 호환성을 결정합니다. 현재 브라우저 시장은 소수의 엔진이 지배하고 있으며, 이는 웹 생태계 전반에 큰 영향을 미칩니다.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div class="border p-4 rounded-lg">
+                            <h4 class="font-bold text-xl mb-2 text-blue-600">Blink (Chromium)</h4>
+                            <p>Google 주도로 개발된 오픈소스 엔진. Chrome, Edge, Brave, Comet, 그리고 새롭게 출시된 Atlas 등 대다수 브라우저가 사용합니다.</p>
+                        </div>
+                        <div class="border p-4 rounded-lg">
+                            <h4 class="font-bold text-xl mb-2 text-orange-600">Gecko</h4>
+                            <p>Mozilla 재단이 개발하는 엔진으로 Firefox가 사용합니다. 웹 다양성을 유지하는 데 중요한 역할을 합니다.</p>
+                        </div>
+                        <div class="border p-4 rounded-lg">
+                            <h4 class="font-bold text-xl mb-2 text-purple-600">WebKit</h4>
+                            <p>Apple이 주도하는 오픈소스 엔진으로 Safari 브라우저의 기반이 됩니다. iOS와 macOS 생태계에서 영향력이 큽니다.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <h4 class="font-semibold text-lg text-center mb-4">엔진 종속성의 의미</h4>
+                        <p class="text-gray-700 max-w-3xl mx-auto">대부분의 브라우저가 Chromium의 Blink 엔진을 공유하면서, 웹 개발은 Blink에 최적화되는 경향이 있습니다. 이는 개발 편의성을 높이지만, 장기적으로는 소수 기업(Google)이 웹 표준에 막대한 영향력을 행사하게 되어 웹의 다양성과 개방성을 저해할 수 있다는 우려를 낳습니다. Gecko와 같은 독립 엔진의 존재가 중요한 이유입니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="future" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">브라우저의 미래, 그리고 우리의 선택</h2>
+                    <p class="mt-4 text-lg leading-8 text-gray-600">미래의 브라우저는 단순한 웹 페이지 뷰어를 넘어, 우리의 디지털 생활을 관리하고 증강하는 지능형 파트너로 진화할 것입니다. 이러한 변화 속에서 사용자는 자신의 필요와 가치에 맞는 도구를 현명하게 선택해야 합니다.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-3">주요 미래 트렌드</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>대화형 인터페이스:</strong> 키워드 검색을 넘어 자연어로 웹과 소통.</li>
+                            <li><strong>개인화된 에이전트:</strong> 사용자의 습관을 학습하여 작업을 자동화하고 콘텐츠를 추천.</li>
+                            <li><strong>온디바이스 AI:</strong> 클라우드 의존도를 줄여 속도와 개인정보 보호 강화.</li>
+                            <li><strong>공간 컴퓨팅 연동:</strong> AR/VR 헤드셋과 연동하여 2D 웹을 3D 공간으로 확장.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-3">사용자의 선택 기준</h3>
+                        <p class="text-gray-700">새로운 브라우저를 선택할 때, 단순히 화려한 기능만을 보기보다는 아래의 기준을 함께 고려해야 합니다.</p>
+                         <ul class="list-disc list-inside space-y-2 mt-4 text-gray-700">
+                           <li><strong>개인정보 보호:</strong> 나의 데이터가 어떻게 수집되고 사용되는가?</li>
+                           <li><strong>개방성:</strong> 특정 기업의 생태계에 종속되지 않는가?</li>
+                           <li><strong>효율성:</strong> 나의 실제 작업 흐름에 도움이 되는가?</li>
+                           <li><strong>안정성:</strong> 신뢰하고 사용할 수 있는가?</li>
+                         </ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('marketShareChart').getContext('2d');
+            const marketShareChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Chrome', 'Safari', 'Edge', 'Firefox', '기타'],
+                    datasets: [{
+                        label: '시장 점유율',
+                        data: [65.7, 18.5, 5.4, 2.8, 7.6],
+                        backgroundColor: [
+                            '#4285F4',
+                            '#737373',
+                            '#0078D7',
+                            '#FF7139',
+                            '#C0C0C0'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const mainNavButtons = document.querySelectorAll('#main-nav button');
+            const mobileNav = document.getElementById('mobile-nav');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            function setActiveSection(targetId) {
+                mainNavButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.target === targetId);
+                });
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+                 if (mobileNav.value !== targetId) {
+                    mobileNav.value = targetId;
+                }
+            }
+            
+            mainNavButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    setActiveSection(button.dataset.target);
+                });
+            });
+
+            mobileNav.addEventListener('change', (e) => {
+                 setActiveSection(e.target.value);
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const browserContents = document.querySelectorAll('.browser-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const targetBrowser = button.dataset.browser;
+                    browserContents.forEach(content => {
+                        content.classList.toggle('active', content.id === targetBrowser);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
