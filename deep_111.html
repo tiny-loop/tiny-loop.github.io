@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akinator와 LLM의 비밀</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: "Inter", "Pretendard", sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+            max-height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .nav-button {
+            @apply px-4 py-2 text-lg font-medium rounded-lg transition-all duration-200;
+        }
+        .nav-button.active {
+            @apply bg-amber-500 text-white shadow-md;
+        }
+        .nav-button:not(.active) {
+            @apply text-amber-700 hover:bg-amber-100;
+        }
+        .content-section {
+            @apply p-4 md:p-8;
+        }
+        .card {
+            @apply bg-white p-6 rounded-xl shadow-lg border border-gray-100;
+        }
+    </style>
+    <!-- Chosen Palette: Calm Harmony (Warm Neutrals) -->
+    <!-- Application Structure Plan: A tabbed SPA with 4 sections: Home (Intro), Akinator Deep Dive, LLM Deep Dive, and Comparative Analysis. This structure separates the two main topics before merging them for comparison, which is a more logical user flow than a linear report. Interactivity (clickable diagrams for Akinator, mock generator for LLM) is used to demonstrate the core concepts of "possibility elimination" and "probabilistic generation" directly, enhancing understanding. -->
+    <!-- Visualization & Content Choices: Akinator's core concept (elimination) -> Goal: Organize/Change -> Viz: Interactive Flow Diagram -> Interaction: Click buttons to filter a set of "candidates" -> Justification: Visually demonstrates the report's "Possibility Elimination" concept -> Method: HTML/CSS/JS. LLM's core concept (generation) -> Goal: Inform/Change -> Viz: Simple Bar Chart + Text Output -> Interaction: Click button to show mock "next token probabilities" and append text -> Justification: Visually demonstrates "Probabilistic Inference" -> Method: Chart.js (Canvas). Comparison -> Goal: Compare -> Viz: Side-by-side table -> Method: HTML/Tailwind. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-amber-50 text-gray-800">
+
+    <div class="container mx-auto max-w-6xl p-4">
+        
+        <header class="text-center my-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-900">Akinator와 LLM의 비밀</h1>
+            <p class="text-xl text-gray-600 mt-2">게임과 AI는 어떻게 같은 원리로 생각할까요?</p>
+        </header>
+
+        <nav class="flex flex-wrap justify-center gap-2 md:gap-4 p-4 bg-white rounded-xl shadow-md mb-8">
+            <button id="nav-home" class="nav-button active" onclick="showSection('home')">소개</button>
+            <button id="nav-akinator" class="nav-button" onclick="showSection('akinator')">Akinator 작동 원리</button>
+            <button id="nav-llm" class="nav-button" onclick="showSection('llm')">LLM 작동 원리</button>
+            <button id="nav-compare" class="nav-button" onclick="showSection('compare')">유사성 비교</button>
+        </nav>
+
+        <main id="main-content" class="bg-white rounded-xl shadow-inner border border-gray-200">
+
+            <section id="home" class="content-section">
+                <h2 class="text-3xl font-semibold text-amber-800 mb-4">놀라운 유사성</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                    '아키네이터(Akinator)' 스무고개 게임과 'ChatGPT' 같은 대규모 언어 모델(LLM)은 겉보기엔 전혀 달라 보입니다. 하나는 정답을 맞히는 게임이고, 다른 하나는 글을 쓰는 AI입니다. 하지만 이 둘은 핵심적인 작동 원리, 즉 **'확률 기반 추론'**을 공유합니다.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                    이 인터랙티브 보고서는 두 시스템이 어떻게 주어진 정보를 바탕으로 '가능성'을 계산하고, '가장 확률이 높은' 답을 찾아가는지 탐구합니다. 아키네이터가 캐릭터를 추측하는 방식과 LLM이 다음 단어를 생성하는 방식 사이의 놀라운 연결고리를 발견해 보세요.
+                </p>
+                <div class="bg-amber-100 p-6 rounded-lg text-amber-900">
+                    <h3 class="text-2xl font-semibold mb-2">탐색 시작하기</h3>
+                    <p class="text-lg">상단의 탭을 클릭하여 각 시스템의 작동 원리를 자세히 알아보고, 두 시스템이 어떻게 같은 원리를 공유하는지 비교 분석을 확인해 보세요.</p>
+                </div>
+            </section>
+
+            <section id="akinator" class="content-section hidden">
+                <h2 class="text-3xl font-semibold text-amber-800 mb-4">Akinator: 가능성의 가지치기</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                    아키네이터의 핵심은 '결정 트리'와 '확률'입니다. 수많은 '캐릭터'와 '질문' 데이터베이스를 바탕으로, 매 답변마다 정답이 될 수 없는 후보들을 제거(가지치기)합니다. 이 과정을 통해 수백만 개의 후보가 단 몇 개의 유력한 후보로 좁혀집니다.
+                </p>
+
+                <div class="card border-2 border-amber-200">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Akinator 추론 시뮬레이션</h3>
+                    <p class="text-center text-gray-600 mb-6">아래 버튼을 눌러 아키네이터가 어떻게 후보를 좁혀나가는지 확인해 보세요.</p>
+                    
+                    <div id="akinator-demo-pool" class="p-4 bg-gray-100 rounded-lg text-center mb-4">
+                        <span class="font-semibold text-lg">현재 후보: </span>
+                        <span id="akinator-candidates" class="text-lg text-amber-800 font-bold">1,000,000+ 명</span>
+                    </div>
+
+                    <div id="akinator-step-1" class="text-center">
+                        <p class="text-xl font-medium mb-4">질문 1: "실제 인물입니까?"</p>
+                        <button class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600" onclick="akinatorDemo(1, '예')">예</button>
+                        <button class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600" onclick="akinatorDemo(1, '아니오')">아니오</button>
+                    </div>
+
+                    <div id="akinator-step-2" class="text-center hidden mt-6">
+                        <p id="akinator-q2-text" class="text-xl font-medium mb-4"></p>
+                        <button class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600" onclick="akinatorDemo(2, '예')">예</button>
+                        <button class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600" onclick="akinatorDemo(2, '아니오')">아니오</button>
+                    </div>
+
+                    <div id="akinator-step-3" class="text-center hidden mt-6">
+                        <p id="akinator-q3-text" class="text-xl font-medium mb-4"></p>
+                        <button class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600" onclick="akinatorDemo(3, '예')">예</button>
+                        <button class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600" onclick="akinatorDemo(3, '아니오')">아니오</button>
+                    </div>
+                    
+                    <div id="akinator-result" class="text-center hidden mt-6">
+                        <p class="text-2xl font-bold text-amber-900"></p>
+                    </div>
+                    
+                    <button class="mt-8 bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 block mx-auto" onclick="resetAkinatorDemo()">초기화</button>
+                </div>
+            </section>
+
+            <section id="llm" class="content-section hidden">
+                <h2 class="text-3xl font-semibold text-amber-800 mb-4">LLM: 확률의 사슬</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                    LLM은 '다음에 올 단어'를 예측하는 모델입니다. 'The cat sat on the...'라는 문맥이 주어지면, LLM은 'mat', 'chair', 'floor' 등 어휘 사전에 있는 모든 단어에 대해 '다음에 올 확률'을 계산합니다. 그리고 가장 확률이 높은 단어를 선택(또는 샘플링)하여 문장을 이어갑니다.
+                </p>
+
+                <div class="card border-2 border-amber-200">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">LLM 생성 시뮬레이션</h3>
+                    <p class="text-center text-gray-600 mb-6">버튼을 눌러 LLM이 어떻게 다음 단어를 예측하는지 확인해 보세요.</p>
+
+                    <div class="bg-gray-100 p-4 rounded-lg mb-6 min-h-[100px]">
+                        <p class="text-lg font-mono" id="llm-text-output">"하늘은 푸르고, 바다는..."</p>
+                    </div>
+
+                    <div class="text-center mb-6">
+                        <button id="llm-generate-btn" class="bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600 text-lg font-semibold" onclick="llmDemo()">다음 단어 생성</button>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="llmChart"></canvas>
+                    </div>
+                    <p class="text-center text-gray-600 mt-2">다음 단어 확률 분포 (가상)</p>
+                    
+                    <button class="mt-8 bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 block mx-auto" onclick="resetLlmDemo()">초기화</button>
+                </div>
+            </section>
+
+            <section id="compare" class="content-section hidden">
+                <h2 class="text-3xl font-semibold text-amber-800 mb-4">Akinator vs LLM: 놀라운 유사성</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                    목적(분류 vs 생성)과 데이터(테이블 vs 텍스트)는 다르지만, 두 시스템은 근본적인 추론 과정에서 4가지 핵심 유사성을 공유합니다. 이들은 모두 '정보'를 바탕으로 '불확실성'을 줄여나가는 확률적 추론 엔진입니다.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="card bg-amber-50">
+                        <h3 class="text-2xl font-semibold text-amber-900 mb-3">유사성 1: 확률 기반 추론</h3>
+                        <p class="mb-4"><strong>Akinator:</strong> 사용자의 답변을 기반으로 '가장 확률이 높은 캐릭터'를 계산합니다.</p>
+                        <p><strong>LLM:</strong> 이전 토큰(단어)들을 기반으로 '가장 확률이 높은 다음 토큰'을 계산합니다.</p>
+                    </div>
+                    
+                    <div class="card bg-amber-50">
+                        <h3 class="text-2xl font-semibold text-amber-900 mb-3">유사성 2: 가능성 축소</h3>
+                        <p class="mb-4"><strong>Akinator:</strong> '모든 캐릭터'라는 거대한 공간에서 시작해, 질문과 답변을 통해 후보군을 극적으로 좁혀나갑니다.</p>
+                        <p><strong>LLM:</strong> '모든 문장'이라는 공간에서 시작해, 'The cat sat...'처럼 단어가 추가될수록 다음 단어의 가능성이 좁혀집니다.</p>
+                    </div>
+
+                    <div class="card bg-amber-50">
+                        <h3 class="text-2xl font-semibold text-amber-900 mb-3">유사성 3: 방대한 데이터 의존</h3>
+                        <p class="mb-4"><strong>Akinator:</strong> 수백만 개의 '캐릭터-질문-답변' 관계가 저장된 방대한 데이터베이스(지식)에 의존합니다.</p>
+                        <p><strong>LLM:</strong> 인터넷 규모의 텍스트로 학습된 수십억 개의 '매개변수'(지식)에 의존합니다.</p>
+                    </div>
+
+                    <div class="card bg-amber-50">
+                        <h3 class="text-2xl font-semibold text-amber-900 mb-3">유사성 4: 문맥 의존적 상태</h3>
+                        <p class="mb-4"><strong>Akinator:</strong> 10번째 질문은 1~9번째 답변(문맥)에 따라 결정됩니다.</p>
+                        <p><strong>LLM:</strong> 10번째 토큰은 1~9번째 토큰(문맥)에 따라 결정됩니다.</p>
+                    </div>
+
+                </div>
+
+                <div class="card mt-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">결론</h3>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        아키네이터는 명시적인 '질문-답변'을 통해 가능성을 좁혀 하나의 '정답'을 찾아내는 **'분류'** 모델에 가깝습니다.
+                        반면 LLM은 암시적인 '내부 문맥'을 통해 가능성을 좁혀 일련의 '그럴싸한' 토큰 시퀀스를 만들어내는 **'생성'** 모델입니다.
+                        놀랍게도, 두 시스템 모두 '정보를 처리하여 불확실성을 줄여나가는' 지능의 근본적인 과정을 공유하고 있습니다.
+                    </p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        let llmChartInstance = null;
+        let llmDemoState = 0;
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById('nav-' + sectionId).classList.add('active');
+        }
+
+        function akinatorDemo(step, answer) {
+            const candidatesEl = document.getElementById('akinator-candidates');
+            const q2Text = document.getElementById('akinator-q2-text');
+            const q3Text = document.getElementById('akinator-q3-text');
+            const resultEl = document.getElementById('akinator-result').querySelector('p');
+
+            if (step === 1) {
+                if (answer === '예') {
+                    candidatesEl.textContent = '약 300,000 명 (실제 인물)';
+                    q2Text.textContent = '질문 2: "미국인입니까?"';
+                } else {
+                    candidatesEl.textContent = '약 700,000+ 명 (가상 캐릭터)';
+                    q2Text.textContent = '질문 2: "애니메이션 캐릭터입니까?"';
+                }
+                document.getElementById('akinator-step-1').classList.add('hidden');
+                document.getElementById('akinator-step-2').classList.remove('hidden');
+                
+            } else if (step === 2) {
+                 if (q2Text.textContent.includes('미국인')) {
+                    candidatesEl.textContent = answer === '예' ? '약 100,000 명 (미국인)' : '약 200,000 명 (외국인)';
+                    q3Text.textContent = '질문 3: "가수입니까?"';
+                 } else {
+                    candidatesEl.textContent = answer === '예' ? '약 400,000 명 (애니 캐릭터)' : '약 300,000 명 (기타)';
+                    q3Text.textContent = '질문 3: "일본 애니메이션입니까?"';
+                 }
+                 document.getElementById('akinator-step-2').classList.add('hidden');
+                 document.getElementById('akinator-step-3').classList.remove('hidden');
+
+            } else if (step === 3) {
+                candidatesEl.textContent = '약 10,000 명';
+                if (q3Text.textContent.includes('가수')) {
+                    resultEl.textContent = answer === '예' ? '후보가 "가수"로 좁혀졌습니다. (예: 테일러 스위프트)' : '후보가 "비-가수"로 좁혀졌습니다. (예: 조 바이든)';
+                } else {
+                    resultEl.textContent = answer === '예' ? '후보가 "일본 애니"로 좁혀졌습니다. (예: 나루토)' : '후보가 "기타"로 좁혀졌습니다. (예: 해리 포터)';
+                }
+                document.getElementById('akinator-step-3').classList.add('hidden');
+                document.getElementById('akinator-result').classList.remove('hidden');
+            }
+        }
+
+        function resetAkinatorDemo() {
+            document.getElementById('akinator-candidates').textContent = '1,000,000+ 명';
+            document.getElementById('akinator-step-1').classList.remove('hidden');
+            document.getElementById('akinator-step-2').classList.add('hidden');
+            document.getElementById('akinator-step-3').classList.add('hidden');
+            document.getElementById('akinator-result').classList.add('hidden');
+        }
+
+        const llmDemoSteps = [
+            {
+                text: '"깊고..."',
+                labels: ['푸른', '넓은', '알 수 없는', '검은'],
+                data: [70, 20, 5, 5]
+            },
+            {
+                text: '"깊고 푸른..."',
+                labels: ['바다', '하늘', '색', '존재'],
+                data: [85, 10, 3, 2]
+            },
+            {
+                text: '"깊고 푸른 바다..."',
+                labels: ['속으로', '위에서', '는', '처럼'],
+                data: [60, 25, 10, 5]
+            }
+        ];
+
+        function llmDemo() {
+            const stepData = llmDemoSteps[llmDemoState];
+            if (!stepData) return;
+
+            document.getElementById('llm-text-output').textContent = `"하늘은 푸르고, 바다는 ${stepData.text}`;
+            
+            const ctx = document.getElementById('llmChart').getContext('2d');
+            if (llmChartInstance) {
+                llmChartInstance.destroy();
+            }
+            llmChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: stepData.labels,
+                    datasets: [{
+                        label: '다음 단어 확률 (%)',
+                        data: stepData.data,
+                        backgroundColor: [
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(217, 119, 6, 0.7)',
+                            'rgba(180, 83, 9, 0.7)',
+                            'rgba(142, 68, 8, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(217, 119, 6, 1)',
+                            'rgba(180, 83, 9, 1)',
+                            'rgba(142, 68, 8, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            llmDemoState = (llmDemoState + 1) % llmDemoSteps.length;
+            if (llmDemoState === 0 && llmDemoSteps.length > 0) {
+                 document.getElementById('llm-generate-btn').textContent = "다시 생성";
+            } else {
+                 document.getElementById('llm-generate-btn').textContent = "다음 단어 생성";
+            }
+        }
+        
+        function resetLlmDemo() {
+            llmDemoState = 0;
+            document.getElementById('llm-text-output').textContent = '"하늘은 푸르고, 바다는..."';
+            document.getElementById('llm-generate-btn').textContent = "다음 단어 생성";
+            if (llmChartInstance) {
+                llmChartInstance.destroy();
+                llmChartInstance = null;
+            }
+            const ctx = document.getElementById('llmChart').getContext('2d');
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('home');
+            resetLlmDemo();
+            resetAkinatorDemo();
+        });
+    </script>
+</body>
+</html>
